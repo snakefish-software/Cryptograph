@@ -1,11 +1,8 @@
-package snakefish.crypto.key
+package snakefish.crypto
 
 import java.io.File
 
-/**
- * Base trait for all Key classes
- */
-trait Key {
+trait ToFile {
   
   def toFile(filePath: String)
   
