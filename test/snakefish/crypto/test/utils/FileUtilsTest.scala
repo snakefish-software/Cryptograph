@@ -1,30 +1,22 @@
 package snakefish.crypto.test.utils
 
-import snakefish.crypto.test._
-import snakefish.crypto.utils.FileUtils;
-
-import org.junit.Assert._
-import org.junit.Test
-import org.junit.After
-
-import java.io.File
+import snakefish.crypto.utils.FileUtils
+import snakefish.crypto.test.BaseTest
 
 class FileUtilsTest extends BaseTest {
   
-  @Test
-  def testReadWriteNumber() {
-    val savedNum = 123456789L
-    FileUtils.writeNumber(savedNum, TEST_FILE_PATH)
-    val readNum = FileUtils.readNumber(TEST_FILE_PATH)
-    assertEquals(savedNum, readNum)
+  ".writeNumber/.readNumber" should "correctly write/read single number to/from file" in {
+    val savedNumber = 1234567890L
+    FileUtils.writeNumber(savedNumber, TEST_FILE_PATH)
+    val readNumber = FileUtils.readNumber(TEST_FILE_PATH)
+    readNumber must be (savedNumber)
   }
   
-  @Test
-  def testReadWriteString_WithCharset() {
+  ".writeString/.readString" should "correctly write/read string to/from file in non UTF-8 charset" in {
     val savedString = "Беги, Лола, беги"
     FileUtils.writeString(savedString, TEST_FILE_PATH, "KOI8_R")
     val readString = FileUtils.readString(TEST_FILE_PATH, "KOI8_R")
-    assertEquals(savedString, readString)
+    readString must be (savedString)
   }
   
 }

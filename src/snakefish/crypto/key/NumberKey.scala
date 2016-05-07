@@ -1,6 +1,5 @@
 package snakefish.crypto.key
 
-import java.util.Scanner
 import snakefish.crypto.utils.FileUtils
 import java.io.File
 
@@ -21,4 +20,5 @@ case class NumberKey private (private val key: Long) extends Key {
   def toFile(file: File) {
     FileUtils.writeNumber(key, file)
   }
+  
 }

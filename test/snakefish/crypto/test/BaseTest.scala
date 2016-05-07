@@ -1,14 +1,17 @@
 package snakefish.crypto.test
 
-import org.junit.After
 import java.io.File
+import org.scalatest.FlatSpec
+import org.scalatest.MustMatchers
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.BeforeAndAfter
 
-class BaseTest {
+class BaseTest extends FlatSpec with MustMatchers with BeforeAndAfter {
   
-  @After
-  def deleteTestFiles() {
-    val file = new File(TEST_FILE_PATH)
-    file.delete()
+  val TEST_FILE_PATH = """D:\test"""
+  
+  after {
+    new File(TEST_FILE_PATH).delete()
   }
   
 }
