@@ -14,15 +14,15 @@ class NumberKeyTest extends BaseTest {
   }
   
   ".fromFile" should "read key from file" in {
-    FileUtils.writeNumber(plainKey, TEST_FILE_PATH)
-    val key = NumberKey.fromFile(TEST_FILE_PATH)
+    FileUtils.writeNumber(plainKey, TEST_FILE)
+    val key = NumberKey.fromFile(TEST_FILE)
     key.toNumber must be (plainKey)
   }
   
   ".toFile" should "save key to file" in {
     val key = NumberKey.from(plainKey)
-    key.toFile(TEST_FILE_PATH)
-    val readKey = FileUtils.readNumber(TEST_FILE_PATH)
+    key.toFile(TEST_FILE)
+    val readKey = FileUtils.readNumber(TEST_FILE)
     readKey must be (plainKey)
   }
   

@@ -13,7 +13,7 @@ object StringKey {
 
 case class StringKey private (private val key: String) extends Key {
   
-  def toNumber = key
+  override def toString = key
   
   def toFile(filePath: String) {
     FileUtils.writeString(key, filePath)

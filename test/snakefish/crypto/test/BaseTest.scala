@@ -8,10 +8,13 @@ import org.scalatest.BeforeAndAfter
 
 class BaseTest extends FlatSpec with MustMatchers with BeforeAndAfter {
   
-  val TEST_FILE_PATH = """D:\test"""
+  val TEST_FILE = """D:\test"""
+  val TEST_FILE2 = """D:\test2"""
+  val NON_DEFAULT_CHARSET = "KOI8_R"
   
   after {
-    new File(TEST_FILE_PATH).delete()
+    new File(TEST_FILE).delete()
+    new File(TEST_FILE2).delete()
   }
   
 }
