@@ -6,25 +6,19 @@ import java.io.File
 
 object NumberKey {
   def from(key: Long) = new NumberKey(key)
-  def fromFile(filePath: String) = new NumberKey(filePath)
-  def fromFile(file: File) = new NumberKey(file)
+  def fromFile(filePath: String) = new NumberKey(FileUtils.readNumber(filePath))
+  def fromFile(file: File) = new NumberKey(FileUtils.readNumber(file))
 }
 
-class NumberKey private (_key: Long) extends Key {
-  private var key: Long = _key
-  private var filePath: String = null
-  
-  private def this(_filePath: String) {
-    this(FileUtils.readNumber(_filePath))
-  }
-  
-  private def this(_file: File) {
-    this(FileUtils.readNumber(_file))
-  }
+case class NumberKey private (private val key: Long) extends Key {
   
   def toNumber = key
   
   def toFile(filePath: String) {
     FileUtils.writeNumber(key, filePath)
+  }
+  
+  def toFile(file: File) {
+    FileUtils.writeNumber(key, file)
   }
 }

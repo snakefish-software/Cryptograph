@@ -26,7 +26,7 @@ lazy val root = (project in file(".")).
 
     pollInterval := 1000,
 
-    javacOptions ++= Seq("-source", "1.5", "-target", "1.5"),
+    javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
 
     scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-Xfatal-warnings"),
 

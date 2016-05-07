@@ -7,7 +7,7 @@ import java.io.PrintWriter
 
 object FileUtils {
   
-  val DEFAULT_CHARSET = "UTF-8"
+  private val DEFAULT_CHARSET = "UTF-8"
   
   def readNumber(filePath: String): Long = readNumber(new File(filePath))
   
@@ -31,7 +31,7 @@ object FileUtils {
     var scanner: Scanner = null
     try {
       scanner = new Scanner(file, charset)
-      scanner.useDelimiter("\\A").next
+      scanner.useDelimiter("""\A""").next
     } finally {
       close(scanner)
     }
