@@ -2,6 +2,7 @@ package snakefish.crypto.key
 
 import snakefish.crypto.utils.FileUtils
 import java.io.File
+import snakefish.crypto.NumberWrapper
 
 object NumberKey {
   def from(key: Long) = new NumberKey(key)
@@ -9,16 +10,8 @@ object NumberKey {
   def fromFile(file: File) = new NumberKey(FileUtils.readNumber(file))
 }
 
-case class NumberKey private (private val key: Long) extends Key {
+case class NumberKey private (private val key: Long) extends Key with NumberWrapper {
   
   def toNumber = key
-  
-  def toFile(filePath: String) {
-    FileUtils.writeNumber(key, filePath)
-  }
-  
-  def toFile(file: File) {
-    FileUtils.writeNumber(key, file)
-  }
   
 }

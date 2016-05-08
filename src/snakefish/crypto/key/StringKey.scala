@@ -2,6 +2,7 @@ package snakefish.crypto.key
 
 import snakefish.crypto.utils.FileUtils
 import java.io.File
+import snakefish.crypto.StringWrapper
 
 object StringKey {
   def from(key: String) = new StringKey(key)
@@ -11,24 +12,8 @@ object StringKey {
   def fromFile(file: File, charset: String) = new StringKey(FileUtils.readString(file, charset))
 }
 
-case class StringKey private (private val key: String) extends Key {
+case class StringKey private (private val key: String) extends Key with StringWrapper {
   
   override def toString = key
-  
-  def toFile(filePath: String) {
-    FileUtils.writeString(key, filePath)
-  }
-  
-  def toFile(filePath: String, charset: String) {
-    FileUtils.writeString(key, filePath, charset)
-  }
-  
-  def toFile(file: File) {
-    FileUtils.writeString(key, file)
-  }
-  
-  def toFile(file: File, charset: String) {
-    FileUtils.writeString(key, file, charset)
-  }
   
 }

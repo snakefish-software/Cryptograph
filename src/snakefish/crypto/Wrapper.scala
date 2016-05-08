@@ -2,7 +2,7 @@ package snakefish.crypto
 
 import java.io.File
 
-trait ToFile {
+trait Wrapper {
   
   def toFile(filePath: String)
   
