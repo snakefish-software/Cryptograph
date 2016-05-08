@@ -10,8 +10,8 @@ class StringKeyTest extends BaseTest {
   
   private val plainKey = "Ехал грека через реку, видит грека - в реке рак..."
   
-  ".from" should "create StringKey instance from string" in {
-    val key = StringKey.from(plainKey)
+  ".apply" should "create StringKey instance from string" in {
+    val key = StringKey(plainKey)
     key.toString must be (plainKey)
   }
   
@@ -37,30 +37,6 @@ class StringKeyTest extends BaseTest {
     FileUtils.writeString(plainKey, TEST_FILE2, NON_DEFAULT_CHARSET)
     val key = StringKey.fromFile(new File(TEST_FILE2), NON_DEFAULT_CHARSET)
     key.toString must be (plainKey)
-  }
-  
-  ".toFile(filePath)" should "save key in default UTF-8 charset to file, specified by path" in {
-    StringKey.from(plainKey).toFile(TEST_FILE)
-    val readKey = FileUtils.readString(TEST_FILE)
-    readKey must be (plainKey)
-  }
-  
-  ".toFile(filePath, charset)" should "save key in non-default charset to file, specified by path" in {
-    StringKey.from(plainKey).toFile(TEST_FILE2, NON_DEFAULT_CHARSET)
-    val readKey = FileUtils.readString(TEST_FILE2, NON_DEFAULT_CHARSET)
-    readKey must be (plainKey)
-  }
-  
-  ".toFile(file)" should "save key in default UTF-8 charset to file" in {
-    StringKey.from(plainKey).toFile(new File(TEST_FILE))
-    val readKey = FileUtils.readString(TEST_FILE)
-    readKey must be (plainKey)
-  }
-  
-  ".toFile(file, charset)" should "save key in non-default charset to file" in {
-    StringKey.from(plainKey).toFile(new File(TEST_FILE2), NON_DEFAULT_CHARSET)
-    val readKey = FileUtils.readString(TEST_FILE2, NON_DEFAULT_CHARSET)
-    readKey must be (plainKey)
   }
   
 }
