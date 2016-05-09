@@ -1,9 +1,9 @@
 package snakefish.crypto.utils
 
 import java.io.File
-import java.util.Scanner
 import java.io.Closeable
 import java.io.PrintWriter
+import scala.io.Source
 
 object FileUtils {
   
@@ -28,12 +28,12 @@ object FileUtils {
   def readString(filePath: String, charset: String): String = readString(new File(filePath), charset)
   
   def readString(file: File, charset: String): String = {
-    var scanner: Scanner = null
+    var source: Source = null
     try {
-      scanner = new Scanner(file, charset)
-      scanner.useDelimiter("""\A""").next
+      source = Source.fromFile(file, calcCharset(charset))
+      source.mkString
     } finally {
-      close(scanner)
+      close(source)
     }
   }
   
@@ -52,14 +52,26 @@ object FileUtils {
   def writeString(data: String, file: File, charset: String) {
     var writer: PrintWriter = null
     try {
-      writer = new PrintWriter(file, charset)
+      writer = new PrintWriter(file, calcCharset(charset))
       writer.print(data)
     } finally {
       close(writer)
     }
   }
   
-  private def close(closeable: Closeable) {
+  def calcCharset(charset: String) = if (charset != null) charset else DEFAULT_CHARSET
+  
+  def close(source: Source) {
+    if (source != null) {
+      try {
+        source.close()
+      } catch {
+        case e: Exception => println("Exception on source closing: " + e);
+      }
+    }
+  }
+  
+  def close(closeable: Closeable) {
     if (closeable != null) {
       try {
         closeable.close()

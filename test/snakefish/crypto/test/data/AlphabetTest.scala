@@ -3,7 +3,6 @@ package snakefish.crypto.test.data
 import snakefish.crypto.test.BaseTest
 import snakefish.crypto.data.Alphabet
 import snakefish.crypto.utils.FileUtils
-import snakefish.crypto.key.StringKey
 import java.io.File
 
 class AlphabetTest extends BaseTest {
@@ -18,6 +17,11 @@ class AlphabetTest extends BaseTest {
   ".apply" should "remove duplicate characters from alphabet string" in {
     val alphabet = Alphabet("аббвгдеежзиайкллллмнмн")
     alphabet.toString must be (plainAlphabet)
+  }
+  
+  ".length" should "return correct length of Alphabet" in {
+    val alphabet = Alphabet(plainAlphabet)
+    alphabet.length must be (plainAlphabet.length)
   }
   
   ".+(string)" should "concatenate string with existing Alphabet" in {

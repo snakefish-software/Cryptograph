@@ -3,7 +3,6 @@ package snakefish.crypto.test.key
 import snakefish.crypto.test.BaseTest
 import snakefish.crypto.key.StringKey
 import snakefish.crypto.utils.FileUtils
-import snakefish.crypto.key.NumberKey
 import java.io.File
 
 class StringKeyTest extends BaseTest {

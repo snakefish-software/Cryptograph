@@ -24,6 +24,8 @@ class Alphabet private (private val _alphabet: String) extends StringWrapper {
   
   override def toString = alphabet
   
+  def length = alphabet.length
+  
   def +(that: String) = Alphabet(alphabet + that)
   
   def +(that: Alphabet) = Alphabet(alphabet + that.alphabet)

@@ -2,7 +2,6 @@ package snakefish.crypto.test
 
 import snakefish.crypto.utils.FileUtils
 import snakefish.crypto.NumberWrapper
-import snakefish.crypto.key.NumberKey
 import java.io.File
 
 class NumberWrapperTest extends BaseTest {
