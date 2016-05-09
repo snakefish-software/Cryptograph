@@ -7,7 +7,7 @@ import snakefish.crypto.key.NumberKey
 
 case class Options (val useStrictMode: Boolean) extends CipherOptions
 
-class CaesarCipher extends Cipher[StringData, NumberKey, Options] {
+object CaesarCipher extends Cipher[StringData, NumberKey, Options] {
   
   def encode(data: StringData, key: NumberKey, options: Options = null) = {
     // TODO: Dima Siryk: implement this
