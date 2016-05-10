@@ -20,7 +20,7 @@ object Alphabet {
 
 class Alphabet private (private val _alphabet: String) extends StringWrapper {
   
-  private val alphabet = _alphabet.distinct
+  private val alphabet = _alphabet.toLowerCase.distinct
   
   override def toString = alphabet
   

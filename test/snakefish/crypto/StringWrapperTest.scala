@@ -1,6 +1,5 @@
-package snakefish.crypto.test
+package snakefish.crypto
 
-import snakefish.crypto.StringWrapper
 import snakefish.crypto.utils.FileUtils
 import java.io.File
 

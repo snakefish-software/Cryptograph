@@ -1,7 +1,6 @@
-package snakefish.crypto.test.utils
+package snakefish.crypto.utils
 
-import snakefish.crypto.utils.FileUtils
-import snakefish.crypto.test.BaseTest
+import snakefish.crypto.BaseTest
 
 class FileUtilsTest extends BaseTest {
   

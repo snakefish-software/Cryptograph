@@ -1,8 +1,7 @@
-package snakefish.crypto.test.key
+package snakefish.crypto.key
 
-import snakefish.crypto.key.NumberKey
 import snakefish.crypto.utils.FileUtils
-import snakefish.crypto.test.BaseTest
+import snakefish.crypto.BaseTest
 import java.io.File
 
 class NumberKeyTest extends BaseTest {

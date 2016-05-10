@@ -1,7 +1,6 @@
-package snakefish.crypto.test.data
+package snakefish.crypto.data
 
-import snakefish.crypto.test.BaseTest
-import snakefish.crypto.data.Alphabet
+import snakefish.crypto.BaseTest
 import snakefish.crypto.utils.FileUtils
 import java.io.File
 
