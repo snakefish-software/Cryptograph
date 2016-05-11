@@ -9,9 +9,9 @@ object FileUtils {
   
   private val DEFAULT_CHARSET = "UTF-8"
   
-  def readNumber(filePath: String): Long = readNumber(new File(filePath))
+  def readNumber(filePath: String): BigInt = readNumber(new File(filePath))
   
-  def readNumber(file: File): Long = readString(file).trim.toLong
+  def readNumber(file: File): BigInt = BigInt(readString(file).trim)
   
   def writeNumber(data: Number, filePath: String) {
     writeNumber(data, new File(filePath))
