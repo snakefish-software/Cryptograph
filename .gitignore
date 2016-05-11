@@ -18,3 +18,14 @@ project/plugins/project/
 .scala_dependencies
 .worksheet
 /bin/
+
+# Emacs
+*~
+*#
+.#*
+.ensime
+.ensime_cache
+TAGS
+.dir-locals.el
+*.elc
+.cask

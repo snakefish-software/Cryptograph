@@ -14,10 +14,6 @@ lazy val root = (project in file(".")).
   settings(
     name := "Cryptograph",
 
-    scalaSource in Compile := baseDirectory.value / "src",
-
-    scalaSource in Test := baseDirectory.value / "test",
-
     libraryDependencies += scalacheck % Test,
 
     libraryDependencies += scalatest % Test,
