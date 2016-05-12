@@ -1,8 +1,8 @@
 package snakefish.crypto.data
 
-import snakefish.crypto.StringWrapper
-import snakefish.crypto.utils.FileUtils
-import java.io.File
+case class KeyCharNotInAlphabetException() extends Exception("Key contains symbols that are missing in provided alphabet")
+
+case class DataCharNotInAlphabetException() extends Exception("Data contains symbols that are missing in provided alphabet")
 
 object Alphabet {
   val ENGLISH = Alphabet("abcdefghijklmnopqrstuvwxyz")
@@ -11,14 +11,10 @@ object Alphabet {
   val PUNCTUATION = Alphabet(",;.!?-:")
   val SPACES = Alphabet(" \t\n")
   
-  def apply(alphabet: String) = new Alphabet(alphabet)
-  def fromFile(filePath: String) = Alphabet(FileUtils.readString(filePath))
-  def fromFile(filePath: String, charset: String) = Alphabet(FileUtils.readString(filePath, charset))
-  def fromFile(file: File) = Alphabet(FileUtils.readString(file))
-  def fromFile(file: File, charset: String) = Alphabet(FileUtils.readString(file, charset))
+  implicit def alphabetToStr(alphabet: Alphabet) = alphabet.toString
 }
 
-class Alphabet private (private val _alphabet: String) extends StringWrapper {
+case class Alphabet (private val _alphabet: String) {
   
   private val alphabet = _alphabet.toLowerCase.distinct
   

@@ -1,8 +1,6 @@
 package snakefish.crypto.data
 
 import snakefish.crypto.BaseTest
-import snakefish.crypto.utils.FileUtils
-import java.io.File
 
 class AlphabetTest extends BaseTest {
   
@@ -31,30 +29,6 @@ class AlphabetTest extends BaseTest {
   ".+(Alphabet)" should "concatenate 2 Alphabets" in {
     val alphabet = Alphabet(plainAlphabet) + Alphabet("йклмнщшцщшъ")
     alphabet.toString must be (plainAlphabet + "щшцъ")
-  }
-  
-  ".fromFile(filePath)" should "read alphabet in default UTF-8 charset from file, specified by path" in {
-    FileUtils.writeString(plainAlphabet, TEST_FILE)
-    val alphabet = Alphabet.fromFile(TEST_FILE)
-    alphabet.toString must be (plainAlphabet)
-  }
-  
-  ".fromFile(filePath, charset)" should "read alphabet in non-default charset from file, specified by path" in {
-    FileUtils.writeString(plainAlphabet, TEST_FILE2, NON_DEFAULT_CHARSET)
-    val alphabet = Alphabet.fromFile(TEST_FILE2, NON_DEFAULT_CHARSET)
-    alphabet.toString must be (plainAlphabet)
-  }
-  
-  ".fromFile(file)" should "read alphabet in default UTF-8 charset from file" in {
-    FileUtils.writeString(plainAlphabet, TEST_FILE)
-    val alphabet = Alphabet.fromFile(new File(TEST_FILE))
-    alphabet.toString must be (plainAlphabet)
-  }
-  
-  ".fromFile(file, charset)" should "read alphabet in non-default charset from file" in {
-    FileUtils.writeString(plainAlphabet, TEST_FILE2, NON_DEFAULT_CHARSET)
-    val alphabet = Alphabet.fromFile(new File(TEST_FILE2), NON_DEFAULT_CHARSET)
-    alphabet.toString must be (plainAlphabet)
   }
   
 }
