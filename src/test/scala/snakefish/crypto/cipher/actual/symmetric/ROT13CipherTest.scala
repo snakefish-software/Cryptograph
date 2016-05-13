@@ -10,12 +10,12 @@ class ROT13CipherTest extends BaseTest {
   
   ".encode" should "correctly encode data using provided key and alphabet" in {
     val encodedText = ROT13Cipher.encode(testPlainText, Alphabet.ENGLISH)
-    encodedText must be (testEncodedText)
+    encodedText must be (testEncodedText.toCharArray())
   }
   
   ".decode" should "correctly decode data using provided key and alphabet" in {
     val plainText = ROT13Cipher.decode(testEncodedText, Alphabet.ENGLISH)
-    plainText must be (testPlainText)
+    plainText must be (testPlainText.toCharArray())
   }
   
 }

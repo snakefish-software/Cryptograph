@@ -5,11 +5,11 @@ import java.util.Random
 
 object CryptoUtils {
   
-  def sumKeySeqWithText(keyProvider: (Int) => Int) (data: CharSequence, alphabet: String, useStrictMode: Boolean, resIndexCalc: (Int, Int, Int) => Int) = {
+  def sumKeySeqWithText(keyProvider: Int => Int)(data: CharSequence, alphabet: String, useStrictMode: Boolean, resIndexCalc: (Int, Int, Int) => Int) = {
     val dataLen = data.length()
-    val result = new Array[Char](dataLen)
-    
     val alphabetNorm = alphabet.toLowerCase
+    
+    val result = new Array[Char](dataLen)
     
     for (i <- 0 until dataLen) {
       val dataCh = data.charAt(i)
@@ -23,12 +23,19 @@ object CryptoUtils {
         val resCh = if (isUpper) alphabetNorm(resIndex).toUpper else alphabetNorm(resIndex)
         result(i) = resCh
       } else {
-        if (useStrictMode) throw new DataCharNotInAlphabetException
-        else result(i) = dataCh
+        if (useStrictMode) {
+          eraseArray(result, i + 1)
+          throw new DataCharNotInAlphabetException
+        } else result(i) = dataCh
       }
     }
     
-    new String(result, 0, dataLen)
+    result
+  }
+  
+  def eraseArray(arr: Array[Char], untilInd: Int): Unit = {
+    val eraseCh = 0.toChar
+    for (i <- 0 until untilInd) arr(i) = eraseCh
   }
   
 }

@@ -14,7 +14,7 @@ object CaesarCipher {
   }
   
   private def process(data: CharSequence, key: Int, alphabet: String, useStrictMode: Boolean, resIndexCalc: (Int, Int, Int) => Int) = {
-    val cryptoFunc = CryptoUtils.sumKeySeqWithText((Int) => key) _
+    val cryptoFunc = CryptoUtils.sumKeySeqWithText(_ => key) _
     cryptoFunc(data, alphabet, useStrictMode, resIndexCalc)
   }
   

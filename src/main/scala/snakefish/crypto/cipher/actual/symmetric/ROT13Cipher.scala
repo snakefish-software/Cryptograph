@@ -14,7 +14,7 @@ object ROT13Cipher {
   }
   
   private def process(data: CharSequence, alphabet: String, useStrictMode: Boolean, resIndexCalc: (Int, Int, Int) => Int) = {
-    val cryptoFunc = CryptoUtils.sumKeySeqWithText((Int) => 13) _
+    val cryptoFunc = CryptoUtils.sumKeySeqWithText(_ => 13) _
     cryptoFunc(data, alphabet, useStrictMode, resIndexCalc)
   }
   
