@@ -10,12 +10,12 @@ class CaesarCipherTest extends BaseTest {
   private val testKey = 3
   
   ".encode" should "correctly encode data using provided key and alphabet" in {
-    val encodedText = CaesarCipher.encode(testPlainText, testKey, Alphabet.RUSSIAN)
+    val encodedText = Caesar.encode(testPlainText, testKey, Alphabet.RUSSIAN)
     encodedText must be (testEncodedText.toCharArray())
   }
   
   ".decode" should "correctly decode data using provided key and alphabet" in {
-    val plainText = CaesarCipher.decode(testEncodedText, testKey, Alphabet.RUSSIAN)
+    val plainText = Caesar.decode(testEncodedText, testKey, Alphabet.RUSSIAN)
     plainText must be (testPlainText.toCharArray())
   }
   

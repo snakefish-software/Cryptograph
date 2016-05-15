@@ -1,8 +1,12 @@
 package snakefish.crypto.data
 
-case class KeyCharNotInAlphabetException() extends Exception("Key contains symbols that are missing in provided alphabet")
+import scala.language.implicitConversions
 
-case class DataCharNotInAlphabetException() extends Exception("Data contains symbols that are missing in provided alphabet")
+class KeyCharNotInAlphabetException()
+    extends Exception("Key contains symbols that are missing in provided alphabet")
+
+class DataCharNotInAlphabetException()
+    extends Exception("Data contains symbols that are missing in provided alphabet")
 
 object Alphabet {
   val ENGLISH = Alphabet("abcdefghijklmnopqrstuvwxyz")
@@ -11,7 +15,7 @@ object Alphabet {
   val PUNCTUATION = Alphabet(",;.!?-:")
   val SPACES = Alphabet(" \t\n")
   
-  implicit def alphabetToStr(alphabet: Alphabet) = alphabet.toString
+  implicit def alphabetToStr(alphabet: Alphabet): String = alphabet.toString
 }
 
 case class Alphabet (private val _alphabet: String) {
