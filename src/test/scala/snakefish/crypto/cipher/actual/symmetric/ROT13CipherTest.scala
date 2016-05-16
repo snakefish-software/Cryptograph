@@ -9,12 +9,12 @@ class ROT13CipherTest extends BaseTest {
   private val testEncodedText = "Ubj pna lbh gryy na rkgebireg sebz na vagebireg ng AFN? In the elevators, the extrovert looks at the OTHER guy's shoes."
   
   ".encode" should "correctly encode data using provided key and alphabet" in {
-    val encodedText = ROT13Cipher.encode(testPlainText, Alphabet.ENGLISH)
+    val encodedText = ROT13.encode(testPlainText, Alphabet.ENGLISH)
     encodedText must be (testEncodedText.toCharArray())
   }
   
   ".decode" should "correctly decode data using provided key and alphabet" in {
-    val plainText = ROT13Cipher.decode(testEncodedText, Alphabet.ENGLISH)
+    val plainText = ROT13.decode(testEncodedText, Alphabet.ENGLISH)
     plainText must be (testPlainText.toCharArray())
   }
   
