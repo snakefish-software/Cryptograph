@@ -1,7 +1,6 @@
 package snakefish.crypto.utils
 
 import snakefish.crypto.data.DataCharNotInAlphabetException
-import java.util.Random
 
 object CryptoUtils {
 
