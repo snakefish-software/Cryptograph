@@ -5,18 +5,20 @@ import snakefish.crypto.data.Alphabet
 
 class CaesarCipherTest extends BaseTest {
   
-  private val testPlainText = "Съешь же ещё этих мягких французских булок, да выпей чаю."
+  private val testPlainText: Array[Char] =
+    "Съешь же ещё этих мягких французских булок, да выпей чаю."
+      .toCharArray
   private val testEncodedText = "Фэзыя йз зьи ахлш пвёнлш чугрщцкфнлш дцосн, жг еютзм ъгб."
   private val testKey = 3
   
   ".encode" should "correctly encode data using provided key and alphabet" in {
     val encodedText = Caesar.encode(testPlainText, testKey, Alphabet.RUSSIAN)
-    encodedText must be (testEncodedText.toCharArray())
+    encodedText must be (testEncodedText.toCharArray)
   }
   
   ".decode" should "correctly decode data using provided key and alphabet" in {
     val plainText = Caesar.decode(testEncodedText, testKey, Alphabet.RUSSIAN)
-    plainText must be (testPlainText.toCharArray())
+    plainText must be (testPlainText)
   }
   
 }
