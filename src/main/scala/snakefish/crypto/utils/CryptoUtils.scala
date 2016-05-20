@@ -28,7 +28,7 @@ object CryptoUtils {
         result(i) = resCh
       } else {
         if (useStrictMode) {
-          eraseArray(result, i + 1)
+          eraseArray(result)
           throw new DataCharNotInAlphabetException()
         } else result(i) = dataCh
       }
@@ -37,13 +37,17 @@ object CryptoUtils {
     result
   }
   
-  def eraseArray(arr: Array[Int], untilIndex: Int): Unit = {
-    for (i <- 0 until untilIndex) arr(i) = 0
+  def eraseArray(arr: Array[Int]): Unit = {
+    for (i <- 0 until arr.length) arr(i) = 0
   }
   
-  def eraseArray(arr: Array[Char], untilIndex: Int): Unit = {
+  def eraseArray(arr: Array[Byte]): Unit = {
+    for (i <- 0 until arr.length) arr(i) = 0
+  }
+  
+  def eraseArray(arr: Array[Char]): Unit = {
     val eraseCh = 0.toChar
-    for (i <- 0 until untilIndex) arr(i) = eraseCh
+    for (i <- 0 until arr.length) arr(i) = eraseCh
   }
   
 }

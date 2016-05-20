@@ -54,7 +54,7 @@ object Vigenere {
       val keyCh = Character.toLowerCase(key.charAt(i))
       val keyChIndex = alphabetNorm.indexOf(keyCh)
       if (keyChIndex < 0) {
-        eraseArray(keyInts, i + 1)
+        eraseArray(keyInts)
         throw new KeyCharNotInAlphabetException()
       } else keyInts(i) = keyChIndex
     }
