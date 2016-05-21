@@ -3,7 +3,6 @@ package cipher.historical
 
 import utils.MathOps._
 import utils.CryptoUtils._
-import scala.util.Try
 
 object PolybiusSquare {
   
@@ -11,11 +10,11 @@ object PolybiusSquare {
   
   case class Square(val square: Array[Array[Char]], val missedOnExisting: Map[Char, Char] = Map())
   
-  val LATIN =  Square(Array(Array('a',	'b', 'c',	'd', 'e'),
-                            Array('f',	'g', 'h',	'i', 'k'),
-                            Array('l',	'm', 'n',	'o', 'p'),
-                            Array('q',	'r', 's',	't', 'u'),
-                            Array('v',	'w', 'x',	'y', 'z')),
+  val LATIN =  Square(Array(Array('a', 'b', 'c', 'd', 'e'),
+                            Array('f', 'g', 'h', 'i', 'k'),
+                            Array('l', 'm', 'n', 'o', 'p'),
+                            Array('q', 'r', 's', 't', 'u'),
+                            Array('v', 'w', 'x', 'y', 'z')),
                       Map('j' -> 'i'))
                              
   val RUSSIAN_ALL = Square(Array(Array('а', 'б', 'в', 'г', 'д', 'е'),
