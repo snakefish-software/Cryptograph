@@ -1,6 +1,8 @@
-package snakefish.crypto.utils
+package snakefish.crypto
+package utils
 
-import snakefish.crypto.data.DataCharNotInAlphabetException
+import data.DataCharNotInAlphabetException
+import scala.collection.mutable.ArrayBuffer
 
 object CryptoUtils {
 
@@ -30,7 +32,7 @@ object CryptoUtils {
         calcIndex += 1
       } else {
         if (useStrictMode) {
-          eraseArray(result)
+          erase(result)
           throw new DataCharNotInAlphabetException()
         } else result(i) = dataCh
       }
@@ -39,17 +41,33 @@ object CryptoUtils {
     result
   }
   
-  def eraseArray(arr: Array[Int]): Unit = {
+  def erase(arr: Array[Int]): Unit = {
     for (i <- 0 until arr.length) arr(i) = 0
   }
   
-  def eraseArray(arr: Array[Byte]): Unit = {
+  def erase(arr: ArrayBuffer[Int]): Unit = {
     for (i <- 0 until arr.length) arr(i) = 0
   }
   
-  def eraseArray(arr: Array[Char]): Unit = {
+  def erase(arr: Array[Byte]): Unit = {
+    for (i <- 0 until arr.length) arr(i) = 0
+  }
+  
+  def erase(arr: Array[Char]): Unit = {
     val eraseCh = 0.toChar
     for (i <- 0 until arr.length) arr(i) = eraseCh
+  }
+  
+  def toDigits(num: Long) = {
+    val digits = new ArrayBuffer[Int]()
+    var numCopy = num
+    while (numCopy > 0) {
+      (numCopy % 10).toInt +=: digits
+      numCopy = numCopy / 10
+    }
+    val result = digits.toArray
+    erase(digits)
+    result
   }
   
 }

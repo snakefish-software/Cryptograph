@@ -7,32 +7,32 @@ import data.KeyCharNotInAlphabetException
 
 object Vigenere {
   
-  def encode(data: CharSequence, key: CharSequence, alphabet: String) = {
-    cryptoFunc(data, key, alphabet, false)(addByModulo)
+  def encode(data: CharSequence, key: CharSequence, alphabet: String): Array[Char] = {
+    encode(data, key, alphabet, false)
   }
 
   def encode(data: CharSequence, key: CharSequence, alphabet: String, strictMode: Boolean) = {
     cryptoFunc(data, key, alphabet, strictMode)(addByModulo)
   }
   
-  def encode(data: CharSequence, key: Array[Int], alphabet: String) = {
-    cryptoFunc(data, key, alphabet, false)(addByModulo)
+  def encode(data: CharSequence, key: Array[Int], alphabet: String): Array[Char] = {
+    encode(data, key, alphabet, false)
   }
   
   def encode(data: CharSequence, key: Array[Int], alphabet: String, strictMode: Boolean) = {
     cryptoFunc(data, key, alphabet, strictMode)(addByModulo)
   }
   
-  def decode(data: CharSequence, key: CharSequence, alphabet: String) = {
-    cryptoFunc(data, key, alphabet, false)(subtractByModulo)
+  def decode(data: CharSequence, key: CharSequence, alphabet: String): Array[Char] = {
+    decode(data, key, alphabet, false)
   }
 
   def decode(data: CharSequence, key: CharSequence, alphabet: String, strictMode: Boolean) = {
     cryptoFunc(data, key, alphabet, strictMode)(subtractByModulo)
   }
   
-  def decode(data: CharSequence, key: Array[Int], alphabet: String) = {
-    cryptoFunc(data, key, alphabet, false)(subtractByModulo)
+  def decode(data: CharSequence, key: Array[Int], alphabet: String): Array[Char] = {
+    decode(data, key, alphabet, false)
   }
   
   def decode(data: CharSequence, key: Array[Int], alphabet: String, strictMode: Boolean) = {
@@ -54,13 +54,13 @@ object Vigenere {
       val keyCh = Character.toLowerCase(key.charAt(i))
       val keyChIndex = alphabetNorm.indexOf(keyCh)
       if (keyChIndex < 0) {
-        eraseArray(keyInts)
+        erase(keyInts)
         throw new KeyCharNotInAlphabetException()
       } else keyInts(i) = keyChIndex
     }
     
     val result = cryptoFunc(data, keyInts, alphabet, strictMode)(resIndexCalc)
-    eraseArray(keyInts)
+    erase(keyInts)
     result
   }
   

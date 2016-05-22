@@ -41,7 +41,7 @@ object PolybiusSquare {
       
       val computedCoords = computeCoords(dataCh, square, rowColPair)
       if (computedCoords.isEmpty) {
-        eraseArray(dataNums)
+        erase(dataNums)
         throw new DataCharNotInSquareException()
       }
       
@@ -51,15 +51,15 @@ object PolybiusSquare {
     
     val sq = square.square
     val compDataNums = computeFunc(dataNums, sq)
-    eraseArray(dataNums)
+    erase(dataNums)
     
     val result = new Array[Char](data.length)
     for (i <- 0 until data.length) {
       val row = compDataNums(i * 2)
       val col = compDataNums(i * 2 + 1)
       if (row >= sq.length || col >= sq(row).length) {
-        eraseArray(compDataNums)
-        eraseArray(result)
+        erase(compDataNums)
+        erase(result)
         throw new DataCharNotInSquareException()
       } else {
         var resCh = sq(row)(col)
@@ -70,7 +70,7 @@ object PolybiusSquare {
       }
     }
     
-    eraseArray(compDataNums)
+    erase(compDataNums)
     result
   }
   
