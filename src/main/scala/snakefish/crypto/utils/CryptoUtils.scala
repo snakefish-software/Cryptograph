@@ -15,6 +15,7 @@ object CryptoUtils {
     val alphabetNormLength = alphabetNorm.length
     val result = new Array[Char](dataLen)
     
+    var calcIndex = 0
     for (i <- 0 until dataLen) {
       val dataCh = data.charAt(i)
       val isUpper = Character.isUpperCase(dataCh)
@@ -23,9 +24,10 @@ object CryptoUtils {
       val chIndex = alphabetNorm.indexOf(ch)
       
       if (chIndex >= 0) {
-        val resIndex = resIndexCalc(chIndex, keyProvider(i), alphabetNormLength)
+        val resIndex = resIndexCalc(chIndex, keyProvider(calcIndex), alphabetNormLength)
         val resCh = if (isUpper) Character.toUpperCase(alphabetNorm(resIndex)) else alphabetNorm(resIndex)
         result(i) = resCh
+        calcIndex += 1
       } else {
         if (useStrictMode) {
           eraseArray(result)
