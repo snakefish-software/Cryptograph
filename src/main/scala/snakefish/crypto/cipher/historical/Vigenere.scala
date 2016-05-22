@@ -59,7 +59,9 @@ object Vigenere {
       } else keyInts(i) = keyChIndex
     }
     
-    cryptoFunc(data, keyInts, alphabet, strictMode)(resIndexCalc)
+    val result = cryptoFunc(data, keyInts, alphabet, strictMode)(resIndexCalc)
+    eraseArray(keyInts)
+    result
   }
   
   private def cryptoFunc(

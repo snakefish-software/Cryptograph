@@ -2,6 +2,7 @@ package snakefish.crypto.cipher.historical
 
 import snakefish.crypto.BaseTest
 import snakefish.crypto.data.Alphabet
+import snakefish.crypto.data.DataCharNotInAlphabetException
 
 class AtbashTest extends BaseTest {
   
@@ -13,6 +14,10 @@ class AtbashTest extends BaseTest {
     val alphabetRu = Alphabet.RUSSIAN.toString;
     val resultRu = Atbash.compute(alphabetRu, alphabetRu)
     resultRu must be (alphabetRu.reverse.toCharArray)
+  }
+  
+  ".compute" should "throw an exception in strict mode if income data contains symbols that are missing in alphabet" in {
+    an [DataCharNotInAlphabetException] should be thrownBy Atbash.compute(" ", Alphabet.ENGLISH, true)
   }
   
 }

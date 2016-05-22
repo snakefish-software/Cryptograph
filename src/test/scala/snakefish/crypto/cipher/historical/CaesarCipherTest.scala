@@ -2,6 +2,7 @@ package snakefish.crypto.cipher.historical
 
 import snakefish.crypto.BaseTest
 import snakefish.crypto.data.Alphabet
+import snakefish.crypto.data.DataCharNotInAlphabetException
 
 class CaesarCipherTest extends BaseTest {
   
@@ -17,6 +18,11 @@ class CaesarCipherTest extends BaseTest {
   ".decode" should "correctly decode data using provided key and alphabet" in {
     val plainText = Caesar.decode(testEncodedText, testKey, Alphabet.RUSSIAN)
     plainText must be (testPlainText.toCharArray)
+  }
+  
+  ".encode & .decode" should "throw an exception in strict mode if income data contains symbols that are missing in alphabet" in {
+    an [DataCharNotInAlphabetException] should be thrownBy Caesar.encode(testPlainText, testKey, Alphabet.RUSSIAN, true)
+    an [DataCharNotInAlphabetException] should be thrownBy Caesar.decode(testEncodedText, testKey, Alphabet.RUSSIAN, true)
   }
   
 }

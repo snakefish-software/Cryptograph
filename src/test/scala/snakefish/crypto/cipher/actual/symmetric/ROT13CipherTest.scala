@@ -2,6 +2,7 @@ package snakefish.crypto.cipher.actual.symmetric
 
 import snakefish.crypto.BaseTest
 import snakefish.crypto.data.Alphabet
+import snakefish.crypto.data.DataCharNotInAlphabetException
 
 class ROT13CipherTest extends BaseTest {
   
@@ -16,6 +17,11 @@ class ROT13CipherTest extends BaseTest {
   ".decode" should "correctly decode data using provided key and alphabet" in {
     val plainText = ROT13.decode(testEncodedText, Alphabet.ENGLISH)
     plainText must be (testPlainText.toCharArray())
+  }
+  
+  ".encode & .decode" should "throw an exception in strict mode if income data contains symbols that are missing in alphabet" in {
+    an [DataCharNotInAlphabetException] should be thrownBy ROT13.encode(testPlainText, Alphabet.ENGLISH, true)
+    an [DataCharNotInAlphabetException] should be thrownBy ROT13.decode(testEncodedText, Alphabet.ENGLISH, true)
   }
   
 }
