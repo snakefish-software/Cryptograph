@@ -6,11 +6,11 @@ import PolybiusSquare.DataCharNotInSquareException
 class PolybiusSquareTest extends BaseTest {
   
   ".lowerSymbol" should "correctly compute result" in {
-    val res1 = PolybiusSquare.compute("AgNtZj", PolybiusSquare.LATIN, PolybiusSquare.lowerSymbol)
-    res1 must be ("FmSyEo".toCharArray)
+    val res1 = PolybiusSquare.compute("AgN tZj12", PolybiusSquare.LATIN, PolybiusSquare.lowerSymbol)
+    res1 must be ("FmS yEo12".toCharArray)
     
-    val res2 = PolybiusSquare.compute("АжНфЫя", PolybiusSquare.RUSSIAN_ALL, PolybiusSquare.lowerSymbol)
-    res2 must be ("ЁмУъДв".toCharArray)
+    val res2 = PolybiusSquare.compute("АжН фЫя", PolybiusSquare.RUSSIAN_ALL, PolybiusSquare.lowerSymbol)
+    res2 must be ("ЁмУ ъДв".toCharArray)
     
     val res3 = PolybiusSquare.compute("АзПцЮёЙъ", PolybiusSquare.RUSSIAN_SHORT, PolybiusSquare.lowerSymbol)
     res3 must be ("ЖоХэДмПв".toCharArray)
@@ -71,8 +71,8 @@ class PolybiusSquareTest extends BaseTest {
     res3 must be ("АзПцЮеИь".toCharArray)
   }
   
-  ".compute" should "throw an exception if symbol in income data is missing in square" in {
-    an [DataCharNotInSquareException] should be thrownBy PolybiusSquare.compute("F12yEo", PolybiusSquare.LATIN, PolybiusSquare.upperSymbol)
+  ".compute" should "throw an exception in strict mode if symbol in income data is missing in square" in {
+    an [DataCharNotInSquareException] should be thrownBy PolybiusSquare.compute("F12yEo", PolybiusSquare.LATIN, PolybiusSquare.upperSymbol, true)
   }
   
   ".compute" should "throw an exception if symbol in computed data is missing in square" in {
