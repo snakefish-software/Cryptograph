@@ -45,15 +45,20 @@ object CryptoUtils {
     for (i <- 0 until arr.length) arr(i) = 0
   }
   
-  def erase(arr: ArrayBuffer[Int]): Unit = {
-    for (i <- 0 until arr.length) arr(i) = 0
-  }
-  
   def erase(arr: Array[Byte]): Unit = {
     for (i <- 0 until arr.length) arr(i) = 0
   }
   
   def erase(arr: Array[Char]): Unit = {
+    val eraseCh = 0.toChar
+    for (i <- 0 until arr.length) arr(i) = eraseCh
+  }
+  
+  def erase(arr: ArrayBuffer[Int]): Unit = {
+    for (i <- 0 until arr.length) arr(i) = 0
+  }
+  
+  def eraze(arr: ArrayBuffer[Char]): Unit = {
     val eraseCh = 0.toChar
     for (i <- 0 until arr.length) arr(i) = eraseCh
   }

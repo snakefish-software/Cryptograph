@@ -1,82 +1,93 @@
 package snakefish.crypto.cipher.historical
 
 import snakefish.crypto.BaseTest
-import PolybiusSquare.DataCharNotInSquareException
+import PolybiusSquare._
+import snakefish.crypto.data.Alphabet
 
 class PolybiusSquareTest extends BaseTest {
   
+  ".apply(key, alphabet, missedOnExisting)" should "create Polibius square instance from provided arguments" in {
+    val square = PolybiusSquare("QwErTy", Alphabet.ENGLISH, Map('J' -> 'I'))
+    square.square must equal(Array(Array('q', 'w', 'e', 'r', 't'), 
+                                   Array('y', 'a', 'b', 'c', 'd'),
+                                   Array('f', 'g', 'h', 'i', 'k'),
+                                   Array('l', 'm', 'n', 'o', 'p'),
+                                   Array('s', 'u', 'v', 'x', 'z')))
+    square.missedOnExisting must contain only(('j' -> 'i'))
+  }
+  
   ".lowerSymbol" should "correctly compute result" in {
-    val res1 = PolybiusSquare.compute("AgN tZj12", PolybiusSquare.LATIN, PolybiusSquare.lowerSymbol)
+    val res1 = compute("AgN tZj12", LATIN, lowerSymbol)
     res1 must be ("FmS yEo12".toCharArray)
     
-    val res2 = PolybiusSquare.compute("АжН фЫя", PolybiusSquare.RUSSIAN_ALL, PolybiusSquare.lowerSymbol)
+    val res2 = compute("АжН фЫя", RUSSIAN_ALL, lowerSymbol)
     res2 must be ("ЁмУ ъДв".toCharArray)
     
-    val res3 = PolybiusSquare.compute("АзПцЮёЙъ", PolybiusSquare.RUSSIAN_SHORT, PolybiusSquare.lowerSymbol)
+    val res3 = compute("АзПцЮёЙъ", RUSSIAN_SHORT, lowerSymbol)
     res3 must be ("ЖоХэДмПв".toCharArray)
   }
   
   ".upperSymbol" should "correctly compute result" in {
-    val res1 = PolybiusSquare.compute("FmSyEo", PolybiusSquare.LATIN, PolybiusSquare.upperSymbol)
+    val res1 = compute("FmSyEo", LATIN, upperSymbol)
     res1 must be ("AgNtZi".toCharArray)
     
-    val res2 = PolybiusSquare.compute("ЁмУъДв", PolybiusSquare.RUSSIAN_ALL, PolybiusSquare.upperSymbol)
+    val res2 = compute("ЁмУъДв", RUSSIAN_ALL, upperSymbol)
     res2 must be ("АжНфЫя".toCharArray)
     
-    val res3 = PolybiusSquare.compute("ЖоХэДмПв", PolybiusSquare.RUSSIAN_SHORT, PolybiusSquare.upperSymbol)
+    val res3 = compute("ЖоХэДмПв", RUSSIAN_SHORT, upperSymbol)
     res3 must be ("АзПцЮеИь".toCharArray)
   }
   
   ".rowsCols" should "correctly compute result" in {
-    val res1 = PolybiusSquare.compute("AgNtZ", PolybiusSquare.LATIN, PolybiusSquare.rowsCols)
+    val res1 = compute("AgNtZ", LATIN, rowsCols)
     res1 must be ("BoVhU".toCharArray)
     
-    val res2 = PolybiusSquare.compute("АжНфЫя", PolybiusSquare.RUSSIAN_ALL, PolybiusSquare.rowsCols)
+    val res2 = compute("АжНфЫя", RUSSIAN_ALL, rowsCols)
     res2 must be ("БоЬбОщ".toCharArray)
     
-    val res3 = PolybiusSquare.compute("АзПцЮёЙъ", PolybiusSquare.RUSSIAN_SHORT, PolybiusSquare.rowsCols)
+    val res3 = compute("АзПцЮёЙъ", RUSSIAN_SHORT, rowsCols)
     res3 must be ("БрЩлБрЯп".toCharArray)
   }
   
   ".rowsColsReverse" should "correctly compute result" in {
-    val res1 = PolybiusSquare.compute("BoVhU", PolybiusSquare.LATIN, PolybiusSquare.rowsColsReverse)
+    val res1 = compute("BoVhU", LATIN, rowsColsReverse)
     res1 must be ("AgNtZ".toCharArray)
     
-    val res2 = PolybiusSquare.compute("БоЬбОщ", PolybiusSquare.RUSSIAN_ALL, PolybiusSquare.rowsColsReverse)
+    val res2 = compute("БоЬбОщ", RUSSIAN_ALL, rowsColsReverse)
     res2 must be ("АжНфЫя".toCharArray)
     
-    val res3 = PolybiusSquare.compute("БрЩлБрЯп", PolybiusSquare.RUSSIAN_SHORT, PolybiusSquare.rowsColsReverse)
+    val res3 = compute("БрЩлБрЯп", RUSSIAN_SHORT, rowsColsReverse)
     res3 must be ("АзПцЮеИь".toCharArray)
   }
   
   ".colsRows" should "correctly compute result" in {
-    val res1 = PolybiusSquare.compute("AgNtZ", PolybiusSquare.LATIN, PolybiusSquare.colsRows)
+    val res1 = compute("AgNtZ", LATIN, colsRows)
     res1 must be ("BoVhU".toCharArray)
     
-    val res2 = PolybiusSquare.compute("АжНфЫя", PolybiusSquare.RUSSIAN_ALL, PolybiusSquare.colsRows)
+    val res2 = compute("АжНфЫя", RUSSIAN_ALL, colsRows)
     res2 must be ("БоЩбОь".toCharArray)
     
-    val res3 = PolybiusSquare.compute("АзПцЮёЙъ", PolybiusSquare.RUSSIAN_SHORT, PolybiusSquare.colsRows)
+    val res3 = compute("АзПцЮёЙъ", RUSSIAN_SHORT, colsRows)
     res3 must be ("БрЯпБрЩл".toCharArray)
   }
   
   ".colsRowsReverse" should "correctly compute result" in {
-    val res1 = PolybiusSquare.compute("BoVhU", PolybiusSquare.LATIN, PolybiusSquare.colsRowsReverse)
+    val res1 = compute("BoVhU", LATIN, colsRowsReverse)
     res1 must be ("AgNtZ".toCharArray)
     
-    val res2 = PolybiusSquare.compute("БоЩбОь", PolybiusSquare.RUSSIAN_ALL, PolybiusSquare.colsRowsReverse)
+    val res2 = compute("БоЩбОь", RUSSIAN_ALL, colsRowsReverse)
     res2 must be ("АжНфЫя".toCharArray)
     
-    val res3 = PolybiusSquare.compute("БрЯпБрЩл", PolybiusSquare.RUSSIAN_SHORT, PolybiusSquare.colsRowsReverse)
+    val res3 = compute("БрЯпБрЩл", RUSSIAN_SHORT, colsRowsReverse)
     res3 must be ("АзПцЮеИь".toCharArray)
   }
   
   ".compute" should "throw an exception in strict mode if symbol in income data is missing in square" in {
-    an [DataCharNotInSquareException] should be thrownBy PolybiusSquare.compute("F12yEo", PolybiusSquare.LATIN, PolybiusSquare.upperSymbol, true)
+    an [DataCharNotInSquareException] should be thrownBy compute("F12yEo", LATIN, upperSymbol, true)
   }
   
   ".compute" should "throw an exception if symbol in computed data is missing in square" in {
-    an [DataCharNotInSquareException] should be thrownBy PolybiusSquare.compute("ц", PolybiusSquare.RUSSIAN_ALL, PolybiusSquare.colsRows)
+    an [DataCharNotInSquareException] should be thrownBy compute("ц", RUSSIAN_ALL, colsRows)
   }
   
 }

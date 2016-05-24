@@ -8,12 +8,12 @@ class BifidTest extends BaseTest {
   private val testPlainText = "Defend the east wall of the castle"
   private val testEncodedText = "Ffyhmk hyc plia shad tr lhc chlblr"
   private val period = 5
-  private val square = Square(Array(Array('p', 'h', 'q', 'g', 'm'),
-                                    Array('e', 'a', 'y', 'l', 'n'),
-                                    Array('o', 'f', 'd', 'x', 'k'),
-                                    Array('r', 'c', 'v', 's', 'z'),
-                                    Array('w', 'b', 'u', 't', 'i')),
-                              Map('j' -> 'i'))
+  private val square = PolybiusSquare(Array(Array('p', 'h', 'q', 'g', 'm'),
+                                            Array('e', 'a', 'y', 'l', 'n'),
+                                            Array('o', 'f', 'd', 'x', 'k'),
+                                            Array('r', 'c', 'v', 's', 'z'),
+                                            Array('w', 'b', 'u', 't', 'i')),
+                                      Map('j' -> 'i'))
   
   ".encode" should "correctly encode data using provided Polibius square and period" in {
     val encodedText = Bifid.encode(testPlainText, square, period)

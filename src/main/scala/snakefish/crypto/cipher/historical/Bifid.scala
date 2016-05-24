@@ -7,11 +7,11 @@ import scala.collection.mutable.ArrayBuffer
 
 object Bifid {
 
-  def encode(data: CharSequence, square: Square, period: Int, strictMode: Boolean = false) = {
+  def encode(data: CharSequence, square: PolybiusSquare, period: Int, strictMode: Boolean = false) = {
     PolybiusSquare.compute(data, square, computeFunc(period, rowsCols), strictMode)
   }
 
-  def decode(data: CharSequence, square: Square, period: Int, strictMode: Boolean = false) = {
+  def decode(data: CharSequence, square: PolybiusSquare, period: Int, strictMode: Boolean = false) = {
     PolybiusSquare.compute(data, square, computeFunc(period, rowsColsReverse), strictMode)
   }
 
