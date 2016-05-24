@@ -8,40 +8,40 @@ import scala.collection.mutable.ArrayBuffer
 object Bifid {
 
   def encode(data: CharSequence, square: Square, period: Int, strictMode: Boolean = false) = {
-    compute(data, square, computeFunc(period, rowsCols), strictMode)
+    PolybiusSquare.compute(data, square, computeFunc(period, rowsCols), strictMode)
   }
 
   def decode(data: CharSequence, square: Square, period: Int, strictMode: Boolean = false) = {
-    compute(data, square, computeFunc(period, rowsColsReverse), strictMode)
+    PolybiusSquare.compute(data, square, computeFunc(period, rowsColsReverse), strictMode)
   }
 
-  private def computeFunc(period: Int, periodComputeFunc: (ArrayBuffer[Int], Array[Array[Char]]) => Array[Int]) = {
+  private def computeFunc(period: Int, blockComputeFunc: (ArrayBuffer[Int], Array[Array[Char]]) => Array[Int]) = {
     (data: ArrayBuffer[Int], square: Array[Array[Char]]) =>
       {
         val result = new Array[Int](data.length)
 
-        val periodSize = 2 * period
-        val fullPeriodsCount = data.length / periodSize
-        if (fullPeriodsCount > 0) {
-          val dataPeriod = ArrayBuffer.fill(periodSize)(0)
-          for (periodInd <- 0 until fullPeriodsCount) {
-            for (i <- 0 until periodSize) {
-              dataPeriod(i) = data(periodInd * periodSize + i)
+        val blockSize = 2 * period
+        val fullBlocksCount = data.length / blockSize
+        if (fullBlocksCount > 0) {
+          val dataBlock = ArrayBuffer.fill(blockSize)(0)
+          for (blockInd <- 0 until fullBlocksCount) {
+            for (i <- 0 until blockSize) {
+              dataBlock(i) = data(blockInd * blockSize + i)
             }
-            val compPeriod = periodComputeFunc(dataPeriod, square)
-            for (i <- 0 until periodSize) {
-              result(periodInd * periodSize + i) = compPeriod(i)
+            val compBlock = blockComputeFunc(dataBlock, square)
+            for (i <- 0 until blockSize) {
+              result(blockInd * blockSize + i) = compBlock(i)
             }
-            erase(compPeriod)
+            erase(compBlock)
           }
-          erase(dataPeriod)
+          erase(dataBlock)
         }
 
-        val lastChunkSize = data.length % periodSize
+        val lastChunkSize = data.length % blockSize
         if (lastChunkSize > 0) {
           val startIndex = data.length - lastChunkSize
           val lastChunk = data.slice(startIndex, data.length)
-          val compLastChunk = periodComputeFunc(lastChunk, square)
+          val compLastChunk = blockComputeFunc(lastChunk, square)
           for (i <- 0 until lastChunkSize) {
             result(startIndex + i) = compLastChunk(i)
           }
