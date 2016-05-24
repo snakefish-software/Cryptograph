@@ -4,6 +4,7 @@ package cipher.historical
 import utils.MathOps._
 import utils.CryptoUtils._
 import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 
 object PolybiusSquare {
 
@@ -34,23 +35,23 @@ object PolybiusSquare {
                                  'й' -> 'и',
                                  'ъ' -> 'ь'))
 
-  def compute(data: CharSequence, square: Square, computeFunc: (Array[Int], Array[Array[Char]]) => Array[Int], strictMode: Boolean = false) = {
-    val dataNums = new Array[Int](data.length * 2)
+  def compute(data: CharSequence, square: Square, computeFunc: (ArrayBuffer[Int], Array[Array[Char]]) => Array[Int], strictMode: Boolean = false) = {
+    val dataNums = new ArrayBuffer[Int](data.length * 2)
     val rowColPair = new Array[Int](2)
     val notInSquareChars = new mutable.HashMap[Int, Char]()
     
     for (i <- 0 until data.length) {
       val dataCh = data.charAt(i)
-
-      if (!computeCoords(Character.toLowerCase(dataCh), square, rowColPair)) {
+      
+      if (computeCoords(Character.toLowerCase(dataCh), square, rowColPair)) {
+        dataNums += rowColPair(0)
+        dataNums += rowColPair(1)
+      } else {
         if (strictMode) {
           erase(dataNums)
           throw new DataCharNotInSquareException()
         } else notInSquareChars.put(i, dataCh)
       }
-
-      dataNums(i * 2) = rowColPair(0)
-      dataNums(i * 2 + 1) = rowColPair(1)
     }
 
     val sq = square.square
@@ -58,11 +59,12 @@ object PolybiusSquare {
     erase(dataNums)
 
     val result = new Array[Char](data.length)
+    var inSqInd = 0
     for (i <- 0 until data.length) {
       val notInSquareCh = notInSquareChars.get(i)
       if (notInSquareCh.isEmpty) {
-        val row = compDataNums(i * 2)
-        val col = compDataNums(i * 2 + 1)
+        val row = compDataNums(inSqInd * 2)
+        val col = compDataNums(inSqInd * 2 + 1)
         if (row >= sq.length || col >= sq(row).length) {
           erase(compDataNums)
           erase(result)
@@ -73,6 +75,7 @@ object PolybiusSquare {
             resCh = Character.toUpperCase(resCh)
           }
           result(i) = resCh
+          inSqInd += 1
         }
       } else result(i) = notInSquareCh.get
     }
@@ -97,7 +100,7 @@ object PolybiusSquare {
     if (mappingCh.isEmpty) false else computeCoords(mappingCh.get, square, rowColPair)
   }
 
-  def lowerSymbol(data: Array[Int], square: Array[Array[Char]]) = {
+  def lowerSymbol(data: ArrayBuffer[Int], square: Array[Array[Char]]) = {
     val result = new Array[Int](data.length)
     for (i <- 0 until data.length by 2) {
       val row = data(i)
@@ -113,7 +116,7 @@ object PolybiusSquare {
     result
   }
 
-  def upperSymbol(data: Array[Int], square: Array[Array[Char]]) = {
+  def upperSymbol(data: ArrayBuffer[Int], square: Array[Array[Char]]) = {
     val result = new Array[Int](data.length)
     for (i <- 0 until data.length by 2) {
       val row = data(i)
@@ -129,7 +132,7 @@ object PolybiusSquare {
     result
   }
 
-  def rowsCols(data: Array[Int], square: Array[Array[Char]]) = {
+  def rowsCols(data: ArrayBuffer[Int], square: Array[Array[Char]]) = {
     val result = new Array[Int](data.length)
     val middle = data.length / 2
     for (i <- 0 until middle) {
@@ -141,7 +144,7 @@ object PolybiusSquare {
     result
   }
 
-  def rowsColsReverse(data: Array[Int], square: Array[Array[Char]]) = {
+  def rowsColsReverse(data: ArrayBuffer[Int], square: Array[Array[Char]]) = {
     val result = new Array[Int](data.length)
     val middle = data.length / 2
     for (i <- 0 until middle) {
@@ -153,7 +156,7 @@ object PolybiusSquare {
     result
   }
 
-  def colsRows(data: Array[Int], square: Array[Array[Char]]) = {
+  def colsRows(data: ArrayBuffer[Int], square: Array[Array[Char]]) = {
     val result = new Array[Int](data.length)
     val middle = data.length / 2
     for (i <- 0 until middle) {
@@ -165,7 +168,7 @@ object PolybiusSquare {
     result
   }
 
-  def colsRowsReverse(data: Array[Int], square: Array[Array[Char]]) = {
+  def colsRowsReverse(data: ArrayBuffer[Int], square: Array[Array[Char]]) = {
     val result = new Array[Int](data.length)
     val middle = data.length / 2
     for (i <- 0 until middle) {
