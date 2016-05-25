@@ -37,7 +37,7 @@ object PolybiusSquare {
 
   def apply(key: CharSequence, alphabet: String, missedOnExisting: Map[Char, Char]): PolybiusSquare = {
     val alphabetL = alphabet.toLowerCase
-    val missedOnExistingL = missedOnExisting map { case (k, v) => (Character.toLowerCase(k), Character.toLowerCase(v)) }
+    val missedOnExistingL = missedOnExisting map { case (k, v) => (k.toLower, v.toLower) }
     val sqChars = new ArrayBuffer[Char](alphabetL.length)
     
     def tryToAddToSquare(ch: Char): Unit = {
@@ -48,7 +48,7 @@ object PolybiusSquare {
     }
 
     for (i <- 0 until key.length) {
-      val keyCh = Character.toLowerCase(key.charAt(i))
+      val keyCh = key.charAt(i).toLower
       tryToAddToSquare(keyCh)
     }
     
@@ -77,7 +77,7 @@ object PolybiusSquare {
     for (i <- 0 until data.length) {
       val dataCh = data.charAt(i)
 
-      if (computeCoords(Character.toLowerCase(dataCh), square, rowColPair)) {
+      if (computeCoords(dataCh.toLower, square, rowColPair)) {
         dataNums += rowColPair(0)
         dataNums += rowColPair(1)
       } else {
@@ -105,8 +105,8 @@ object PolybiusSquare {
           throw new DataCharNotInSquareException()
         } else {
           var resCh = sq(row)(col)
-          if (Character.isUpperCase(data.charAt(i))) {
-            resCh = Character.toUpperCase(resCh)
+          if (data.charAt(i).isUpper) {
+            resCh = resCh.toUpper
           }
           result(i) = resCh
           inSqInd += 1

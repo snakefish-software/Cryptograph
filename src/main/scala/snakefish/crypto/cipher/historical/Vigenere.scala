@@ -49,7 +49,7 @@ object Vigenere {
     val alphabetNorm = alphabet.toLowerCase
     
     for (i <- 0 until key.length) {
-      val keyCh = Character.toLowerCase(key.charAt(i))
+      val keyCh = key.charAt(i).toLower
       val keyChIndex = alphabetNorm.indexOf(keyCh)
       if (keyChIndex < 0) {
         erase(keyInts)

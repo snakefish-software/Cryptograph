@@ -23,14 +23,14 @@ package object crypto {
     var calcIndex = 0
     for (i <- 0 until dataLen) {
       val dataCh = data.charAt(i)
-      val isUpper = Character.isUpperCase(dataCh)
-      val ch = if (isUpper) Character.toLowerCase(dataCh) else dataCh
+      val isUpper = dataCh.isUpper
+      val ch = if (isUpper) dataCh.toLower else dataCh
       
       val chIndex = alphabetNorm.indexOf(ch)
       
       if (chIndex >= 0) {
         val resIndex = resIndexCalc(chIndex, keyProvider(calcIndex), alphabetNormLength)
-        val resCh = if (isUpper) Character.toUpperCase(alphabetNorm(resIndex)) else alphabetNorm(resIndex)
+        val resCh = if (isUpper) alphabetNorm(resIndex).toUpper else alphabetNorm(resIndex)
         result(i) = resCh
         calcIndex += 1
       } else {
