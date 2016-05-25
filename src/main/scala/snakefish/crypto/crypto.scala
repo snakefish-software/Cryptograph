@@ -2,9 +2,10 @@ package snakefish
 
 import snakefish.crypto.data.DataCharNotInAlphabetException
 import scala.collection.mutable.ArrayBuffer
+import scala.language.higherKinds
 
-package object crypto {
-  
+package object crypto extends EraseInstances {
+
   def addByModulo(x: Int, y: Int, mod: Int) = (x % mod + y % mod) % mod
 
   def subtractByModulo(x: Int, y: Int, mod: Int) = (x % mod - y % mod + mod) % mod
@@ -44,28 +45,6 @@ package object crypto {
     result
   }
   
-  def erase(arr: Array[Int]): Unit = {
-    for (i <- 0 until arr.length) arr(i) = 0
-  }
-  
-  def erase(arr: Array[Byte]): Unit = {
-    for (i <- 0 until arr.length) arr(i) = 0
-  }
-  
-  def erase(arr: Array[Char]): Unit = {
-    val eraseCh = 0.toChar
-    for (i <- 0 until arr.length) arr(i) = eraseCh
-  }
-  
-  def erase(arr: ArrayBuffer[Int]): Unit = {
-    for (i <- 0 until arr.length) arr(i) = 0
-  }
-  
-  def eraze(arr: ArrayBuffer[Char]): Unit = {
-    val eraseCh = 0.toChar
-    for (i <- 0 until arr.length) arr(i) = eraseCh
-  }
-  
   def toDigits(num: Long) = {
     val digits = new ArrayBuffer[Int]()
     var numCopy = num
@@ -77,5 +56,8 @@ package object crypto {
     erase(digits)
     result
   }
-  
+
+  def erase[R, E[R]](x: E[R])(implicit ev: Erase[E], evCh: EraseChar[R]): E[R] =
+    ev.erase(x)(evCh)
+
 }

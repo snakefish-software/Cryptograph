@@ -64,7 +64,7 @@ object PolybiusSquare {
       square(row)(col) = sqChars(i)
     }
     
-    eraze(sqChars)
+    erase(sqChars)
     
     PolybiusSquare(square, missedOnExistingL)
   }
