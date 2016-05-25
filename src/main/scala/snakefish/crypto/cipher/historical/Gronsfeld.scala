@@ -1,8 +1,6 @@
 package snakefish.crypto
 package cipher.historical
 
-import utils.CryptoUtils._
-
 object Gronsfeld {
   
   def encode(data: CharSequence, key: Long, alphabet: String): Array[Char] = {

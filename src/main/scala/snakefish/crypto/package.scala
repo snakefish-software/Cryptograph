@@ -1,11 +1,14 @@
-package snakefish.crypto
-package utils
+package snakefish
 
-import data.DataCharNotInAlphabetException
+import snakefish.crypto.data.DataCharNotInAlphabetException
 import scala.collection.mutable.ArrayBuffer
 
-object CryptoUtils {
+package object crypto {
+  
+  def addByModulo(x: Int, y: Int, mod: Int) = (x % mod + y % mod) % mod
 
+  def subtractByModulo(x: Int, y: Int, mod: Int) = (x % mod - y % mod + mod) % mod
+  
   def sumKeySeqWithText(keyProvider: Int => Int)(
     data: CharSequence,
     alphabet: String,

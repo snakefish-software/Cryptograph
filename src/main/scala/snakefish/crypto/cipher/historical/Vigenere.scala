@@ -1,8 +1,6 @@
 package snakefish.crypto
 package cipher.historical
 
-import utils.MathOps._
-import utils.CryptoUtils._
 import data.KeyCharNotInAlphabetException
 
 object Vigenere {

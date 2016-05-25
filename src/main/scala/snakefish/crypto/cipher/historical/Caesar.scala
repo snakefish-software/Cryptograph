@@ -1,9 +1,6 @@
 package snakefish.crypto
 package cipher.historical
 
-import utils.MathOps._
-import utils.CryptoUtils._
-
 object Caesar {
 
   def encode(data: CharSequence, key: Int, alphabet: String, strictMode: Boolean = false) = {

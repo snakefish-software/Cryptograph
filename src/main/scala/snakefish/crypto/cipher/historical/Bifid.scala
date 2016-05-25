@@ -2,7 +2,6 @@ package snakefish.crypto
 package cipher.historical
 
 import PolybiusSquare._
-import utils.CryptoUtils._
 import scala.collection.mutable.ArrayBuffer
 
 object Bifid {

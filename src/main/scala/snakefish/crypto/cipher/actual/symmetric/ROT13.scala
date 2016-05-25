@@ -1,9 +1,6 @@
 package snakefish.crypto
 package cipher.actual.symmetric
 
-import utils.MathOps._
-import utils.CryptoUtils._
-
 object ROT13 {
 
   def encode(data: CharSequence, alphabet: String, strictMode: Boolean = false) =

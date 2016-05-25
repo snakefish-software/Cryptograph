@@ -4,7 +4,7 @@ import snakefish.crypto.BaseTest
 import snakefish.crypto.data.Alphabet
 import snakefish.crypto.data.DataCharNotInAlphabetException
 
-class ROT13CipherTest extends BaseTest {
+class ROT13Test extends BaseTest {
   
   private val testPlainText = "How can you tell an extrovert from an introvert at NSA? Va gur ryringbef, gur rkgebireg ybbxf ng gur BGURE thl'f fubrf."
   private val testEncodedText = "Ubj pna lbh gryy na rkgebireg sebz na vagebireg ng AFN? In the elevators, the extrovert looks at the OTHER guy's shoes."
