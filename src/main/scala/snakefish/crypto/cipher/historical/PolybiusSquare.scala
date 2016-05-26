@@ -4,9 +4,16 @@ package cipher.historical
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-case class PolybiusSquare(val square: Array[Array[Char]], val missedOnExisting: Map[Char, Char] = Map())
+case class PolybiusSquare(val square: Array[Array[Char]], val missedOnExisting: Map[Char, Char] = Map()) {
+  def apply(row: Int)(col: Int) = square(row)(col)
+  def rowsCount = square.length
+  def colsCount = square(0).length
+  def lastRowLength = square(square.length - 1).length
+}
 
 object PolybiusSquare {
+  
+  class KeyCharNotInSquareException() extends Exception("Key contains symbols that are missing in provided square")
 
   class DataCharNotInSquareException() extends Exception("Data contains symbols that are missing in provided square")
 
@@ -118,7 +125,7 @@ object PolybiusSquare {
     result
   }
 
-  private def computeCoords(ch: Char, square: PolybiusSquare, rowColPair: Array[Int]): Boolean = {
+  def computeCoords(ch: Char, square: PolybiusSquare, rowColPair: Array[Int]): Boolean = {
     val sq = square.square
     for (row <- 0 until sq.length) {
       for (col <- 0 until sq(row).length) {
