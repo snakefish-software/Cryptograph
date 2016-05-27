@@ -40,7 +40,8 @@ object PolybiusSquare {
                                          'й' -> 'и',
                                          'ъ' -> 'ь'))
   
-  def apply(key: CharSequence, alphabet: String): PolybiusSquare = apply(key, alphabet, Map())
+  def apply(key: CharSequence, alphabet: String): PolybiusSquare = 
+    apply(key, alphabet, Map[Char, Char]())
 
   def apply(key: CharSequence, alphabet: String, missedOnExisting: Map[Char, Char]): PolybiusSquare = {
     val alphabetL = alphabet.toLowerCase
@@ -61,19 +62,46 @@ object PolybiusSquare {
     
     alphabetL foreach { tryToAddToSquare }
     
-    val rowsCount = Math.sqrt(sqChars.length).toInt
-    val colsCount = Math.ceil(sqChars.length.toDouble / rowsCount).toInt
-    
-    val square = Array.ofDim[Char](rowsCount, colsCount)
-    for (i <- 0 until sqChars.length) {
-      val row = i / colsCount
-      val col = i % colsCount
-      square(row)(col) = sqChars(i)
-    }
-    
+    val square = createSquare(sqChars)
     erase(sqChars)
     
     PolybiusSquare(square, missedOnExistingL)
+  }
+  
+  def apply(key: Long, alphabet: String): PolybiusSquare = 
+    apply(key, alphabet, Map[Char, Char]())
+  
+  def apply(key: Long, alphabet: String, missedOnExisting: Map[Char, Char]): PolybiusSquare = {
+    val alphabetL = alphabet.toLowerCase
+    val missedOnExistingL = missedOnExisting map { case (k, v) => (k.toLower, v.toLower) }
+    val sqChars = new StringBuilder(alphabetL.length)
+    
+    def tryToAddToSquare(ch: Char): Unit = {
+      if (missedOnExistingL.contains(ch)) return
+      if (sqChars.contains(ch)) return
+      sqChars += ch
+    }
+    
+    alphabetL foreach { tryToAddToSquare }
+    
+    val shuffled = shuffle(sqChars, key)
+    val square = createSquare(shuffled)
+    erase(shuffled)
+    
+    PolybiusSquare(square, missedOnExistingL)
+  }
+  
+  private def createSquare(chars: CharSequence) = {
+    val rowsCount = Math.sqrt(chars.length).toInt
+    val colsCount = Math.ceil(chars.length.toDouble / rowsCount).toInt
+    
+    val square = Array.ofDim[Char](rowsCount, colsCount)
+    for (i <- 0 until chars.length) {
+      val row = i / colsCount
+      val col = i % colsCount
+      square(row)(col) = chars.charAt(i)
+    }
+    square
   }
 
   def compute(data: CharSequence, square: PolybiusSquare, computeFunc: (ArrayBuffer[Int], Array[Array[Char]]) => Array[Int], strictMode: Boolean = false) = {

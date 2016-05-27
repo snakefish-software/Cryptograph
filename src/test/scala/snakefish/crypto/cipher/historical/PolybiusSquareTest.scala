@@ -6,13 +6,23 @@ import snakefish.crypto.data.Alphabet
 
 class PolybiusSquareTest extends BaseTest {
   
-  ".apply(key, alphabet, missedOnExisting)" should "create Polibius square instance from provided arguments" in {
+  ".apply(key: CharSequence, alphabet, missedOnExisting)" should "create Polibius square instance from provided arguments" in {
     val square = PolybiusSquare("QwErTy", Alphabet.ENGLISH, Map('J' -> 'I'))
     square.square must equal(Array(Array('q', 'w', 'e', 'r', 't'), 
                                    Array('y', 'a', 'b', 'c', 'd'),
                                    Array('f', 'g', 'h', 'i', 'k'),
                                    Array('l', 'm', 'n', 'o', 'p'),
                                    Array('s', 'u', 'v', 'x', 'z')))
+    square.missedOnExisting must contain only(('j' -> 'i'))
+  }
+  
+  ".apply(key: Long, alphabet, missedOnExisting)" should "create Polibius square instance from provided arguments" in {
+    val square = PolybiusSquare(123456789, Alphabet.ENGLISH, Map('J' -> 'I'))
+    square.square must equal(Array(Array('l', 's', 'r', 'k', 'p'),
+                                   Array('q', 'a', 'o', 'g', 'x'),
+                                   Array('u', 't', 'd', 'f', 'y'),
+                                   Array('b', 'n', 'i', 'w', 'c'),
+                                   Array('e', 'h', 'm', 'v', 'z')))
     square.missedOnExisting must contain only(('j' -> 'i'))
   }
   

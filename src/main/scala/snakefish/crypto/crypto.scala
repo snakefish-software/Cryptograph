@@ -3,6 +3,8 @@ package snakefish
 import snakefish.crypto.data.DataCharNotInAlphabetException
 import scala.collection.mutable.ArrayBuffer
 import scala.language.higherKinds
+import java.security.SecureRandom
+import java.util.BitSet
 
 package object crypto extends EraseInstances {
 
@@ -59,5 +61,51 @@ package object crypto extends EraseInstances {
 
   def erase[R, E[R]](x: E[R])(implicit ev: Erase[E], evCh: EraseChar[R]): E[R] =
     ev.erase(x)(evCh)
+  
+  def shuffle(data: CharSequence, key: Long) = {
+    val rand = new SecureRandom()
+    rand.setSeed(key)
+    val dataLen = data.length
+    val result = new Array[Char](dataLen)
+    
+    for (i <- 0 until dataLen) {
+      val pos = rand.nextInt(dataLen - i)
+      var insPos = -1
+      var emptyPosCounter = -1
+      while (emptyPosCounter < pos) {
+        insPos += 1
+        if (result(insPos) == 0) {
+          emptyPosCounter += 1
+        }
+      }
+      result(insPos) = data.charAt(i)
+    }
+    
+    result
+  }
+  
+  def deshuffle(data: CharSequence, key: Long) = {
+    val rand = new SecureRandom()
+    rand.setSeed(key)
+    val dataLen = data.length
+    val result = new Array[Char](dataLen)
+    val alreadyRead = new BitSet(dataLen)
+    
+    for (i <- 0 until dataLen) {
+      val pos = rand.nextInt(dataLen - i)
+      var readPos = -1
+      var notReadCounter = -1
+      while (notReadCounter < pos) {
+        readPos += 1
+        if (!alreadyRead.get(readPos)) {
+          notReadCounter += 1
+        }
+      }
+      result(i) = data.charAt(readPos)
+      alreadyRead.set(readPos)
+    }
+    
+    result
+  }
 
 }
