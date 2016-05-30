@@ -6,7 +6,7 @@ import scala.collection.mutable.ArrayBuffer
 
 object Nihilist {
   
-  class CiferTextNumberException() extends Exception("Cifertext contains incorrect numbers")
+  class CifertextNumberException() extends Exception("Cifertext contains incorrect numbers")
   
   def encode(data: CharSequence, key: CharSequence, square: PolybiusSquare, strictMode: Boolean = false) = {
     val keyNumsOpt = toNums(key, square)
@@ -52,7 +52,7 @@ object Nihilist {
       if (resultNum < 11 || resultNum > maxPossibleResNum) {
         erase(keyNums)
         erase(result)
-        throw new CiferTextNumberException()
+        throw new CifertextNumberException()
       } else {
         val row = resultNum / 10 - 1
         val col = resultNum % 10 - 1
