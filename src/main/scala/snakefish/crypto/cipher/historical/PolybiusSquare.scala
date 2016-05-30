@@ -5,10 +5,31 @@ import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 case class PolybiusSquare(val square: Array[Array[Char]], val missedOnExisting: Map[Char, Char] = Map()) {
+  
+  private val _coords = new Array[Int](2)
+  
   def apply(row: Int) = square(row)
   def rowsCount = square.length
   def colsCount = square(0).length
   def lastRowLength = square(square.length - 1).length
+  
+  def coords(ch: Char): Option[Array[Int]] = {
+    val chLower = ch.toLower
+    for (row <- 0 until rowsCount) {
+      for (col <- 0 until square(row).length) {
+        if (square(row)(col) == chLower) {
+          _coords(0) = row
+          _coords(1) = col
+          return Some(_coords)
+        }
+      }
+    }
+
+    val mappingCh = missedOnExisting.get(chLower)
+    if (mappingCh.isEmpty) None else coords(mappingCh.get)
+  }
+  
+  def erase(): Unit = snakefish.crypto.erase(_coords)
 }
 
 object PolybiusSquare {
@@ -107,20 +128,23 @@ object PolybiusSquare {
 
   def compute(data: CharSequence, square: PolybiusSquare, computeFunc: (ArrayBuffer[Int], Array[Array[Char]]) => Array[Int], strictMode: Boolean = false) = {
     val dataNums = new ArrayBuffer[Int](data.length * 2)
-    val rowColPair = new Array[Int](2)
     val notInSquareChars = new mutable.HashMap[Int, Char]()
 
     for (i <- 0 until data.length) {
       val dataCh = data.charAt(i)
-
-      if (computeCoords(dataCh.toLower, square, rowColPair)) {
-        dataNums += rowColPair(0)
-        dataNums += rowColPair(1)
-      } else {
-        if (strictMode) {
-          erase(dataNums)
-          throw new DataCharNotInSquareException()
-        } else notInSquareChars.put(i, dataCh)
+      
+      square.coords(dataCh) match {
+        case Some(coords) => {
+          dataNums += coords(0)
+          dataNums += coords(1)
+        }
+        
+        case None => {
+          if (strictMode) {
+            erase(dataNums)
+            throw new DataCharNotInSquareException()
+          } else notInSquareChars.put(i, dataCh)
+        }
       }
     }
 
@@ -151,21 +175,6 @@ object PolybiusSquare {
 
     erase(compDataNums)
     result
-  }
-
-  def computeCoords(ch: Char, square: PolybiusSquare, rowColPair: Array[Int]): Boolean = {
-    for (row <- 0 until square.rowsCount) {
-      for (col <- 0 until square(row).length) {
-        if (square(row)(col) == ch) {
-          rowColPair(0) = row
-          rowColPair(1) = col
-          return true
-        }
-      }
-    }
-
-    val mappingCh = square.missedOnExisting.get(ch)
-    if (mappingCh.isEmpty) false else computeCoords(mappingCh.get, square, rowColPair)
   }
 
   def lowerSymbol(data: ArrayBuffer[Int], square: Array[Array[Char]]) = {
