@@ -10,20 +10,18 @@ case class PolybiusSquare(val square: Array[Array[Char]], val missedOnExisting: 
   def colsCount = square(0).length
   def lastRowLength = square(square.length - 1).length
   
-  def computeCoords(ch: Char, coords: Array[Int]): Boolean = {
+  def coords(ch: Char): Option[(Int, Int)] = {
     val chLower = ch.toLower
     for (row <- 0 until rowsCount) {
       for (col <- 0 until square(row).length) {
         if (square(row)(col) == chLower) {
-          coords(0) = row
-          coords(1) = col
-          return true
+          return Some(row, col)
         }
       }
     }
 
     val mappingCh = missedOnExisting.get(chLower)
-    if (mappingCh.isEmpty) false else computeCoords(mappingCh.get, coords)
+    if (mappingCh.isEmpty) None else coords(mappingCh.get)
   }
 }
 
@@ -119,17 +117,20 @@ object PolybiusSquare {
   def compute(data: CharSequence, square: PolybiusSquare, computeFunc: (ArrayBuffer[Int], Array[Array[Char]]) => Array[Int], strictMode: Boolean = false) = {
     val dataNums = new ArrayBuffer[Int](data.length * 2)
     val notInSquareChars = new mutable.HashMap[Int, Char]()
-    
-    val coords = new Array[Int](2)
+
     for (i <- 0 until data.length) {
       val dataCh = data.charAt(i)
-      if (square.computeCoords(dataCh, coords)) {
-        dataNums += coords(0)
-        dataNums += coords(1)
-      } else {
-        if (strictMode) {
-          throw new DataCharNotInSquareException()
-        } else notInSquareChars.put(i, dataCh)
+      square.coords(dataCh) match {
+        case Some((row, col)) => {
+          dataNums += row
+          dataNums += col
+        }
+        
+        case None => {
+          if (strictMode) {
+            throw new DataCharNotInSquareException()
+          } else notInSquareChars.put(i, dataCh)
+        }
       }
     }
     

@@ -16,15 +16,18 @@ object Nihilist {
     val result = new ArrayBuffer[Int](data.length)
     var keyNumInd = 0
     
-    val coords = new Array[Int](2)
     for (i <- 0 until data.length) {
-      if (square.computeCoords(data.charAt(i), coords)) {
-        val dataNum = toInt(coords)
-        val keyNum = keyNums(keyNumInd % keyNums.length)
-        result += dataNum + keyNum
-        keyNumInd += 1
-      } else if (strictMode) {
-        throw new DataCharNotInSquareException()
+      square.coords(data.charAt(i)) match {
+        case Some((row, col)) => {
+          val dataNum = toInt(row, col)
+          val keyNum = keyNums(keyNumInd % keyNums.length)
+          result += dataNum + keyNum
+          keyNumInd += 1
+        }
+        
+        case None => {
+          if (strictMode) throw new DataCharNotInSquareException()
+        }
       }
     }
     
@@ -56,23 +59,15 @@ object Nihilist {
   
   private def toNums(chars: CharSequence, square: PolybiusSquare): Option[Array[Int]] = {
     val nums = new Array[Int](chars.length)
-    
-    val coords = new Array[Int](2)
     for (i <- 0 until chars.length) {
-      if (square.computeCoords(chars.charAt(i), coords)) {
-        nums(i) = toInt(coords)
-      } else {
-        return None
+      square.coords(chars.charAt(i)) match {
+        case Some((row, col)) => nums(i) = toInt(row, col)
+        case None => return None
       }
     }
-    
     Some(nums)
   }
   
-  private def toInt(rowColPair: Array[Int]) = {
-    val row = rowColPair(0) + 1
-    val col = rowColPair(1) + 1
-    row * 10 + col
-  }
+  private def toInt(row: Int, col: Int) = (row + 1) * 10 + (col + 1)
   
 }
