@@ -39,13 +39,13 @@ object Bifid {
         val lastChunkSize = data.length % blockSize
         if (lastChunkSize > 0) {
           val startIndex = data.length - lastChunkSize
-          val lastChunk = data.slice(startIndex, data.length)
-          val compLastChunk = blockComputeFunc(lastChunk, square)
+          val dataChunk = data.slice(startIndex, data.length)
+          val compChunk = blockComputeFunc(dataChunk, square)
           for (i <- 0 until lastChunkSize) {
-            result(startIndex + i) = compLastChunk(i)
+            result(startIndex + i) = compChunk(i)
           }
-          erase(lastChunk)
-          erase(compLastChunk)
+          erase(dataChunk)
+          erase(compChunk)
         }
 
         result

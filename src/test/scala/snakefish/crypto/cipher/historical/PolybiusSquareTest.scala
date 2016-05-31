@@ -1,8 +1,8 @@
-package snakefish.crypto.cipher.historical
+package snakefish.crypto
+package cipher.historical
 
-import snakefish.crypto.BaseTest
 import PolybiusSquare._
-import snakefish.crypto.data.Alphabet
+import data.Alphabet
 
 class PolybiusSquareTest extends BaseTest {
   

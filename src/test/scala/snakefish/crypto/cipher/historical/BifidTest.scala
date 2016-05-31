@@ -1,12 +1,12 @@
-package snakefish.crypto.cipher.historical
+package snakefish.crypto
+package cipher.historical
 
-import snakefish.crypto.BaseTest
 import PolybiusSquare._
 
 class BifidTest extends BaseTest {
   
-  private val testPlainText = "Defend the east wall of the castle"
-  private val testEncodedText = "Ffyhmk hyc plia shad tr lhc chlblr"
+  private val plaintext = "Defend the east wall of the castle"
+  private val cifertext = "Ffyhmk hyc plia shad tr lhc chlblr"
   private val period = 5
   private val square = PolybiusSquare(Array(Array('p', 'h', 'q', 'g', 'm'),
                                             Array('e', 'a', 'y', 'l', 'n'),
@@ -16,18 +16,18 @@ class BifidTest extends BaseTest {
                                       Map('j' -> 'i'))
   
   ".encode" should "correctly encode data using provided Polibius square and period" in {
-    val encodedText = Bifid.encode(testPlainText, square, period)
-    encodedText must be (testEncodedText.toCharArray)
+    val _cifertext = Bifid.encode(plaintext, square, period)
+    _cifertext must be (cifertext.toCharArray)
   }
   
   ".decode" should "correctly decode data using provided Polibius square and period" in {
-    val plainText = Bifid.decode(testEncodedText, square, period)
-    plainText must be (testPlainText.toCharArray)
+    val _plaintext = Bifid.decode(cifertext, square, period)
+    _plaintext must be (plaintext.toCharArray)
   }
   
   ".encode & .decode" should "throw an exception in strict mode if income data contains symbols that are missing in provided square" in {
-    an [DataCharNotInSquareException] should be thrownBy Bifid.encode(testPlainText, square, period, true)
-    an [DataCharNotInSquareException] should be thrownBy Bifid.decode(testEncodedText, square, period, true)
+    an [DataCharNotInSquareException] should be thrownBy Bifid.encode(plaintext, square, period, true)
+    an [DataCharNotInSquareException] should be thrownBy Bifid.decode(cifertext, square, period, true)
   }
   
 }

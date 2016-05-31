@@ -1,28 +1,28 @@
-package snakefish.crypto.cipher.historical
+package snakefish.crypto
+package cipher.historical
 
-import snakefish.crypto.BaseTest
-import snakefish.crypto.data.Alphabet
-import snakefish.crypto.data.DataCharNotInAlphabetException
+import data.Alphabet
+import data.DataCharNotInAlphabetException
 
 class CaesarCipherTest extends BaseTest {
   
-  private val testPlainText = "Съешь же ещё этих мягких французских булок, да выпей чаю."
-  private val testEncodedText = "Фэзыя йз зьи ахлш пвёнлш чугрщцкфнлш дцосн, жг еютзм ъгб."
-  private val testKey = 3
+  private val plaintext = "Съешь же ещё этих мягких французских булок, да выпей чаю."
+  private val cifertext = "Фэзыя йз зьи ахлш пвёнлш чугрщцкфнлш дцосн, жг еютзм ъгб."
+  private val crKey = 3
   
   ".encode" should "correctly encode data using provided key and alphabet" in {
-    val encodedText = Caesar.encode(testPlainText, testKey, Alphabet.RUSSIAN)
-    encodedText must be (testEncodedText.toCharArray)
+    val _cifertext = Caesar.encode(plaintext, crKey, Alphabet.RUSSIAN)
+    _cifertext must be (cifertext.toCharArray)
   }
   
   ".decode" should "correctly decode data using provided key and alphabet" in {
-    val plainText = Caesar.decode(testEncodedText, testKey, Alphabet.RUSSIAN)
-    plainText must be (testPlainText.toCharArray)
+    val _plaintext = Caesar.decode(cifertext, crKey, Alphabet.RUSSIAN)
+    _plaintext must be (plaintext.toCharArray)
   }
   
   ".encode & .decode" should "throw an exception in strict mode if income data contains symbols that are missing in alphabet" in {
-    an [DataCharNotInAlphabetException] should be thrownBy Caesar.encode(testPlainText, testKey, Alphabet.RUSSIAN, true)
-    an [DataCharNotInAlphabetException] should be thrownBy Caesar.decode(testEncodedText, testKey, Alphabet.RUSSIAN, true)
+    an [DataCharNotInAlphabetException] should be thrownBy Caesar.encode(plaintext, crKey, Alphabet.RUSSIAN, true)
+    an [DataCharNotInAlphabetException] should be thrownBy Caesar.decode(cifertext, crKey, Alphabet.RUSSIAN, true)
   }
   
 }

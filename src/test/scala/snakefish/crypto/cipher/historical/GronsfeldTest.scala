@@ -1,28 +1,28 @@
-package snakefish.crypto.cipher.historical
+package snakefish.crypto
+package cipher.historical
 
-import snakefish.crypto.BaseTest
-import snakefish.crypto.data.Alphabet
-import snakefish.crypto.data.DataCharNotInAlphabetException
+import data.Alphabet
+import data.DataCharNotInAlphabetException
 
 class GronsfeldTest extends BaseTest {
   
-  private val testPlainText = "GrOnS fElD"
-  private val testEncodedText = "IrPsU fFqF"
-  private val testKey = 2015
+  private val plaintext = "GrOnS fElD"
+  private val cifertext = "IrPsU fFqF"
+  private val crKey = 2015
   
   ".encode" should "correctly encode data using provided key and alphabet" in {
-    val encodedText = Gronsfeld.encode(testPlainText, testKey, Alphabet.ENGLISH)
-    encodedText must be (testEncodedText.toCharArray)
+    val _cifertext = Gronsfeld.encode(plaintext, crKey, Alphabet.ENGLISH)
+    _cifertext must be (cifertext.toCharArray)
   }
   
   ".decode" should "correctly decode data using provided key and alphabet" in {
-    val plainText = Gronsfeld.decode(testEncodedText, testKey, Alphabet.ENGLISH)
-    plainText must be (testPlainText.toCharArray)
+    val _plaintext = Gronsfeld.decode(cifertext, crKey, Alphabet.ENGLISH)
+    _plaintext must be (plaintext.toCharArray)
   }
   
   ".encode & .decode" should "throw an exception in strict mode if income data contains symbols that are missing in alphabet" in {
-    an [DataCharNotInAlphabetException] should be thrownBy Gronsfeld.encode(testPlainText, testKey, Alphabet.ENGLISH, true)
-    an [DataCharNotInAlphabetException] should be thrownBy Gronsfeld.decode(testEncodedText, testKey, Alphabet.ENGLISH, true)
+    an [DataCharNotInAlphabetException] should be thrownBy Gronsfeld.encode(plaintext, crKey, Alphabet.ENGLISH, true)
+    an [DataCharNotInAlphabetException] should be thrownBy Gronsfeld.decode(cifertext, crKey, Alphabet.ENGLISH, true)
   }
   
 }

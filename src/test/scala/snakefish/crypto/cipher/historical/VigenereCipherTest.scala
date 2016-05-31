@@ -1,34 +1,34 @@
-package snakefish.crypto.cipher.historical
+package snakefish.crypto
+package cipher.historical
 
-import snakefish.crypto.BaseTest
-import snakefish.crypto.data.Alphabet
-import snakefish.crypto.data.KeyCharNotInAlphabetException
-import snakefish.crypto.data.DataCharNotInAlphabetException
+import data.Alphabet
+import data.KeyCharNotInAlphabetException
+import data.DataCharNotInAlphabetException
 
 class VigenereCipherTest extends BaseTest {
   
-  private val testPlainText = "Attack at dawn"
-  private val testEncodedText = "Lxfopv ef rnhr"
-  private val testKey = "LeMoN"
+  private val plaintext = "Attack at dawn"
+  private val cifertext = "Lxfopv ef rnhr"
+  private val crKey = "LeMoN"
   
   ".encode" should "correctly encode data using provided key and alphabet" in {
-    val encodedText = Vigenere.encode(testPlainText, testKey, Alphabet.ENGLISH)
-    encodedText must be (testEncodedText.toCharArray())
+    val _cifertext = Vigenere.encode(plaintext, crKey, Alphabet.ENGLISH)
+    _cifertext must be (cifertext.toCharArray)
   }
   
   ".decode" should "correctly decode data using provided key and alphabet" in {
-    val plainText = Vigenere.decode(testEncodedText, testKey, Alphabet.ENGLISH)
-    plainText must be (testPlainText.toCharArray())
+    val _plaintext = Vigenere.decode(cifertext, crKey, Alphabet.ENGLISH)
+    _plaintext must be (plaintext.toCharArray)
   }
   
   ".encode & .decode" should "thrown an exception if key char is missing in alphabet" in {
-    an [KeyCharNotInAlphabetException] should be thrownBy Vigenere.encode(testPlainText, " ", Alphabet.ENGLISH)
-    an [KeyCharNotInAlphabetException] should be thrownBy Vigenere.decode(testPlainText, " ", Alphabet.ENGLISH)
+    an [KeyCharNotInAlphabetException] should be thrownBy Vigenere.encode(plaintext, " ", Alphabet.ENGLISH)
+    an [KeyCharNotInAlphabetException] should be thrownBy Vigenere.decode(cifertext, " ", Alphabet.ENGLISH)
   }
   
   ".encode & .decode" should "throw an exception in strict mode if income data contains symbols that are missing in alphabet" in {
-    an [DataCharNotInAlphabetException] should be thrownBy Vigenere.encode(testPlainText, testKey, Alphabet.ENGLISH, true)
-    an [DataCharNotInAlphabetException] should be thrownBy Vigenere.decode(testEncodedText, testKey, Alphabet.ENGLISH, true)
+    an [DataCharNotInAlphabetException] should be thrownBy Vigenere.encode(plaintext, crKey, Alphabet.ENGLISH, true)
+    an [DataCharNotInAlphabetException] should be thrownBy Vigenere.decode(cifertext, crKey, Alphabet.ENGLISH, true)
   }
   
 }

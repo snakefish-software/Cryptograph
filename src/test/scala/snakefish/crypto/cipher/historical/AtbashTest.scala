@@ -1,8 +1,8 @@
-package snakefish.crypto.cipher.historical
+package snakefish.crypto
+package cipher.historical
 
-import snakefish.crypto.BaseTest
-import snakefish.crypto.data.Alphabet
-import snakefish.crypto.data.DataCharNotInAlphabetException
+import data.Alphabet
+import data.DataCharNotInAlphabetException
 
 class AtbashTest extends BaseTest {
   

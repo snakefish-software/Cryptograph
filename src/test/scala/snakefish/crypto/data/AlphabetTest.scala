@@ -1,6 +1,5 @@
-package snakefish.crypto.data
-
-import snakefish.crypto.BaseTest
+package snakefish.crypto
+package data
 
 class AlphabetTest extends BaseTest {
   
