@@ -19,7 +19,7 @@ object Gronsfeld {
   }
   
   def encode(data: CharSequence, key: Array[Int], alphabet: String, strictMode: Boolean) = {
-    Vigenere.encode(data, key, alphabet, strictMode)
+    sumKeySeqWithText(data, key, alphabet, strictMode)(addByModulo)
   }
   
   def decode(data: CharSequence, key: Long, alphabet: String): Array[Char] = {
@@ -38,7 +38,7 @@ object Gronsfeld {
   }
   
   def decode(data: CharSequence, key: Array[Int], alphabet: String, strictMode: Boolean) = {
-    Vigenere.decode(data, key, alphabet, strictMode)
+    sumKeySeqWithText(data, key, alphabet, strictMode)(subtractByModulo)
   }
   
 }

@@ -18,7 +18,7 @@ object Vigenere {
   }
   
   def encode(data: CharSequence, key: Array[Int], alphabet: String, strictMode: Boolean) = {
-    cryptoFunc(data, key, alphabet, strictMode)(addByModulo)
+    sumKeySeqWithText(data, key, alphabet, strictMode)(addByModulo)
   }
   
   def decode(data: CharSequence, key: CharSequence, alphabet: String): Array[Char] = {
@@ -34,7 +34,7 @@ object Vigenere {
   }
   
   def decode(data: CharSequence, key: Array[Int], alphabet: String, strictMode: Boolean) = {
-    cryptoFunc(data, key, alphabet, strictMode)(subtractByModulo)
+    sumKeySeqWithText(data, key, alphabet, strictMode)(subtractByModulo)
   }
 
   private def cryptoFunc(
@@ -57,22 +57,9 @@ object Vigenere {
       } else keyInts(i) = keyChIndex
     }
     
-    val result = cryptoFunc(data, keyInts, alphabet, strictMode)(resIndexCalc)
+    val result = sumKeySeqWithText(data, keyInts, alphabet, strictMode)(resIndexCalc)
     erase(keyInts)
     result
-  }
-  
-  private def cryptoFunc(
-    data: CharSequence,
-    key: Array[Int],
-    alphabet: String,
-    strictMode: Boolean
-  )(
-    resIndexCalc: (Int, Int, Int) => Int
-  ): Array[Char] = {
-    val keyLength = key.length
-    val keyF = { i: Int => key(i % keyLength) }
-    sumKeySeqWithText(keyF)(data, alphabet, strictMode, resIndexCalc)
   }
 
 }
