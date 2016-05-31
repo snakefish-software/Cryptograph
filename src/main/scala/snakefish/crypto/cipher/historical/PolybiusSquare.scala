@@ -5,31 +5,26 @@ import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 case class PolybiusSquare(val square: Array[Array[Char]], val missedOnExisting: Map[Char, Char] = Map()) {
-  
-  private val _coords = new Array[Int](2)
-  
   def apply(row: Int) = square(row)
   def rowsCount = square.length
   def colsCount = square(0).length
   def lastRowLength = square(square.length - 1).length
   
-  def coords(ch: Char): Option[Array[Int]] = {
+  def computeCoords(ch: Char, coords: Array[Int]): Boolean = {
     val chLower = ch.toLower
     for (row <- 0 until rowsCount) {
       for (col <- 0 until square(row).length) {
         if (square(row)(col) == chLower) {
-          _coords(0) = row
-          _coords(1) = col
-          return Some(_coords)
+          coords(0) = row
+          coords(1) = col
+          return true
         }
       }
     }
 
     val mappingCh = missedOnExisting.get(chLower)
-    if (mappingCh.isEmpty) None else coords(mappingCh.get)
+    if (mappingCh.isEmpty) false else computeCoords(mappingCh.get, coords)
   }
-  
-  def erase(): Unit = snakefish.crypto.erase(_coords)
 }
 
 object PolybiusSquare {
@@ -129,25 +124,23 @@ object PolybiusSquare {
   def compute(data: CharSequence, square: PolybiusSquare, computeFunc: (ArrayBuffer[Int], Array[Array[Char]]) => Array[Int], strictMode: Boolean = false) = {
     val dataNums = new ArrayBuffer[Int](data.length * 2)
     val notInSquareChars = new mutable.HashMap[Int, Char]()
-
+    
+    val coords = new Array[Int](2)
     for (i <- 0 until data.length) {
       val dataCh = data.charAt(i)
-      
-      square.coords(dataCh) match {
-        case Some(coords) => {
-          dataNums += coords(0)
-          dataNums += coords(1)
-        }
-        
-        case None => {
-          if (strictMode) {
-            erase(dataNums)
-            throw new DataCharNotInSquareException()
-          } else notInSquareChars.put(i, dataCh)
-        }
+      if (square.computeCoords(dataCh, coords)) {
+        dataNums += coords(0)
+        dataNums += coords(1)
+      } else {
+        if (strictMode) {
+          erase(dataNums)
+          erase(coords)
+          throw new DataCharNotInSquareException()
+        } else notInSquareChars.put(i, dataCh)
       }
     }
-
+    erase(coords)
+    
     val compDataNums = computeFunc(dataNums, square)
     erase(dataNums)
 
