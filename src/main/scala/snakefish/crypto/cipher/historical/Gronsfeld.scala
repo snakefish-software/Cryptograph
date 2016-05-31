@@ -8,10 +8,7 @@ object Gronsfeld {
   } 
   
   def encode(data: CharSequence, key: Long, alphabet: String, strictMode: Boolean): Array[Char] = {
-    val keyDigits = toDigits(key)
-    val result = encode(data, keyDigits, alphabet, strictMode)
-    erase(keyDigits)
-    result
+    encode(data, toDigits(key), alphabet, strictMode)
   }
   
   def encode(data: CharSequence, key: Array[Int], alphabet: String): Array[Char] = {
@@ -27,10 +24,7 @@ object Gronsfeld {
   }
   
   def decode(data: CharSequence, key: Long, alphabet: String, strictMode: Boolean): Array[Char] = {
-    val keyDigits = toDigits(key)
-    val result = decode(data, keyDigits, alphabet, strictMode)
-    erase(keyDigits)
-    result
+    decode(data, toDigits(key), alphabet, strictMode)
   }
   
   def decode(data: CharSequence, key: Array[Int], alphabet: String): Array[Char] = {

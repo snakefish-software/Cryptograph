@@ -24,15 +24,10 @@ object Nihilist {
         result += dataNum + keyNum
         keyNumInd += 1
       } else if (strictMode) {
-        erase(coords)
-        erase(keyNums)
-        erase(result)
         throw new DataCharNotInSquareException()
       }
     }
-    erase(coords)
     
-    erase(keyNums)
     result
   }
 
@@ -48,8 +43,6 @@ object Nihilist {
       val keyNum = keyNums(i % keyNums.length)
       val resultNum = data(i) - keyNum
       if (resultNum < 11 || resultNum > maxPossibleResNum) {
-        erase(keyNums)
-        erase(result)
         throw new CifertextNumberException()
       } else {
         val row = resultNum / 10 - 1
@@ -58,7 +51,6 @@ object Nihilist {
       }
     }
     
-    erase(keyNums)
     result
   }
   
@@ -70,12 +62,9 @@ object Nihilist {
       if (square.computeCoords(chars.charAt(i), coords)) {
         nums(i) = toInt(coords)
       } else {
-        erase(coords)
-        erase(nums)
         return None
       }
     }
-    erase(coords)
     
     Some(nums)
   }

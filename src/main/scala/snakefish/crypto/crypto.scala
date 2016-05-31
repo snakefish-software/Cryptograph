@@ -38,7 +38,6 @@ package object crypto extends EraseInstances {
         calcIndex += 1
       } else {
         if (useStrictMode) {
-          erase(result)
           throw new DataCharNotInAlphabetException()
         } else result(i) = dataCh
       }
@@ -67,9 +66,7 @@ package object crypto extends EraseInstances {
       (numCopy % 10).toInt +=: digits
       numCopy = numCopy / 10
     }
-    val result = digits.toArray
-    erase(digits)
-    result
+    digits.toArray
   }
 
   def erase[R, E[R]](x: E[R])(implicit ev: Erase[E], evCh: EraseChar[R]): E[R] =

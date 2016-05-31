@@ -82,10 +82,7 @@ object PolybiusSquare {
     
     alphabetL.foreach(tryToAddToSquare)
     
-    val square = createSquare(sqChars)
-    erase(sqChars)
-    
-    PolybiusSquare(square, missedOnExistingL)
+    PolybiusSquare(createSquare(sqChars), missedOnExistingL)
   }
   
   def apply(key: Long, alphabet: String): PolybiusSquare = 
@@ -102,10 +99,8 @@ object PolybiusSquare {
     })
     
     val shuffled = shuffle(sqChars, key)
-    val square = createSquare(shuffled)
-    erase(shuffled)
     
-    PolybiusSquare(square, missedOnExistingL)
+    PolybiusSquare(createSquare(shuffled), missedOnExistingL)
   }
   
   private def createSquare(chars: CharSequence) = {
@@ -133,16 +128,12 @@ object PolybiusSquare {
         dataNums += coords(1)
       } else {
         if (strictMode) {
-          erase(dataNums)
-          erase(coords)
           throw new DataCharNotInSquareException()
         } else notInSquareChars.put(i, dataCh)
       }
     }
-    erase(coords)
     
     val compDataNums = computeFunc(dataNums, square)
-    erase(dataNums)
 
     val result = new Array[Char](data.length)
     var inSqInd = 0
@@ -152,8 +143,6 @@ object PolybiusSquare {
         val row = compDataNums(inSqInd * 2)
         val col = compDataNums(inSqInd * 2 + 1)
         if (row >= square.rowsCount || col >= square(row).length) {
-          erase(compDataNums)
-          erase(result)
           throw new DataCharNotInSquareException()
         } else {
           var resCh = square(row)(col)
@@ -165,8 +154,7 @@ object PolybiusSquare {
         }
       } else result(i) = notInSquareCh.get
     }
-
-    erase(compDataNums)
+    
     result
   }
 

@@ -52,14 +52,11 @@ object Vigenere {
       val keyCh = key.charAt(i).toLower
       val keyChIndex = alphabetNorm.indexOf(keyCh)
       if (keyChIndex < 0) {
-        erase(keyInts)
         throw new KeyCharNotInAlphabetException()
       } else keyInts(i) = keyChIndex
     }
     
-    val result = sumKeySeqWithText(data, keyInts, alphabet, strictMode)(resIndexCalc)
-    erase(keyInts)
-    result
+    sumKeySeqWithText(data, keyInts, alphabet, strictMode)(resIndexCalc)
   }
 
 }

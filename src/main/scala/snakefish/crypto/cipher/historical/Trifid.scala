@@ -33,14 +33,11 @@ object Trifid {
         dataNums += coords(2)
       } else {
         if (strictMode) {
-          erase(coords)
-          erase(dataNums)
           throw new DataCharNotInCubeException()
         } else notInSquareChars.put(i, dataCh)
       }
     }
     
-    erase(coords)
     applyBlockFunc(dataNums, period, blockComputeFunc)
     
     val result = new Array[Char](data.length)
@@ -52,8 +49,6 @@ object Trifid {
         val row = dataNums(compInd * 3 + 1)
         val col = dataNums(compInd * 3 + 2)
         if (table >= cube.length || row >= cube(table).length || col >= cube(table)(row).length) {
-          erase(dataNums)
-          erase(result)
           throw new DataCharNotInCubeException()
         } else {
           var resCh = cube(table)(row)(col)
@@ -66,7 +61,6 @@ object Trifid {
       } else result(i) = notInSquareCh.get
     }
 
-    erase(dataNums)
     result
   }
   
@@ -85,8 +79,6 @@ object Trifid {
           data(blockInd * blockSize + i) = compBlock(i)
         }  
       }
-      erase(dataBlock)
-      erase(compBlock)
     }
 
     val lastChunkSize = data.length % blockSize
@@ -98,8 +90,6 @@ object Trifid {
       for (i <- 0 until lastChunkSize) {
         data(startIndex + i) = compChunk(i)
       }
-      erase(dataChunk)
-      erase(compChunk)
     }
   }
   

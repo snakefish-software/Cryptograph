@@ -31,9 +31,7 @@ object Bifid {
             for (i <- 0 until blockSize) {
               result(blockInd * blockSize + i) = compBlock(i)
             }
-            erase(compBlock)
           }
-          erase(dataBlock)
         }
 
         val lastChunkSize = data.length % blockSize
@@ -44,8 +42,6 @@ object Bifid {
           for (i <- 0 until lastChunkSize) {
             result(startIndex + i) = compChunk(i)
           }
-          erase(dataChunk)
-          erase(compChunk)
         }
 
         result
