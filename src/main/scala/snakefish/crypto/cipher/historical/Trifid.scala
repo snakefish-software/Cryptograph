@@ -41,19 +41,18 @@ object Trifid {
     }
     
     erase(coords)
-    val compDataNums = computeFunc(dataNums, period, blockComputeFunc)
-    erase(dataNums)
+    applyBlockFunc(dataNums, period, blockComputeFunc)
     
     val result = new Array[Char](data.length)
     var compInd = 0
     for (i <- 0 until data.length) {
       val notInSquareCh = notInSquareChars.get(i)
       if (notInSquareCh.isEmpty) {
-        val table = compDataNums(compInd * 3)
-        val row = compDataNums(compInd * 3 + 1)
-        val col = compDataNums(compInd * 3 + 2)
+        val table = dataNums(compInd * 3)
+        val row = dataNums(compInd * 3 + 1)
+        val col = dataNums(compInd * 3 + 2)
         if (table >= cube.length || row >= cube(table).length || col >= cube(table)(row).length) {
-          erase(compDataNums)
+          erase(dataNums)
           erase(result)
           throw new DataCharNotInCubeException()
         } else {
@@ -67,13 +66,11 @@ object Trifid {
       } else result(i) = notInSquareCh.get
     }
 
-    erase(compDataNums)
+    erase(dataNums)
     result
   }
   
-  private def computeFunc(data: ArrayBuffer[Int], period: Int, blockComputeFunc: (ArrayBuffer[Int], Array[Int]) => Unit) = {
-    val result = new Array[Int](data.length)
-
+  private def applyBlockFunc(data: ArrayBuffer[Int], period: Int, blockComputeFunc: (ArrayBuffer[Int], Array[Int]) => Unit): Unit = {
     val blockSize = 3 * period
     val fullBlocksCount = data.length / blockSize
     if (fullBlocksCount > 0) {
@@ -85,7 +82,7 @@ object Trifid {
         }
         blockComputeFunc(dataBlock, compBlock)
         for (i <- 0 until blockSize) {
-          result(blockInd * blockSize + i) = compBlock(i)
+          data(blockInd * blockSize + i) = compBlock(i)
         }  
       }
       erase(dataBlock)
@@ -99,13 +96,11 @@ object Trifid {
       val compChunk = new Array[Int](lastChunkSize)
       blockComputeFunc(dataChunk, compChunk)
       for (i <- 0 until lastChunkSize) {
-        result(startIndex + i) = compChunk(i)
+        data(startIndex + i) = compChunk(i)
       }
       erase(dataChunk)
       erase(compChunk)
     }
-
-    result
   }
   
   private def encodeBlockFunc(data: ArrayBuffer[Int], result: Array[Int]): Unit = {
