@@ -5,11 +5,11 @@ class AtbashTest extends BaseTest {
   
   ".compute" should "correctly compute result according to Atbash rules" in {
     val alphabetEn = Alphabet.ENGLISH.toString;
-    val resultEn = Atbash.compute(alphabetEn, alphabetEn)
+    val resultEn = Atbash.compute(alphabetEn, Alphabet.ENGLISH)
     resultEn must be (alphabetEn.reverse.toCharArray)
     
     val alphabetRu = Alphabet.RUSSIAN.toString;
-    val resultRu = Atbash.compute(alphabetRu, alphabetRu)
+    val resultRu = Atbash.compute(alphabetRu, Alphabet.RUSSIAN)
     resultRu must be (alphabetRu.reverse.toCharArray)
   }
   

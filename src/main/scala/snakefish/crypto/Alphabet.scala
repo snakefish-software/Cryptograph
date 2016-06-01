@@ -22,6 +22,8 @@ case class Alphabet (private val _alphabet: String) {
   
   private val alphabet = _alphabet.toLowerCase.distinct
   
+  def apply(i: Int) = alphabet(i)
+  
   override def toString = alphabet
   
   def length = alphabet.length
@@ -29,5 +31,9 @@ case class Alphabet (private val _alphabet: String) {
   def +(that: String) = Alphabet(alphabet + that)
   
   def +(that: Alphabet) = Alphabet(alphabet + that.alphabet)
+  
+  def indexOf(ch: Char) = alphabet.indexOf(ch.toLower)
+  
+  def contains(ch: Char) = alphabet.contains(ch.toLower)
   
 }

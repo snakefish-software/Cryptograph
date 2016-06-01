@@ -58,18 +58,17 @@ object PolybiusSquare {
                                          'й' -> 'и',
                                          'ъ' -> 'ь'))
   
-  def apply(key: CharSequence, alphabet: String): PolybiusSquare = 
+  def apply(key: CharSequence, alphabet: Alphabet): PolybiusSquare = 
     apply(key, alphabet, Map[Char, Char]())
 
-  def apply(key: CharSequence, alphabet: String, missedOnExisting: Map[Char, Char]): PolybiusSquare = {
-    val alphabetL = alphabet.toLowerCase
+  def apply(key: CharSequence, alphabet: Alphabet, missedOnExisting: Map[Char, Char]): PolybiusSquare = {
     val missedOnExistingL = missedOnExisting map { case (k, v) => (k.toLower, v.toLower) }
-    val sqChars = new ArrayBuffer[Char](alphabetL.length)
+    val sqChars = new ArrayBuffer[Char](alphabet.length)
     
     def tryToAddToSquare(ch: Char): Unit = {
       if (missedOnExistingL.contains(ch)) return
       if (sqChars.contains(ch)) return
-      if (!alphabetL.contains(ch)) return
+      if (!alphabet.contains(ch)) return
       sqChars += ch
     }
 
@@ -78,20 +77,19 @@ object PolybiusSquare {
       tryToAddToSquare(keyCh)
     }
     
-    alphabetL.foreach(tryToAddToSquare)
+    alphabet.toString.foreach(tryToAddToSquare)
     
     PolybiusSquare(createSquare(sqChars), missedOnExistingL)
   }
   
-  def apply(key: Long, alphabet: String): PolybiusSquare = 
+  def apply(key: Long, alphabet: Alphabet): PolybiusSquare = 
     apply(key, alphabet, Map[Char, Char]())
   
-  def apply(key: Long, alphabet: String, missedOnExisting: Map[Char, Char]): PolybiusSquare = {
-    val alphabetL = alphabet.toLowerCase
+  def apply(key: Long, alphabet: Alphabet, missedOnExisting: Map[Char, Char]): PolybiusSquare = {
     val missedOnExistingL = missedOnExisting map { case (k, v) => (k.toLower, v.toLower) }
-    val sqChars = new StringBuilder(alphabetL.length)
+    val sqChars = new StringBuilder(alphabet.length)
     
-    alphabetL.foreach((ch: Char) => {
+    alphabet.toString.foreach((ch: Char) => {
       if (!missedOnExistingL.contains(ch) && !sqChars.contains(ch))
         sqChars += ch
     })
