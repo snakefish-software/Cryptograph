@@ -44,11 +44,8 @@ object Vigenere {
     resIndexCalc: (Int, Int, Int) => Int
   ): Array[Char] = {
     val keyInts = new Array[Int](key.length)
-    val alphabetNorm = alphabet.toLowerCase
-    
     for (i <- 0 until key.length) {
-      val keyCh = key.charAt(i).toLower
-      val keyChIndex = alphabetNorm.indexOf(keyCh)
+      val keyChIndex = alphabet.indexOf(key.charAt(i))
       if (keyChIndex < 0) {
         throw new KeyCharNotInAlphabetException()
       } else keyInts(i) = keyChIndex

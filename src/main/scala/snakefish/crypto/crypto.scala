@@ -82,7 +82,9 @@ package object crypto extends EraseInstances {
       (numCopy % 10).toInt +=: digits
       numCopy = numCopy / 10
     }
-    digits.toArray
+    val result = digits.toArray
+    erase(digits)
+    result
   }
 
   def erase[R, E[R]](x: E[R])(implicit ev: Erase[E], evCh: EraseChar[R]): E[R] =
