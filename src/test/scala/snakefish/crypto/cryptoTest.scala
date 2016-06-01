@@ -19,6 +19,18 @@ class cryptoTest extends BaseTest {
     subtractByModulo(12, 1, 11) must be (0)
   }
   
+  ".xor(Byte, Byte)" should "correctly XOR 2 bytes" in {
+    xor(byte("01010111"),
+        byte("11110011")) must be 
+       (byte("10100100"))
+  }
+  
+  ".xor(Char, Char)" should "correctly XOR 2 chars" in {
+    xor(char("01010111"),
+        char("11110011")) must be 
+       (char("10100100"))
+  }
+  
   ".toDigits" should "return array of digits that make up a number" in {
     val res1 = toDigits(1234567890)
     res1 must be (Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 0))
