@@ -7,7 +7,12 @@ object Gronsfeld {
     encode(data, key, alphabet, false)
   } 
   
-  def encode(data: CharSequence, key: Long, alphabet: Alphabet, strictMode: Boolean): Array[Char] = {
+  def encode(
+    data: CharSequence,
+    key: Long,
+    alphabet: Alphabet,
+    strictMode: Boolean): Array[Char] =
+  {
     encode(data, toDigits(key), alphabet, strictMode)
   }
   
@@ -15,7 +20,12 @@ object Gronsfeld {
     encode(data, key, alphabet, false)
   }
   
-  def encode(data: CharSequence, key: Array[Int], alphabet: Alphabet, strictMode: Boolean) = {
+  def encode(
+    data: CharSequence,
+    key: Array[Int],
+    alphabet: Alphabet,
+    strictMode: Boolean): Array[Char] =
+  {
     sumKeySeqWithText(data, key, alphabet, strictMode)(addByModulo)
   }
   
@@ -23,7 +33,12 @@ object Gronsfeld {
     decode(data, key, alphabet, false)
   }
   
-  def decode(data: CharSequence, key: Long, alphabet: Alphabet, strictMode: Boolean): Array[Char] = {
+  def decode(
+    data: CharSequence,
+    key: Long,
+    alphabet: Alphabet,
+    strictMode: Boolean): Array[Char] =
+  {
     decode(data, toDigits(key), alphabet, strictMode)
   }
   
@@ -31,7 +46,12 @@ object Gronsfeld {
     decode(data, key, alphabet, false)
   }
   
-  def decode(data: CharSequence, key: Array[Int], alphabet: Alphabet, strictMode: Boolean) = {
+  def decode(
+    data: CharSequence,
+    key: Array[Int],
+    alphabet: Alphabet,
+    strictMode: Boolean): Array[Char] =
+  {
     sumKeySeqWithText(data, key, alphabet, strictMode)(subtractByModulo)
   }
   

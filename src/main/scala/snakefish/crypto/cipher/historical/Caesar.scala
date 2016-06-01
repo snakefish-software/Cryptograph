@@ -3,11 +3,21 @@ package cipher.historical
 
 object Caesar {
 
-  def encode(data: CharSequence, key: Int, alphabet: Alphabet, strictMode: Boolean = false) = {
+  def encode(
+    data: CharSequence,
+    key: Int,
+    alphabet: Alphabet,
+    strictMode: Boolean = false): Array[Char] =
+  {
     cryptoFunc(data, key, alphabet, strictMode)(addByModulo)
   }
 
-  def decode(data: CharSequence, key: Int, alphabet: Alphabet, strictMode: Boolean = false) = {
+  def decode(
+    data: CharSequence,
+    key: Int,
+    alphabet: Alphabet,
+    strictMode: Boolean = false): Array[Char] =
+  {
     cryptoFunc(data, key, alphabet, strictMode)(subtractByModulo)
   }
 

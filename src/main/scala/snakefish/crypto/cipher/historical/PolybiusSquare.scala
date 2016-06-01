@@ -5,10 +5,10 @@ import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 case class PolybiusSquare(val square: Array[Array[Char]], val missedOnExisting: Map[Char, Char] = Map()) {
-  def apply(row: Int) = square(row)
-  def rowsCount = square.length
-  def colsCount = square(0).length
-  def lastRowLength = square(square.length - 1).length
+  def apply(row: Int): Array[Char] = square(row)
+  def rowsCount: Int = square.length
+  def colsCount: Int = square(0).length
+  def lastRowLength: Int = square(square.length - 1).length
   
   def coords(ch: Char): Option[(Int, Int)] = {
     val chLower = ch.toLower
@@ -33,7 +33,7 @@ object PolybiusSquare {
   
   implicit def squareToArray(square: PolybiusSquare): Array[Array[Char]] = square.square
   
-  implicit def arrayToSquare(array: Array[Array[Char]]) : PolybiusSquare = PolybiusSquare(array)
+  implicit def arrayToSquare(array: Array[Array[Char]]): PolybiusSquare = PolybiusSquare(array)
 
   val LATIN = PolybiusSquare(Array(Array('a', 'b', 'c', 'd', 'e'),
                                    Array('f', 'g', 'h', 'i', 'k'),
@@ -99,7 +99,7 @@ object PolybiusSquare {
     PolybiusSquare(createSquare(shuffled), missedOnExistingL)
   }
   
-  private def createSquare(chars: CharSequence) = {
+  private def createSquare(chars: CharSequence): Array[Array[Char]] = {
     val rowsCount = Math.sqrt(chars.length).toInt
     val colsCount = Math.ceil(chars.length.toDouble / rowsCount).toInt
     
@@ -112,7 +112,12 @@ object PolybiusSquare {
     square
   }
 
-  def compute(data: CharSequence, square: PolybiusSquare, computeFunc: (ArrayBuffer[Int], Array[Array[Char]]) => Array[Int], strictMode: Boolean = false) = {
+  def compute(
+    data: CharSequence,
+    square: PolybiusSquare,
+    computeFunc: (ArrayBuffer[Int], Array[Array[Char]]) => Array[Int],
+    strictMode: Boolean = false): Array[Char] =
+  {
     val dataNums = new ArrayBuffer[Int](data.length * 2)
     val notInSquareChars = new mutable.HashMap[Int, Char]()
 
@@ -157,7 +162,7 @@ object PolybiusSquare {
     result
   }
 
-  def lowerSymbol(data: ArrayBuffer[Int], square: Array[Array[Char]]) = {
+  def lowerSymbol(data: ArrayBuffer[Int], square: Array[Array[Char]]): Array[Int] = {
     val result = new Array[Int](data.length)
     for (i <- 0 until data.length by 2) {
       val row = data(i)
@@ -173,7 +178,7 @@ object PolybiusSquare {
     result
   }
 
-  def upperSymbol(data: ArrayBuffer[Int], square: Array[Array[Char]]) = {
+  def upperSymbol(data: ArrayBuffer[Int], square: Array[Array[Char]]): Array[Int] = {
     val result = new Array[Int](data.length)
     for (i <- 0 until data.length by 2) {
       val row = data(i)
@@ -189,7 +194,7 @@ object PolybiusSquare {
     result
   }
 
-  def rowsCols(data: ArrayBuffer[Int], square: Array[Array[Char]]) = {
+  def rowsCols(data: ArrayBuffer[Int], square: Array[Array[Char]]): Array[Int] = {
     val result = new Array[Int](data.length)
     val middle = data.length / 2
     for (i <- 0 until middle) {
@@ -201,7 +206,7 @@ object PolybiusSquare {
     result
   }
 
-  def rowsColsReverse(data: ArrayBuffer[Int], square: Array[Array[Char]]) = {
+  def rowsColsReverse(data: ArrayBuffer[Int], square: Array[Array[Char]]): Array[Int] = {
     val result = new Array[Int](data.length)
     val middle = data.length / 2
     for (i <- 0 until middle) {
@@ -213,7 +218,7 @@ object PolybiusSquare {
     result
   }
 
-  def colsRows(data: ArrayBuffer[Int], square: Array[Array[Char]]) = {
+  def colsRows(data: ArrayBuffer[Int], square: Array[Array[Char]]): Array[Int] = {
     val result = new Array[Int](data.length)
     val middle = data.length / 2
     for (i <- 0 until middle) {
@@ -225,7 +230,7 @@ object PolybiusSquare {
     result
   }
 
-  def colsRowsReverse(data: ArrayBuffer[Int], square: Array[Array[Char]]) = {
+  def colsRowsReverse(data: ArrayBuffer[Int], square: Array[Array[Char]]): Array[Int] = {
     val result = new Array[Int](data.length)
     val middle = data.length / 2
     for (i <- 0 until middle) {

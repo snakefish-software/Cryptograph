@@ -22,18 +22,16 @@ case class Alphabet (private val _alphabet: String) {
   
   private val alphabet = _alphabet.toLowerCase.distinct
   
-  def apply(i: Int) = alphabet(i)
+  def apply(i: Int): Char = alphabet(i)
   
-  override def toString = alphabet
+  override def toString: String = alphabet
   
-  def length = alphabet.length
+  def length: Int = alphabet.length
   
-  def +(that: String) = Alphabet(alphabet + that)
+  def +(that: String): Alphabet = Alphabet(alphabet + that)
+  def +(that: Alphabet): Alphabet = Alphabet(alphabet + that.alphabet)
   
-  def +(that: Alphabet) = Alphabet(alphabet + that.alphabet)
-  
-  def indexOf(ch: Char) = alphabet.indexOf(ch.toLower)
-  
-  def contains(ch: Char) = alphabet.contains(ch.toLower)
+  def indexOf(ch: Char): Int = alphabet.indexOf(ch.toLower)
+  def contains(ch: Char): Boolean = alphabet.contains(ch.toLower)
   
 }

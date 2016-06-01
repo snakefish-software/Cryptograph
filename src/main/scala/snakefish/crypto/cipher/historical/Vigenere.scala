@@ -7,7 +7,12 @@ object Vigenere {
     encode(data, key, alphabet, false)
   }
 
-  def encode(data: CharSequence, key: CharSequence, alphabet: Alphabet, strictMode: Boolean) = {
+  def encode(
+    data: CharSequence,
+    key: CharSequence,
+    alphabet: Alphabet,
+    strictMode: Boolean): Array[Char] =
+  {
     cryptoFunc(data, key, alphabet, strictMode)(addByModulo)
   }
   
@@ -15,7 +20,12 @@ object Vigenere {
     encode(data, key, alphabet, false)
   }
   
-  def encode(data: CharSequence, key: Array[Int], alphabet: Alphabet, strictMode: Boolean) = {
+  def encode(
+    data: CharSequence,
+    key: Array[Int],
+    alphabet: Alphabet,
+    strictMode: Boolean): Array[Char] =
+  {
     sumKeySeqWithText(data, key, alphabet, strictMode)(addByModulo)
   }
   
@@ -23,7 +33,12 @@ object Vigenere {
     decode(data, key, alphabet, false)
   }
 
-  def decode(data: CharSequence, key: CharSequence, alphabet: Alphabet, strictMode: Boolean) = {
+  def decode(
+    data: CharSequence,
+    key: CharSequence,
+    alphabet: Alphabet,
+    strictMode: Boolean): Array[Char] =
+  {
     cryptoFunc(data, key, alphabet, strictMode)(subtractByModulo)
   }
   
@@ -31,7 +46,12 @@ object Vigenere {
     decode(data, key, alphabet, false)
   }
   
-  def decode(data: CharSequence, key: Array[Int], alphabet: Alphabet, strictMode: Boolean) = {
+  def decode(
+    data: CharSequence,
+    key: Array[Int],
+    alphabet: Alphabet,
+    strictMode: Boolean): Array[Char] =
+  {
     sumKeySeqWithText(data, key, alphabet, strictMode)(subtractByModulo)
   }
 

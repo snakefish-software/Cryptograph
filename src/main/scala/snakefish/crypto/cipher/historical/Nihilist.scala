@@ -8,7 +8,12 @@ object Nihilist {
   
   class CifertextNumberException() extends Exception("Cifertext contains incorrect numbers")
   
-  def encode(data: CharSequence, key: CharSequence, square: PolybiusSquare, strictMode: Boolean = false) = {
+  def encode(
+    data: CharSequence,
+    key: CharSequence,
+    square: PolybiusSquare,
+    strictMode: Boolean = false): ArrayBuffer[Int] =
+  {
     val keyNumsOpt = toNums(key, square)
     if (keyNumsOpt.isEmpty) throw new KeyCharNotInSquareException()
     
@@ -34,7 +39,7 @@ object Nihilist {
     result
   }
 
-  def decode(data: Array[Int], key: CharSequence, square: PolybiusSquare) = {
+  def decode(data: Array[Int], key: CharSequence, square: PolybiusSquare): Array[Char] = {
     val keyNumsOpt = toNums(key, square)
     if (keyNumsOpt.isEmpty) throw new KeyCharNotInSquareException()
     

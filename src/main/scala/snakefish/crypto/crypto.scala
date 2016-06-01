@@ -7,9 +7,9 @@ import java.util.BitSet
 
 package object crypto extends EraseInstances {
 
-  def addByModulo(x: Int, y: Int, mod: Int) = (x % mod + y % mod) % mod
+  def addByModulo(x: Int, y: Int, mod: Int): Int = (x % mod + y % mod) % mod
 
-  def subtractByModulo(x: Int, y: Int, mod: Int) = (x % mod - y % mod + mod) % mod
+  def subtractByModulo(x: Int, y: Int, mod: Int): Int = (x % mod - y % mod + mod) % mod
   
   def xor(b1: Byte, b2: Byte): Byte = (b1 ^ b2).toByte
   
@@ -75,7 +75,7 @@ package object crypto extends EraseInstances {
     sumKeySeqWithText(keyF)(data, alphabet, strictMode, resIndexCalc)
   }
   
-  def toDigits(num: Long) = {
+  def toDigits(num: Long): Array[Int] = {
     val digits = new ArrayBuffer[Int]()
     var numCopy = num
     while (numCopy > 0) {
@@ -90,7 +90,7 @@ package object crypto extends EraseInstances {
   def erase[R, E[R]](x: E[R])(implicit ev: Erase[E], evCh: EraseChar[R]): E[R] =
     ev.erase(x)(evCh)
   
-  def shuffle(data: CharSequence, key: Long) = {
+  def shuffle(data: CharSequence, key: Long): Array[Char] = {
     val rand = new SecureRandom()
     rand.setSeed(key)
     val dataLen = data.length
@@ -112,7 +112,7 @@ package object crypto extends EraseInstances {
     result
   }
   
-  def deshuffle(data: CharSequence, key: Long) = {
+  def deshuffle(data: CharSequence, key: Long): Array[Char] = {
     val rand = new SecureRandom()
     rand.setSeed(key)
     val dataLen = data.length

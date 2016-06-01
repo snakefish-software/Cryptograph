@@ -8,19 +8,31 @@ object Trifid {
   
   class DataCharNotInCubeException() extends Exception("Data contains symbols that are missing in provided cube")
   
-  def encode(data: CharSequence, cube: Array[Array[Array[Char]]], period: Int, strictMode: Boolean = false) = {
+  def encode(
+    data: CharSequence,
+    cube: Array[Array[Array[Char]]],
+    period: Int,
+    strictMode: Boolean = false): Array[Char] =
+  {
     compute(data, cube, period, encodeBlockFunc, strictMode)
   }
 
-  def decode(data: CharSequence, cube: Array[Array[Array[Char]]], period: Int, strictMode: Boolean = false) = {
+  def decode(
+    data: CharSequence,
+    cube: Array[Array[Array[Char]]],
+    period: Int,
+    strictMode: Boolean = false): Array[Char] =
+  {
     compute(data, cube, period, decodeBlockFunc, strictMode)
   }
   
-  private def compute(data: CharSequence,
-                      cube: Array[Array[Array[Char]]],
-                      period: Int,
-                      blockComputeFunc: (ArrayBuffer[Int], Array[Int]) => Unit,
-                      strictMode: Boolean) = {
+  private def compute(
+    data: CharSequence,
+    cube: Array[Array[Array[Char]]],
+    period: Int,
+    blockComputeFunc: (ArrayBuffer[Int], Array[Int]) => Unit,
+    strictMode: Boolean): Array[Char] =
+  {
     val dataNums = new ArrayBuffer[Int](data.length * 3)
     val notInSquareChars = new mutable.HashMap[Int, Char]()
     val coords = new Array[Int](3)
@@ -64,7 +76,11 @@ object Trifid {
     result
   }
   
-  private def applyBlockFunc(data: ArrayBuffer[Int], period: Int, blockComputeFunc: (ArrayBuffer[Int], Array[Int]) => Unit): Unit = {
+  private def applyBlockFunc(
+    data: ArrayBuffer[Int],
+    period: Int,
+    blockComputeFunc: (ArrayBuffer[Int], Array[Int]) => Unit): Unit =
+  {
     val blockSize = 3 * period
     val fullBlocksCount = data.length / blockSize
     if (fullBlocksCount > 0) {

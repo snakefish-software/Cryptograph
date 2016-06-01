@@ -3,7 +3,7 @@ package cipher.historical
 
 object Atbash {
 
-  def compute(data: CharSequence, alphabet: Alphabet, strictMode: Boolean = false) = {
+  def compute(data: CharSequence, alphabet: Alphabet, strictMode: Boolean = false): Array[Char] = {
     sumKeySeqWithText(identity)(data,
                                 alphabet,
                                 strictMode,

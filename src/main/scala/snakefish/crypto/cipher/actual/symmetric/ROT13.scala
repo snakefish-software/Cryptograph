@@ -3,10 +3,10 @@ package cipher.actual.symmetric
 
 object ROT13 {
 
-  def encode(data: CharSequence, alphabet: Alphabet, strictMode: Boolean = false) =
+  def encode(data: CharSequence, alphabet: Alphabet, strictMode: Boolean = false): Array[Char] =
     cryptoFunc(data, alphabet, strictMode)(addByModulo)
 
-  def decode(data: CharSequence, alphabet: Alphabet, strictMode: Boolean = false) =
+  def decode(data: CharSequence, alphabet: Alphabet, strictMode: Boolean = false): Array[Char] =
     cryptoFunc(data, alphabet, strictMode)(subtractByModulo)
 
   private def cryptoFunc(
