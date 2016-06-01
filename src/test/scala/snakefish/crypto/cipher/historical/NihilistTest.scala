@@ -3,7 +3,6 @@ package cipher.historical
 
 import PolybiusSquare._
 import Nihilist._
-import data.Alphabet
 
 class NihilistTest extends BaseTest {
   

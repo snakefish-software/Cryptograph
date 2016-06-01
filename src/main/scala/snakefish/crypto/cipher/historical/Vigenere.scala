@@ -1,8 +1,6 @@
 package snakefish.crypto
 package cipher.historical
 
-import data.KeyCharNotInAlphabetException
-
 object Vigenere {
   
   def encode(data: CharSequence, key: CharSequence, alphabet: String): Array[Char] = {

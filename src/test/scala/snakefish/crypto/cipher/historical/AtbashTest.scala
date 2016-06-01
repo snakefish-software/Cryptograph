@@ -1,9 +1,6 @@
 package snakefish.crypto
 package cipher.historical
 
-import data.Alphabet
-import data.DataCharNotInAlphabetException
-
 class AtbashTest extends BaseTest {
   
   ".compute" should "correctly compute result according to Atbash rules" in {

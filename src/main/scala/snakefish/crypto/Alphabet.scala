@@ -1,4 +1,4 @@
-package snakefish.crypto.data
+package snakefish.crypto
 
 import scala.language.implicitConversions
 

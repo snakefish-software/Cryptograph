@@ -1,9 +1,6 @@
 package snakefish.crypto
 package cipher.historical
 
-import data.Alphabet
-import data.DataCharNotInAlphabetException
-
 class CaesarCipherTest extends BaseTest {
   
   private val plaintext = "Съешь же ещё этих мягких французских булок, да выпей чаю."

@@ -1,10 +1,6 @@
 package snakefish.crypto
 package cipher.historical
 
-import data.Alphabet
-import data.KeyCharNotInAlphabetException
-import data.DataCharNotInAlphabetException
-
 class VigenereCipherTest extends BaseTest {
   
   private val plaintext = "Attack at dawn"

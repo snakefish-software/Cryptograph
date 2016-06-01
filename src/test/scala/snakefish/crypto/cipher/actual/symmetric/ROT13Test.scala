@@ -1,9 +1,6 @@
 package snakefish.crypto
 package cipher.actual.symmetric
 
-import data.Alphabet
-import data.DataCharNotInAlphabetException
-
 class ROT13Test extends BaseTest {
   
   private val plaintext = "How can you tell an extrovert from an introvert at NSA? Va gur ryringbef, gur rkgebireg ybbxf ng gur BGURE thl'f fubrf."

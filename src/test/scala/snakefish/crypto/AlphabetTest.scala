@@ -1,5 +1,4 @@
 package snakefish.crypto
-package data
 
 class AlphabetTest extends BaseTest {
   

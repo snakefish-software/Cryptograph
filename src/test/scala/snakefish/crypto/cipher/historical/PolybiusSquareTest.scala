@@ -2,7 +2,6 @@ package snakefish.crypto
 package cipher.historical
 
 import PolybiusSquare._
-import data.Alphabet
 
 class PolybiusSquareTest extends BaseTest {
   

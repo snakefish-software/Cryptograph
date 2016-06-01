@@ -1,9 +1,6 @@
 package snakefish.crypto
 package cipher.historical
 
-import data.Alphabet
-import data.DataCharNotInAlphabetException
-
 class GronsfeldTest extends BaseTest {
   
   private val plaintext = "GrOnS fElD"
