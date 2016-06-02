@@ -13,19 +13,20 @@ object OneTimePad {
   }
   
   def encode(data: CharSequence, key: CharSequence, alphabet: Alphabet): Array[Char] = {
-    cryptoFunc(data, key, alphabet, addByModulo)
+    cryptoFunc(data, key, alphabet)(addByModulo)
   }
   
   def decode(data: CharSequence, key: CharSequence, alphabet: Alphabet): Array[Char] = {
-    cryptoFunc(data, key, alphabet, subtractByModulo)
+    cryptoFunc(data, key, alphabet)(subtractByModulo)
   }
   
   private def cryptoFunc(
     data: CharSequence,
     key: CharSequence,
-    alphabet: Alphabet,
-    resIndexCalc: (Int, Int, Int) => Int): Array[Char] =
-  {
+    alphabet: Alphabet
+  )(
+    resIndexCalc: (Int, Int, Int) => Int
+  ): Array[Char] = {
     if (key.length < data.length)
       throw new KeyLengthInsuffisientException()
     

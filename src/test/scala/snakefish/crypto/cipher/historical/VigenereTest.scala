@@ -1,7 +1,7 @@
 package snakefish.crypto
 package cipher.historical
 
-class VigenereCipherTest extends BaseTest {
+class VigenereTest extends BaseTest {
   
   private val plaintext = "Attack at dawn"
   private val cifertext = "Lxfopv ef rnhr"

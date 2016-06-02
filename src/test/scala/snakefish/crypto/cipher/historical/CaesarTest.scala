@@ -1,7 +1,7 @@
 package snakefish.crypto
 package cipher.historical
 
-class CaesarCipherTest extends BaseTest {
+class CaesarTest extends BaseTest {
   
   private val plaintext = "Съешь же ещё этих мягких французских булок, да выпей чаю."
   private val cifertext = "Фэзыя йз зьи ахлш пвёнлш чугрщцкфнлш дцосн, жг еютзм ъгб."
