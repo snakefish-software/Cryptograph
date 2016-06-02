@@ -125,16 +125,14 @@ object PolybiusSquare {
     for (i <- 0 until data.length) {
       val dataCh = data.charAt(i)
       square.coords(dataCh) match {
-        case Some((row, col)) => {
+        case Some((row, col)) =>
           dataNums += row
           dataNums += col
-        }
         
-        case None => {
+        case None =>
           if (strictMode) {
             throw new DataCharNotInSquareException()
           } else notInSquareChars.put(i, dataCh)
-        }
       }
     }
     

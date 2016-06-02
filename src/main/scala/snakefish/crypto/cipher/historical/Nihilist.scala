@@ -23,16 +23,14 @@ object Nihilist {
     
     for (i <- 0 until data.length) {
       square.coords(data.charAt(i)) match {
-        case Some((row, col)) => {
+        case Some((row, col)) =>
           val dataNum = toInt(row, col)
           val keyNum = keyNums(keyNumInd % keyNums.length)
           result += dataNum + keyNum
           keyNumInd += 1
-        }
         
-        case None => {
+        case None =>
           if (strictMode) throw new DataCharNotInSquareException()
-        }
       }
     }
     
