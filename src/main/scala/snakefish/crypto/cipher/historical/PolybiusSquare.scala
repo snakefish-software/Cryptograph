@@ -12,12 +12,13 @@ case class PolybiusSquare(val square: Array[Array[Char]], val missedOnExisting: 
   
   def coords(ch: Char): Option[(Int, Int)] = {
     val chLower = ch.toLower
-    for (row <- 0 until rowsCount) {
-      for (col <- 0 until square(row).length) {
-        if (square(row)(col) == chLower) {
-          return Some(row, col)
-        }
-      }
+    
+    for (
+      row <- 0 until rowsCount;
+      col <- 0 until square(row).length)
+    {
+      if (square(row)(col) == chLower)
+        return Some(row, col)
     }
 
     val mappingCh = missedOnExisting.get(chLower)

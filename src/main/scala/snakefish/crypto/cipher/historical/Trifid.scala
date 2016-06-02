@@ -135,18 +135,20 @@ object Trifid {
   
   private def compCoords(ch: Char, cube: Array[Array[Array[Char]]], coords: Array[Int]): Boolean = {
     val chLower = ch.toLower
-    for (table <- 0 until cube.length) {
-      for (row <- 0 until cube(table).length) {
-        for (col <- 0 until cube(table)(row).length) {
-          if (chLower == cube(table)(row)(col).toLower) {
-            coords(0) = table
-            coords(1) = row
-            coords(2) = col
-            return true
-          }
-        }
+    
+    for (
+      table <- 0 until cube.length;
+      row   <- 0 until cube(table).length;
+      col   <- 0 until cube(table)(row).length)
+    {
+      if (chLower == cube(table)(row)(col).toLower) {
+        coords(0) = table
+        coords(1) = row
+        coords(2) = col
+        return true
       }
     }
+    
     return false
   }
   
