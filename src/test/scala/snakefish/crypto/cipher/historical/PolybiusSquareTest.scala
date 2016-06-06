@@ -12,7 +12,7 @@ class PolybiusSquareTest extends BaseTest {
                                    Array('f', 'g', 'h', 'i', 'k'),
                                    Array('l', 'm', 'n', 'o', 'p'),
                                    Array('s', 'u', 'v', 'x', 'z')))
-    square.missedOnExisting must contain only(('j' -> 'i'))
+    square.missedToExisting must contain only(('j' -> 'i'))
   }
   
   ".apply(key: Long, alphabet, missedOnExisting)" should "create Polibius square instance from provided arguments" in {
@@ -22,7 +22,7 @@ class PolybiusSquareTest extends BaseTest {
                                    Array('u', 't', 'd', 'f', 'y'),
                                    Array('b', 'n', 'i', 'w', 'c'),
                                    Array('e', 'h', 'm', 'v', 'z')))
-    square.missedOnExisting must contain only(('j' -> 'i'))
+    square.missedToExisting must contain only(('j' -> 'i'))
   }
   
   ".lowerSymbol" should "correctly compute result" in {

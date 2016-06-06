@@ -1,29 +1,32 @@
 package snakefish.crypto
 package cipher.historical
 
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.HashMap
 
-case class PolybiusSquare(val square: Array[Array[Char]], val missedOnExisting: Map[Char, Char] = Map()) {
+case class PolybiusSquare(val square: Array[Array[Char]], val missedToExisting: Map[Char, Char] = Map()) {
+  
+  private val charsToCoords = new HashMap[Char, (Int, Int)]()
+  
+  for (
+    row <- 0 until square.length;
+    col <- 0 until square(row).length
+  ) {
+    val chLower = square(row)(col).toLower
+    charsToCoords.put(chLower, (row, col))
+  }
+  
+  for ((missed, existing) <- missedToExisting) {
+    val existingCoords = charsToCoords.get(existing.toLower)
+    if (existingCoords.isDefined)
+      charsToCoords.put(missed.toLower, existingCoords.get)
+  }
+  
   def apply(row: Int): Array[Char] = square(row)
   def rowsCount: Int = square.length
   def colsCount: Int = square(0).length
   def lastRowLength: Int = square(square.length - 1).length
-  
-  def coords(ch: Char): Option[(Int, Int)] = {
-    val chLower = ch.toLower
-    
-    for (
-      row <- 0 until rowsCount;
-      col <- 0 until square(row).length)
-    {
-      if (square(row)(col) == chLower)
-        return Some(row, col)
-    }
-
-    val mappingCh = missedOnExisting.get(chLower)
-    if (mappingCh.isEmpty) None else coords(mappingCh.get)
-  }
+  def coords(ch: Char): Option[(Int, Int)] = charsToCoords.get(ch.toLower)
 }
 
 object PolybiusSquare {
@@ -62,12 +65,12 @@ object PolybiusSquare {
   def apply(key: CharSequence, alphabet: Alphabet): PolybiusSquare = 
     apply(key, alphabet, Map[Char, Char]())
 
-  def apply(key: CharSequence, alphabet: Alphabet, missedOnExisting: Map[Char, Char]): PolybiusSquare = {
-    val missedOnExistingL = missedOnExisting map { case (k, v) => (k.toLower, v.toLower) }
+  def apply(key: CharSequence, alphabet: Alphabet, missedToExisting: Map[Char, Char]): PolybiusSquare = {
+    val missedToExistingL = missedToExisting map { case (k, v) => (k.toLower, v.toLower) }
     val sqChars = new ArrayBuffer[Char](alphabet.length)
     
     def tryToAddToSquare(ch: Char): Unit = {
-      if (missedOnExistingL.contains(ch)) return
+      if (missedToExistingL.contains(ch)) return
       if (sqChars.contains(ch)) return
       if (!alphabet.contains(ch)) return
       sqChars += ch
@@ -80,24 +83,24 @@ object PolybiusSquare {
     
     alphabet.toString.foreach(tryToAddToSquare)
     
-    PolybiusSquare(createSquare(sqChars), missedOnExistingL)
+    PolybiusSquare(createSquare(sqChars), missedToExistingL)
   }
   
   def apply(key: Long, alphabet: Alphabet): PolybiusSquare = 
     apply(key, alphabet, Map[Char, Char]())
   
-  def apply(key: Long, alphabet: Alphabet, missedOnExisting: Map[Char, Char]): PolybiusSquare = {
-    val missedOnExistingL = missedOnExisting map { case (k, v) => (k.toLower, v.toLower) }
+  def apply(key: Long, alphabet: Alphabet, missedToExisting: Map[Char, Char]): PolybiusSquare = {
+    val missedToExistingL = missedToExisting map { case (k, v) => (k.toLower, v.toLower) }
     val sqChars = new StringBuilder(alphabet.length)
     
     alphabet.toString.foreach((ch: Char) => {
-      if (!missedOnExistingL.contains(ch) && !sqChars.contains(ch))
+      if (!missedToExistingL.contains(ch) && !sqChars.contains(ch))
         sqChars += ch
     })
     
     val shuffled = shuffle(sqChars, key)
     
-    PolybiusSquare(createSquare(shuffled), missedOnExistingL)
+    PolybiusSquare(createSquare(shuffled), missedToExistingL)
   }
   
   private def createSquare(chars: CharSequence): Array[Array[Char]] = {
@@ -120,7 +123,7 @@ object PolybiusSquare {
     strictMode: Boolean = false): Array[Char] =
   {
     val dataNums = new ArrayBuffer[Int](data.length * 2)
-    val notInSquareChars = new mutable.HashMap[Int, Char]()
+    val notInSquareChars = new HashMap[Int, Char]()
 
     for (i <- 0 until data.length) {
       val dataCh = data.charAt(i)

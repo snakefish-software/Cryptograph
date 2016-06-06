@@ -19,11 +19,6 @@ class NihilistTest extends BaseTest {
     val _plaintext = Nihilist.decode(cifertext, crKey, square)
     _plaintext must be ("dynamitewinterpalace".toCharArray)
   }
-  
-   ".encode and .decode" should "throw an exception if key contains chars that are missing in square" in {
-     an [KeyCharNotInSquareException] should be thrownBy Nihilist.encode("DYNAMITE WINTER PALACE", "1234", square)
-     an [KeyCharNotInSquareException] should be thrownBy Nihilist.decode(cifertext, "1234", square)
-   }
    
    ".decode" should "throw an exception if cifertext contains wrong number" in {
      val wrongCifertext = Array(100500, -1000)
