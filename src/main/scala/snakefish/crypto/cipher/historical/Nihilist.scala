@@ -8,12 +8,8 @@ object Nihilist {
   
   class CifertextNumberException() extends Exception("Cifertext contains incorrect numbers")
   
-  def encode(
-    data: CharSequence,
-    key: CharSequence,
-    square: PolybiusSquare,
-    strictMode: Boolean = false): ArrayBuffer[Int] =
-  {
+  @throws(classOf[KeyCharNotInSquareException])
+  def encode(data: CharSequence, key: CharSequence, square: PolybiusSquare): ArrayBuffer[Int] = {
     val keyNumsOpt = toNums(key, square)
     if (keyNumsOpt.isEmpty) throw new KeyCharNotInSquareException()
     
@@ -22,21 +18,19 @@ object Nihilist {
     var keyNumInd = 0
     
     for (i <- 0 until data.length) {
-      square.coords(data.charAt(i)) match {
-        case Some((row, col)) =>
-          val dataNum = toInt(row, col)
-          val keyNum = keyNums(keyNumInd % keyNums.length)
-          result += dataNum + keyNum
-          keyNumInd += 1
-        
-        case None =>
-          if (strictMode) throw new DataCharNotInSquareException()
-      }
+      square.coords(data.charAt(i)).foreach { case (row, col) => {
+        val dataNum = toInt(row, col)
+        val keyNum = keyNums(keyNumInd % keyNums.length)
+        result += dataNum + keyNum
+        keyNumInd += 1
+      }}
     }
     
     result
   }
 
+  @throws(classOf[KeyCharNotInSquareException])
+  @throws(classOf[CifertextNumberException])
   def decode(data: Array[Int], key: CharSequence, square: PolybiusSquare): Array[Char] = {
     val keyNumsOpt = toNums(key, square)
     if (keyNumsOpt.isEmpty) throw new KeyCharNotInSquareException()
