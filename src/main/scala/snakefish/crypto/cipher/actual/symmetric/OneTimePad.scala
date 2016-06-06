@@ -5,6 +5,7 @@ object OneTimePad {
   
   class KeyLengthInsuffisientException() extends Exception("Key length must be >= data length")
   
+  @throws(classOf[KeyLengthInsuffisientException])
   def compute(data: Array[Byte], key: Array[Byte]): Array[Byte] = {
     if (key.length < data.length)
       throw new KeyLengthInsuffisientException()
@@ -12,10 +13,16 @@ object OneTimePad {
     xor(data, key)
   }
   
+  @throws(classOf[KeyLengthInsuffisientException])
+  @throws(classOf[DataCharNotInAlphabetException])
+  @throws(classOf[KeyCharNotInAlphabetException])
   def encode(data: CharSequence, key: CharSequence, alphabet: Alphabet): Array[Char] = {
     cryptoFunc(data, key, alphabet)(addByModulo)
   }
   
+  @throws(classOf[KeyLengthInsuffisientException])
+  @throws(classOf[DataCharNotInAlphabetException])
+  @throws(classOf[KeyCharNotInAlphabetException])
   def decode(data: CharSequence, key: CharSequence, alphabet: Alphabet): Array[Char] = {
     cryptoFunc(data, key, alphabet)(subtractByModulo)
   }
