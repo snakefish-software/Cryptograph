@@ -23,46 +23,52 @@ case class PolybiusSquare(square: Array[Array[Char]], missedToExisting: Map[Char
   }
   
   def apply(row: Int): Array[Char] = square(row)
-  def rowsCount: Int = square.length
-  def colsCount: Int = square(0).length
-  def lastRowLength: Int = square(square.length - 1).length
+  def rowsCount = square.length
+  def colsCount = square(0).length
+  def lastRowLength = square(square.length - 1).length
   def coords(ch: Char): Option[(Int, Int)] = charsToCoords.get(ch.toLower)
 }
 
 object PolybiusSquare {
   
-  case class KeyCharNotInSquareException(position: Int) 
+  class KeyCharNotInSquareException(val position: Int) 
       extends RuntimeException(s"Key char at position $position is missing in Polybius square")
 
-  case class DataCharNotInSquareException(position: Int) 
+  class DataCharNotInSquareException(val position: Int) 
       extends RuntimeException(s"Data char at position $position is missing in Polybius square")
+  
+  class CoordinatesOutOfBoundsException(val position: Int, val row: Int, val col: Int)
+      extends RuntimeException(s"Coordinates (row = $row; column = $col) of char at position $position are out of Polybius square bounds")
   
   implicit def squareToArray(square: PolybiusSquare): Array[Array[Char]] = square.square
   
   implicit def arrayToSquare(array: Array[Array[Char]]): PolybiusSquare = PolybiusSquare(array)
 
-  val LATIN = PolybiusSquare(Array(Array('a', 'b', 'c', 'd', 'e'),
-                                   Array('f', 'g', 'h', 'i', 'k'),
-                                   Array('l', 'm', 'n', 'o', 'p'),
-                                   Array('q', 'r', 's', 't', 'u'),
-                                   Array('v', 'w', 'x', 'y', 'z')),
-                             Map('j' -> 'i'))
+  val LATIN = PolybiusSquare(
+    Array(Array('a', 'b', 'c', 'd', 'e'),
+          Array('f', 'g', 'h', 'i', 'k'),
+          Array('l', 'm', 'n', 'o', 'p'),
+          Array('q', 'r', 's', 't', 'u'),
+          Array('v', 'w', 'x', 'y', 'z')),
+    Map('j' -> 'i'))
 
-  val RUSSIAN_ALL = PolybiusSquare(Array(Array('а', 'б', 'в', 'г', 'д', 'е'),
-                                         Array('ё', 'ж', 'з', 'и', 'й', 'к'),
-                                         Array('л', 'м', 'н', 'о', 'п', 'р'),
-                                         Array('с', 'т', 'у', 'ф', 'х', 'ц'),
-                                         Array('ч', 'ш', 'щ', 'ъ', 'ы', 'ь'),
-                                         Array('э', 'ю', 'я')))
+  val RUSSIAN_ALL = PolybiusSquare(
+    Array(Array('а', 'б', 'в', 'г', 'д', 'е'),
+          Array('ё', 'ж', 'з', 'и', 'й', 'к'),
+          Array('л', 'м', 'н', 'о', 'п', 'р'),
+          Array('с', 'т', 'у', 'ф', 'х', 'ц'),
+          Array('ч', 'ш', 'щ', 'ъ', 'ы', 'ь'),
+          Array('э', 'ю', 'я')))
 
-  val RUSSIAN_SHORT = PolybiusSquare(Array(Array('а', 'б', 'в', 'г', 'д', 'е'),
-                                           Array('ж', 'з', 'и', 'к', 'л', 'м'),
-                                           Array('н', 'о', 'п', 'р', 'с', 'т'),
-                                           Array('у', 'ф', 'х', 'ц', 'ч', 'ш'),
-                                           Array('щ', 'ы', 'ь', 'э', 'ю', 'я')),
-                                     Map('ё' -> 'е',
-                                         'й' -> 'и',
-                                         'ъ' -> 'ь'))
+  val RUSSIAN_SHORT = PolybiusSquare(
+    Array(Array('а', 'б', 'в', 'г', 'д', 'е'),
+          Array('ж', 'з', 'и', 'к', 'л', 'м'),
+          Array('н', 'о', 'п', 'р', 'с', 'т'),
+          Array('у', 'ф', 'х', 'ц', 'ч', 'ш'),
+          Array('щ', 'ы', 'ь', 'э', 'ю', 'я')),
+    Map('ё' -> 'е',
+        'й' -> 'и',
+        'ъ' -> 'ь'))
   
   def apply(key: CharSequence, alphabet: Alphabet): PolybiusSquare = 
     apply(key, alphabet, Map[Char, Char]())
@@ -95,7 +101,7 @@ object PolybiusSquare {
     val missedToExistingL = missedToExisting map { case (k, v) => (k.toLower, v.toLower) }
     val sqChars = new StringBuilder(alphabet.length)
     
-    alphabet.toString.foreach((ch: Char) => {
+    alphabet.toString.foreach(ch => {
       if (!missedToExistingL.contains(ch) && !sqChars.contains(ch))
         sqChars += ch
     })
@@ -118,15 +124,17 @@ object PolybiusSquare {
     square
   }
 
+  @throws(classOf[DataCharNotInSquareException])
+  @throws(classOf[CoordinatesOutOfBoundsException])
   def compute(
     data: CharSequence,
     square: PolybiusSquare,
-    computeFunc: (ArrayBuffer[Int], Array[Array[Char]]) => Array[Int],
-    strictMode: Boolean = false): Array[Char] =
-  {
+    computeFunc: (ArrayBuffer[Int], PolybiusSquare) => Array[Int],
+    strictMode: Boolean = false
+  ): Array[Char] = {
     val dataNums = new ArrayBuffer[Int](data.length * 2)
     val notInSquareChars = new HashMap[Int, Char]()
-
+    
     for (i <- 0 until data.length) {
       val dataCh = data.charAt(i)
       square.coords(dataCh) match {
@@ -142,7 +150,7 @@ object PolybiusSquare {
     }
     
     val compDataNums = computeFunc(dataNums, square)
-
+    
     val result = new Array[Char](data.length)
     var inSqInd = 0
     for (i <- 0 until data.length) {
@@ -150,29 +158,27 @@ object PolybiusSquare {
       if (notInSquareCh.isEmpty) {
         val row = compDataNums(inSqInd * 2)
         val col = compDataNums(inSqInd * 2 + 1)
-        if (row >= square.rowsCount || col >= square(row).length) {
-          throw new DataCharNotInSquareException(i)
-        } else {
+        
+        if (row < square.rowsCount && col < square(row).length) {
           var resCh = square(row)(col)
           if (data.charAt(i).isUpper) {
             resCh = resCh.toUpper
           }
           result(i) = resCh
           inSqInd += 1
-        }
+        } else throw new CoordinatesOutOfBoundsException(i, row, col)
       } else result(i) = notInSquareCh.get
     }
-    
     result
   }
 
-  def lowerSymbol(data: ArrayBuffer[Int], square: Array[Array[Char]]): Array[Int] = {
+  def lowerSymbol(data: ArrayBuffer[Int], square: PolybiusSquare): Array[Int] = {
     val result = new Array[Int](data.length)
     for (i <- 0 until data.length by 2) {
       val row = data(i)
       val col = data(i + 1)
 
-      var newRow = addByModulo(row, 1, square.length)
+      var newRow = addByModulo(row, 1, square.rowsCount)
       if (col >= square(newRow).length)
         newRow = 0
 
@@ -182,13 +188,13 @@ object PolybiusSquare {
     result
   }
 
-  def upperSymbol(data: ArrayBuffer[Int], square: Array[Array[Char]]): Array[Int] = {
+  def upperSymbol(data: ArrayBuffer[Int], square: PolybiusSquare): Array[Int] = {
     val result = new Array[Int](data.length)
     for (i <- 0 until data.length by 2) {
       val row = data(i)
       val col = data(i + 1)
 
-      var newRow = subtractByModulo(row, 1, square.length)
+      var newRow = subtractByModulo(row, 1, square.rowsCount)
       if (col >= square(newRow).length)
         newRow -= 1
 
@@ -198,7 +204,7 @@ object PolybiusSquare {
     result
   }
 
-  def rowsCols(data: ArrayBuffer[Int], square: Array[Array[Char]]): Array[Int] = {
+  def rowsCols(data: ArrayBuffer[Int], square: PolybiusSquare): Array[Int] = {
     val result = new Array[Int](data.length)
     val middle = data.length / 2
     for (i <- 0 until middle) {
@@ -210,7 +216,7 @@ object PolybiusSquare {
     result
   }
 
-  def rowsColsReverse(data: ArrayBuffer[Int], square: Array[Array[Char]]): Array[Int] = {
+  def rowsColsReverse(data: ArrayBuffer[Int], square: PolybiusSquare): Array[Int] = {
     val result = new Array[Int](data.length)
     val middle = data.length / 2
     for (i <- 0 until middle) {
@@ -222,7 +228,7 @@ object PolybiusSquare {
     result
   }
 
-  def colsRows(data: ArrayBuffer[Int], square: Array[Array[Char]]): Array[Int] = {
+  def colsRows(data: ArrayBuffer[Int], square: PolybiusSquare): Array[Int] = {
     val result = new Array[Int](data.length)
     val middle = data.length / 2
     for (i <- 0 until middle) {
@@ -234,7 +240,7 @@ object PolybiusSquare {
     result
   }
 
-  def colsRowsReverse(data: ArrayBuffer[Int], square: Array[Array[Char]]): Array[Int] = {
+  def colsRowsReverse(data: ArrayBuffer[Int], square: PolybiusSquare): Array[Int] = {
     val result = new Array[Int](data.length)
     val middle = data.length / 2
     for (i <- 0 until middle) {

@@ -11,11 +11,6 @@ class NihilistTest extends BaseTest {
   private val crKey = "RUSSIAN123"
   private val square = PolybiusSquare("ZEBRAS", Alphabet.ENGLISH, Map('J' -> 'I'))
   
-  "CifertextNumberException" should "produce correct message about exception position" in {
-    val ex = CifertextNumberException(5)
-    ex.getMessage must be ("Cifertext contains incorrect number at position 5")
-  }
-  
   ".encode" should "correctly encode data using provided parameters" in {
     val _cifertext = Nihilist.encode(plaintext, crKey, square)
     _cifertext must equal (cifertext)
@@ -31,9 +26,9 @@ class NihilistTest extends BaseTest {
     ex.position must be (plaintext.indexOf(' '))
   }
    
-  ".decode(strictMode)" should "throw an exception if cifertext contains wrong number" in {
+  ".decode" should "throw an exception if cifertext contains wrong number" in {
     val wrongCifertext = Array(37, -300, 106, 62, 36)
-    val ex = the [CifertextNumberException] thrownBy Nihilist.decode(wrongCifertext, crKey, square, true)
+    val ex = the [CoordinatesOutOfBoundsException] thrownBy Nihilist.decode(wrongCifertext, crKey, square)
     ex.position must be (1)
   }
    

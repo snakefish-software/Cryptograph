@@ -6,9 +6,6 @@ import scala.collection.mutable.ArrayBuffer
 
 object Nihilist {
   
-  case class CifertextNumberException(position: Int) 
-      extends RuntimeException(s"Cifertext contains incorrect number at position $position")
-  
   @throws(classOf[DataCharNotInSquareException])
   def encode(
     data: CharSequence,
@@ -38,12 +35,11 @@ object Nihilist {
     result
   }
 
-  @throws(classOf[CifertextNumberException])
+  @throws(classOf[CoordinatesOutOfBoundsException])
   def decode(
     data: Array[Int],
     key: CharSequence,
-    square: PolybiusSquare,
-    strictMode: Boolean = false
+    square: PolybiusSquare
   ): ArrayBuffer[Char] = {
     val keyNums = toNums(key, square)
     val keyLength = keyNums.length
@@ -54,14 +50,13 @@ object Nihilist {
     for (i <- 0 until data.length) {
       val keyNum = if (keyLength > 0) keyNums(i % keyLength) else 0
       val resultNum = data(i) - keyNum
+      val row = resultNum / 10 - 1
+      val col = resultNum % 10 - 1
+      val rowCorrect = row >= 0 && row < square.rowsCount
       
-      if (resultNum >= 11 && resultNum <= maxPossibleResNum) {
-        val row = resultNum / 10 - 1
-        val col = resultNum % 10 - 1
-        if (row < square.rowsCount && col < square(row).length) {
-          result += square(row)(col)
-        } else if (strictMode) throw new CifertextNumberException(i)
-      } else if (strictMode) throw new CifertextNumberException(i)
+      if (rowCorrect && col >= 0 && col < square(row).length) {
+        result += square(row)(col)
+      } else throw new CoordinatesOutOfBoundsException(i, row, col)
     }
     
     result

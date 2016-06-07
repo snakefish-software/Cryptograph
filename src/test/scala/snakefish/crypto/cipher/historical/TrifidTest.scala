@@ -19,6 +19,16 @@ class TrifidTest extends BaseTest {
                            Array(Array('f', 'g', 'o'),
                                  Array('r', 'i', 'j'),
                                  Array('h', 'a', 'q')))
+                                 
+  "DataCharNotInCubeException" should "have correct exception message" in {
+    val ex = new DataCharNotInCubeException(5)
+    ex.getMessage must be ("Data char at position 5 is missing in cube")
+  }
+  
+  "CoordinatesOutOfBoundsException" should "have correct exception message" in {
+    val ex = new CoordinatesOutOfBoundsException(5, -1, -2 ,-3)
+    ex.getMessage must be ("Coordinates (table = -1; row = -2; column = -3) of char at position 5 are out of cube bounds")
+  }
   
   ".encode" should "correctly encode data using provided parameters" in {
     val _cifertext = Trifid.encode(plaintext, cube, period)
@@ -30,9 +40,14 @@ class TrifidTest extends BaseTest {
     _plaintext must be (plaintext.toCharArray)
   }
   
-  ".encode & .decode" should "throw an exception in strict mode if income data contains symbols that are missing in provided square" in {
-    an [DataCharNotInCubeException] should be thrownBy Trifid.encode(plaintext, cube, period, true)
-    an [DataCharNotInCubeException] should be thrownBy Trifid.decode(cifertext, cube, period, true)
+  ".encode(strictMode)" should "throw an exception if plaintext contains symbols that are missing in cube" in {
+    val ex = the [DataCharNotInCubeException] thrownBy Trifid.encode(plaintext, cube, period, true)
+    ex.position must be (plaintext.indexOf(' '))
+  }
+  
+  ".decode(strictMode)" should "throw an exception if cifertext contains symbols that are missing in cube" in {
+    val ex = the [DataCharNotInCubeException] thrownBy Trifid.decode(cifertext, cube, period, true)
+    ex.position must be (cifertext.indexOf(' '))
   }
   
 }

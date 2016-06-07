@@ -1,29 +1,37 @@
 package snakefish.crypto
 package cipher.historical
 
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.HashMap
 
 object Trifid {
   
-  class DataCharNotInCubeException() extends Exception("Data contains symbols that are missing in provided cube")
+  class DataCharNotInCubeException(val position: Int) 
+      extends RuntimeException(s"Data char at position $position is missing in cube")
   
+  class CoordinatesOutOfBoundsException(val position: Int, val table: Int, val row: Int, val col: Int)
+      extends RuntimeException(s"Coordinates (table = $table; row = $row; column = $col) of char at position $position are out of cube bounds")
+  
+  @throws(classOf[DataCharNotInCubeException])
+  @throws(classOf[CoordinatesOutOfBoundsException])
   def encode(
     data: CharSequence,
     cube: Array[Array[Array[Char]]],
     period: Int,
-    strictMode: Boolean = false): Array[Char] =
-  {
-    compute(data, cube, period, encodeBlockFunc, strictMode)
+    strictMode: Boolean = false
+  ): Array[Char] = {
+    compute(data, cube, period, encodeBlock, strictMode)
   }
 
+  @throws(classOf[DataCharNotInCubeException])
+  @throws(classOf[CoordinatesOutOfBoundsException])
   def decode(
     data: CharSequence,
     cube: Array[Array[Array[Char]]],
     period: Int,
-    strictMode: Boolean = false): Array[Char] =
-  {
-    compute(data, cube, period, decodeBlockFunc, strictMode)
+    strictMode: Boolean = false
+  ): Array[Char] = {
+    compute(data, cube, period, decodeBlock, strictMode)
   }
   
   private def compute(
@@ -31,10 +39,10 @@ object Trifid {
     cube: Array[Array[Array[Char]]],
     period: Int,
     blockComputeFunc: (ArrayBuffer[Int], Array[Int]) => Unit,
-    strictMode: Boolean): Array[Char] =
-  {
+    strictMode: Boolean
+  ): Array[Char] = {
     val dataNums = new ArrayBuffer[Int](data.length * 3)
-    val notInSquareChars = new mutable.HashMap[Int, Char]()
+    val notInSquareChars = new HashMap[Int, Char]()
     val coords = new Array[Int](3)
     
     for (i <- 0 until data.length) {
@@ -45,7 +53,7 @@ object Trifid {
         dataNums += coords(2)
       } else {
         if (strictMode) {
-          throw new DataCharNotInCubeException()
+          throw new DataCharNotInCubeException(i)
         } else notInSquareChars.put(i, dataCh)
       }
     }
@@ -60,16 +68,16 @@ object Trifid {
         val table = dataNums(compInd * 3)
         val row = dataNums(compInd * 3 + 1)
         val col = dataNums(compInd * 3 + 2)
-        if (table >= cube.length || row >= cube(table).length || col >= cube(table)(row).length) {
-          throw new DataCharNotInCubeException()
-        } else {
-          var resCh = cube(table)(row)(col)
-          if (data.charAt(i).isUpper) {
-            resCh = resCh.toUpper
-          }
-          result(i) = resCh
-          compInd += 1
+        
+        if (table >= cube.length || row >= cube(table).length || col >= cube(table)(row).length)
+          throw new CoordinatesOutOfBoundsException(i, table, row, col)
+          
+        var resCh = cube(table)(row)(col)
+        if (data.charAt(i).isUpper) {
+          resCh = resCh.toUpper
         }
+        result(i) = resCh
+        compInd += 1
       } else result(i) = notInSquareCh.get
     }
 
@@ -79,8 +87,8 @@ object Trifid {
   private def applyBlockFunc(
     data: ArrayBuffer[Int],
     period: Int,
-    blockComputeFunc: (ArrayBuffer[Int], Array[Int]) => Unit): Unit =
-  {
+    blockComputeFunc: (ArrayBuffer[Int], Array[Int]) => Unit
+  ): Unit = {
     val blockSize = 3 * period
     val fullBlocksCount = data.length / blockSize
     if (fullBlocksCount > 0) {
@@ -109,7 +117,7 @@ object Trifid {
     }
   }
   
-  private def encodeBlockFunc(data: ArrayBuffer[Int], result: Array[Int]): Unit = {
+  private def encodeBlock(data: ArrayBuffer[Int], result: Array[Int]): Unit = {
     val oneThird = data.length / 3
     for (i <- 0 until oneThird) {
       val table = data(i * 3)
@@ -121,7 +129,7 @@ object Trifid {
     }
   }
   
-  private def decodeBlockFunc(data: ArrayBuffer[Int], result: Array[Int]): Unit = {
+  private def decodeBlock(data: ArrayBuffer[Int], result: Array[Int]): Unit = {
     val oneThird = data.length / 3
     for (i <- 0 until oneThird) {
       val table = data(i)
@@ -139,8 +147,8 @@ object Trifid {
     for (
       table <- 0 until cube.length;
       row   <- 0 until cube(table).length;
-      col   <- 0 until cube(table)(row).length)
-    {
+      col   <- 0 until cube(table)(row).length
+    ) {
       if (chLower == cube(table)(row)(col).toLower) {
         coords(0) = table
         coords(1) = row

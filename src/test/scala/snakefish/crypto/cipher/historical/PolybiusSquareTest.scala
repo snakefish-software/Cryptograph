@@ -5,6 +5,21 @@ import PolybiusSquare._
 
 class PolybiusSquareTest extends BaseTest {
   
+  "KeyCharNotInSquareException" should "have correct exception message" in {
+    val ex = new KeyCharNotInSquareException(5)
+    ex.getMessage must be ("Key char at position 5 is missing in Polybius square")
+  }
+  
+  "DataCharNotInSquareException" should "have correct exception message" in {
+    val ex = new DataCharNotInSquareException(5)
+    ex.getMessage must be ("Data char at position 5 is missing in Polybius square")
+  }
+  
+  "CoordinatesOutOfBoundsException" should "have correct exception message" in {
+    val ex = new CoordinatesOutOfBoundsException(5, -3, 100)
+    ex.getMessage must be ("Coordinates (row = -3; column = 100) of char at position 5 are out of Polybius square bounds")
+  }
+  
   ".apply(key: CharSequence, alphabet, missedOnExisting)" should "create Polibius square instance from provided arguments" in {
     val square = PolybiusSquare("QwErTy", Alphabet.ENGLISH, Map('J' -> 'I'))
     square.square must equal(Array(Array('q', 'w', 'e', 'r', 't'), 
@@ -91,12 +106,16 @@ class PolybiusSquareTest extends BaseTest {
     res3 must be ("АзПцЮеИь".toCharArray)
   }
   
-  ".compute" should "throw an exception in strict mode if symbol in income data is missing in square" in {
-    an [DataCharNotInSquareException] should be thrownBy compute("F12yEo", LATIN, upperSymbol, true)
+  ".compute(strictMode)" should "throw an exception if symbol in income data is missing in square" in {
+    val ex = the [DataCharNotInSquareException] thrownBy compute("F12yEo", LATIN, upperSymbol, true)
+    ex.position must be (1)
   }
   
   ".compute" should "throw an exception if symbol in computed data is missing in square" in {
-    an [DataCharNotInSquareException] should be thrownBy compute("ц", RUSSIAN_ALL, colsRows)
+    val ex = the [CoordinatesOutOfBoundsException] thrownBy compute("ц", RUSSIAN_ALL, colsRows)
+    ex.position must be (0)
+    ex.row must be (5)
+    ex.col must be (3)
   }
   
 }

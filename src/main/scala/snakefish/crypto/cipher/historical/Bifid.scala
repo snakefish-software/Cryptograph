@@ -6,26 +6,30 @@ import scala.collection.mutable.ArrayBuffer
 
 object Bifid {
 
+  @throws(classOf[DataCharNotInSquareException])
+  @throws(classOf[CoordinatesOutOfBoundsException])
   def encode(
     data: CharSequence,
     square: PolybiusSquare,
     period: Int,
-    strictMode: Boolean = false): Array[Char] =
-  {
+    strictMode: Boolean = false
+  ): Array[Char] = {
     PolybiusSquare.compute(data, square, computeFunc(period, rowsCols), strictMode)
   }
 
+  @throws(classOf[DataCharNotInSquareException])
+  @throws(classOf[CoordinatesOutOfBoundsException])
   def decode(
     data: CharSequence,
     square: PolybiusSquare,
     period: Int,
-    strictMode: Boolean = false): Array[Char] =
-  {
+    strictMode: Boolean = false
+  ): Array[Char] = {
     PolybiusSquare.compute(data, square, computeFunc(period, rowsColsReverse), strictMode)
   }
 
-  private def computeFunc(period: Int, blockComputeFunc: (ArrayBuffer[Int], Array[Array[Char]]) => Array[Int]) = {
-    (data: ArrayBuffer[Int], square: Array[Array[Char]]) =>
+  private def computeFunc(period: Int, blockComputeFunc: (ArrayBuffer[Int], PolybiusSquare) => Array[Int]) = {
+    (data: ArrayBuffer[Int], square: PolybiusSquare) =>
       {
         val result = new Array[Int](data.length)
 
