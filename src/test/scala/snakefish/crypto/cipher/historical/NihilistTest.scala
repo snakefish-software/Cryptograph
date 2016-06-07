@@ -6,12 +6,18 @@ import Nihilist._
 
 class NihilistTest extends BaseTest {
   
+  private val plaintext = "DYNAMITE WINTER PALACE"
   private val cifertext = Array(37, 106, 62, 36, 67, 47, 86, 26, 104, 53, 62, 77, 27, 55, 57, 66, 55, 36, 54, 27)
-  private val crKey = "RUSSIAN"
+  private val crKey = "RUSSIAN123"
   private val square = PolybiusSquare("ZEBRAS", Alphabet.ENGLISH, Map('J' -> 'I'))
   
+  "CifertextNumberException" should "produce correct message about exception position" in {
+    val ex = CifertextNumberException(5)
+    ex.getMessage must be ("Cifertext contains incorrect number at position 5")
+  }
+  
   ".encode" should "correctly encode data using provided parameters" in {
-    val _cifertext = Nihilist.encode("DYNAMITE WINTER PALACE", crKey, square)
+    val _cifertext = Nihilist.encode(plaintext, crKey, square)
     _cifertext must equal (cifertext)
   }
   
@@ -19,10 +25,16 @@ class NihilistTest extends BaseTest {
     val _plaintext = Nihilist.decode(cifertext, crKey, square)
     _plaintext must be ("dynamitewinterpalace".toCharArray)
   }
+  
+  ".encode(strictMode)" should "throw an exception if data contains char that is missing in Polybius square" in {
+    val ex = the [DataCharNotInSquareException] thrownBy Nihilist.encode(plaintext, crKey, square, true)
+    ex.position must be (plaintext.indexOf(' '))
+  }
    
-   ".decode" should "throw an exception if cifertext contains wrong number" in {
-     val wrongCifertext = Array(100500, -1000)
-     an [CifertextNumberException] should be thrownBy Nihilist.decode(wrongCifertext, crKey, square)
-   }
+  ".decode(strictMode)" should "throw an exception if cifertext contains wrong number" in {
+    val wrongCifertext = Array(37, -300, 106, 62, 36)
+    val ex = the [CifertextNumberException] thrownBy Nihilist.decode(wrongCifertext, crKey, square, true)
+    ex.position must be (1)
+  }
    
 }

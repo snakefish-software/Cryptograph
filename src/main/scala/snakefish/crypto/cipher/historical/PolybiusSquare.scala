@@ -4,7 +4,7 @@ package cipher.historical
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.HashMap
 
-case class PolybiusSquare(val square: Array[Array[Char]], val missedToExisting: Map[Char, Char] = Map()) {
+case class PolybiusSquare(square: Array[Array[Char]], missedToExisting: Map[Char, Char] = Map()) {
   
   private val charsToCoords = new HashMap[Char, (Int, Int)]()
   
@@ -31,9 +31,11 @@ case class PolybiusSquare(val square: Array[Array[Char]], val missedToExisting: 
 
 object PolybiusSquare {
   
-  class KeyCharNotInSquareException() extends Exception("Key contains symbols that are missing in provided square")
+  case class KeyCharNotInSquareException(position: Int) 
+      extends RuntimeException(s"Key char at position $position is missing in Polybius square")
 
-  class DataCharNotInSquareException() extends Exception("Data contains symbols that are missing in provided square")
+  case class DataCharNotInSquareException(position: Int) 
+      extends RuntimeException(s"Data char at position $position is missing in Polybius square")
   
   implicit def squareToArray(square: PolybiusSquare): Array[Array[Char]] = square.square
   
@@ -134,7 +136,7 @@ object PolybiusSquare {
         
         case None =>
           if (strictMode) {
-            throw new DataCharNotInSquareException()
+            throw new DataCharNotInSquareException(i)
           } else notInSquareChars.put(i, dataCh)
       }
     }
@@ -149,7 +151,7 @@ object PolybiusSquare {
         val row = compDataNums(inSqInd * 2)
         val col = compDataNums(inSqInd * 2 + 1)
         if (row >= square.rowsCount || col >= square(row).length) {
-          throw new DataCharNotInSquareException()
+          throw new DataCharNotInSquareException(i)
         } else {
           var resCh = square(row)(col)
           if (data.charAt(i).isUpper) {
