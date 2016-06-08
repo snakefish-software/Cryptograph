@@ -15,19 +15,19 @@ class BifidTest extends BaseTest {
                                             Array('w', 'b', 'u', 't', 'i')),
                                       Map('j' -> 'i'))
   
-  ".encode" should "correctly encode data using provided Polibius square and period" in {
+  ".encode" must "correctly encode data using provided Polibius square and period" in {
     val _cifertext = Bifid.encode(plaintext, square, period)
     _cifertext must be (cifertext.toCharArray)
   }
   
-  ".decode" should "correctly decode data using provided Polibius square and period" in {
+  ".decode" must "correctly decode data using provided Polibius square and period" in {
     val _plaintext = Bifid.decode(cifertext, square, period)
     _plaintext must be (plaintext.toCharArray)
   }
   
-  ".encode & .decode" should "throw an exception in strict mode if income data contains symbols that are missing in provided square" in {
-    an [DataCharNotInSquareException] should be thrownBy Bifid.encode(plaintext, square, period, true)
-    an [DataCharNotInSquareException] should be thrownBy Bifid.decode(cifertext, square, period, true)
+  ".encode & .decode" must "throw an exception in strict mode if income data contains symbols that are missing in provided square" in {
+    an [DataCharNotInSquareException] must be thrownBy Bifid.encode(plaintext, square, period, true)
+    an [DataCharNotInSquareException] must be thrownBy Bifid.decode(cifertext, square, period, true)
   }
   
 }

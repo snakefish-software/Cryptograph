@@ -35,10 +35,11 @@ package object crypto extends EraseInstances {
     result
   }
   
+  @throws(classOf[DataCharNotInAlphabetException])
   def sumKeySeqWithText(keyProvider: Int => Int)(
     data: CharSequence,
     alphabet: Alphabet,
-    useStrictMode: Boolean,
+    strictMode: Boolean,
     resIndexCalc: (Int, Int, Int) => Int
   ): Array[Char] = {
     val dataLen = data.length()
@@ -53,8 +54,8 @@ package object crypto extends EraseInstances {
         result(i) = if (dataCh.isUpper) alphabet(resIndex).toUpper else alphabet(resIndex)
         calcIndex += 1
       } else {
-        if (useStrictMode) {
-          throw new DataCharNotInAlphabetException()
+        if (strictMode) {
+          throw new DataCharNotInAlphabetException(i)
         } else result(i) = dataCh
       }
     }
@@ -71,7 +72,7 @@ package object crypto extends EraseInstances {
     resIndexCalc: (Int, Int, Int) => Int
   ): Array[Char] = {
     val keyLength = key.length
-    val keyF = { i: Int => key(i % keyLength) }
+    val keyF = { i: Int => if (keyLength > 0) key(i % keyLength) else 0 }
     sumKeySeqWithText(keyF)(data, alphabet, strictMode, resIndexCalc)
   }
   

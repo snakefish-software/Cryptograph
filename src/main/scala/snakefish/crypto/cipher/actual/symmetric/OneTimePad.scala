@@ -42,12 +42,12 @@ object OneTimePad {
       val dataChInd = alphabet.indexOf(data.charAt(i))
       if (dataChInd < 0) {
         erase(result)
-        throw new DataCharNotInAlphabetException()
+        throw new DataCharNotInAlphabetException(i)
       }
       val keyChInd = alphabet.indexOf(key.charAt(i))
       if (keyChInd < 0) {
         erase(result)
-        throw new KeyCharNotInAlphabetException()
+        throw new KeyCharNotInAlphabetException(i)
       }
       val resChInd = resIndexCalc(dataChInd, keyChInd, alphabet.length)
       result(i) = alphabet(resChInd)

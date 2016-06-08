@@ -3,9 +3,11 @@ package cipher.actual.symmetric
 
 object ROT13 {
 
+  @throws(classOf[DataCharNotInAlphabetException])
   def encode(data: CharSequence, alphabet: Alphabet, strictMode: Boolean = false): Array[Char] =
     cryptoFunc(data, alphabet, strictMode)(addByModulo)
 
+  @throws(classOf[DataCharNotInAlphabetException])
   def decode(data: CharSequence, alphabet: Alphabet, strictMode: Boolean = false): Array[Char] =
     cryptoFunc(data, alphabet, strictMode)(subtractByModulo)
 

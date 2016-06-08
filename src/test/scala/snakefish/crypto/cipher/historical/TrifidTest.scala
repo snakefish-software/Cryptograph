@@ -20,32 +20,32 @@ class TrifidTest extends BaseTest {
                                  Array('r', 'i', 'j'),
                                  Array('h', 'a', 'q')))
                                  
-  "DataCharNotInCubeException" should "have correct exception message" in {
+  "DataCharNotInCubeException" must "have correct exception message" in {
     val ex = new DataCharNotInCubeException(5)
     ex.getMessage must be ("Data char at position 5 is missing in cube")
   }
   
-  "CoordinatesOutOfBoundsException" should "have correct exception message" in {
+  "CoordinatesOutOfBoundsException" must "have correct exception message" in {
     val ex = new CoordinatesOutOfBoundsException(5, -1, -2 ,-3)
     ex.getMessage must be ("Coordinates (table = -1; row = -2; column = -3) of char at position 5 are out of cube bounds")
   }
   
-  ".encode" should "correctly encode data using provided parameters" in {
+  ".encode" must "correctly encode data using provided parameters" in {
     val _cifertext = Trifid.encode(plaintext, cube, period)
     _cifertext must be (cifertext.toCharArray)
   }
   
-  ".decode" should "correctly decode cifertext using provided parameters" in {
+  ".decode" must "correctly decode cifertext using provided parameters" in {
     val _plaintext = Trifid.decode(cifertext, cube, period)
     _plaintext must be (plaintext.toCharArray)
   }
   
-  ".encode(strictMode)" should "throw an exception if plaintext contains symbols that are missing in cube" in {
+  ".encode(strictMode)" must "throw an exception if plaintext contains symbols that are missing in cube" in {
     val ex = the [DataCharNotInCubeException] thrownBy Trifid.encode(plaintext, cube, period, true)
     ex.position must be (plaintext.indexOf(' '))
   }
   
-  ".decode(strictMode)" should "throw an exception if cifertext contains symbols that are missing in cube" in {
+  ".decode(strictMode)" must "throw an exception if cifertext contains symbols that are missing in cube" in {
     val ex = the [DataCharNotInCubeException] thrownBy Trifid.decode(cifertext, cube, period, true)
     ex.position must be (cifertext.indexOf(' '))
   }

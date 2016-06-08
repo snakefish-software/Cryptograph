@@ -5,26 +5,34 @@ class VigenereTest extends BaseTest {
   
   private val plaintext = "Attack at dawn"
   private val cifertext = "Lxfopv ef rnhr"
-  private val crKey = "LeMoN"
+  private val crKey = "L e M o N"
   
-  ".encode" should "correctly encode data using provided key and alphabet" in {
+  ".encode" must "correctly encode data using provided key and alphabet" in {
     val _cifertext = Vigenere.encode(plaintext, crKey, Alphabet.ENGLISH)
     _cifertext must be (cifertext.toCharArray)
   }
   
-  ".decode" should "correctly decode data using provided key and alphabet" in {
+  ".decode" must "correctly decode data using provided key and alphabet" in {
     val _plaintext = Vigenere.decode(cifertext, crKey, Alphabet.ENGLISH)
     _plaintext must be (plaintext.toCharArray)
   }
   
-  ".encode & .decode" should "thrown an exception if key char is missing in alphabet" in {
-    an [KeyCharNotInAlphabetException] should be thrownBy Vigenere.encode(plaintext, " ", Alphabet.ENGLISH)
-    an [KeyCharNotInAlphabetException] should be thrownBy Vigenere.decode(cifertext, " ", Alphabet.ENGLISH)
+  ".encode & .decode" must "left data as is if all key chars are missing in alphabet" in {
+    val _cifertext = Vigenere.encode(plaintext, "123456", Alphabet.ENGLISH)
+    _cifertext must be (plaintext.toCharArray)
+    
+    val _plaintext = Vigenere.decode(cifertext, "123456", Alphabet.ENGLISH)
+    _plaintext must be (cifertext.toCharArray)
   }
   
-  ".encode & .decode" should "throw an exception in strict mode if income data contains symbols that are missing in alphabet" in {
-    an [DataCharNotInAlphabetException] should be thrownBy Vigenere.encode(plaintext, crKey, Alphabet.ENGLISH, true)
-    an [DataCharNotInAlphabetException] should be thrownBy Vigenere.decode(cifertext, crKey, Alphabet.ENGLISH, true)
+  ".encode(strictMode)" must "throw an exception if income data contains symbols that are missing in alphabet" in {
+    val ex = the [DataCharNotInAlphabetException] thrownBy Vigenere.encode(plaintext, crKey, Alphabet.ENGLISH, true)
+    ex.position must be (plaintext.indexOf(' '))
+  }
+  
+  ".decode(strictMode)" must "throw an exception if income data contains symbols that are missing in alphabet" in {
+    val ex = the [DataCharNotInAlphabetException] thrownBy Vigenere.decode(cifertext, crKey, Alphabet.ENGLISH, true)
+    ex.position must be (cifertext.indexOf(' '))
   }
   
 }
