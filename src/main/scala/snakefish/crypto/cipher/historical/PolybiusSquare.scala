@@ -27,6 +27,7 @@ case class PolybiusSquare(square: Array[Array[Char]], missedToExisting: Map[Char
   def colsCount = square(0).length
   def lastRowLength = square(square.length - 1).length
   def coords(ch: Char): Option[(Int, Int)] = charsToCoords.get(ch.toLower)
+  def contains(ch: Char) = coords(ch).isDefined
 }
 
 object PolybiusSquare {
@@ -39,6 +40,9 @@ object PolybiusSquare {
   
   class CoordinatesOutOfBoundsException(val position: Int, val row: Int, val col: Int)
       extends RuntimeException(s"Coordinates (row = $row; column = $col) of char at position $position are out of Polybius square bounds")
+  
+  class WrongSquareSizeException(val msg: String)
+      extends RuntimeException(msg)
   
   implicit def squareToArray(square: PolybiusSquare): Array[Array[Char]] = square.square
   
@@ -170,6 +174,20 @@ object PolybiusSquare {
       } else result(i) = notInSquareCh.get
     }
     result
+  }
+  
+  @throws(classOf[DataCharNotInSquareException])
+  def filter(data: CharSequence, square: PolybiusSquare, strictMode: Boolean): CharSequence = {
+    val inSquareChars = new StringBuilder(data.length)
+    
+    for (i <- 0 until data.length) {
+      val ch = data.charAt(i)
+      if (square.contains(ch))
+        inSquareChars.append(ch)
+      else if (strictMode) throw new DataCharNotInSquareException(i)
+    }
+    
+    inSquareChars
   }
 
   def lowerSymbol(data: ArrayBuffer[Int], square: PolybiusSquare): Array[Int] = {
