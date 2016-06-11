@@ -2,57 +2,26 @@ package snakefish.crypto
 package cipher.historical
 
 object Gronsfeld {
-  
-  def encode(data: CharSequence, key: Long, alphabet: Alphabet): Array[Char] = 
-    encode(data, key, alphabet, false)
-  
-  @throws(classOf[DataCharNotInAlphabetException])
-  def encode(
-    data: CharSequence,
-    key: Long,
-    alphabet: Alphabet,
-    strictMode: Boolean
-  ): Array[Char] = {
-    encode(data, toDigits(key), alphabet, strictMode)
-  }
-  
-  def encode(data: CharSequence, key: Array[Int], alphabet: Alphabet): Array[Char] = 
-    encode(data, key, alphabet, false)
+  def apply(alphabet: Alphabet, strictMode: Boolean = false) = 
+    new Gronsfeld(alphabet, strictMode)
+}
+
+class Gronsfeld(val alphabet: Alphabet, val strictMode: Boolean = false) {
   
   @throws(classOf[DataCharNotInAlphabetException])
-  def encode(
-    data: CharSequence,
-    key: Array[Int],
-    alphabet: Alphabet,
-    strictMode: Boolean
-  ): Array[Char] = {
+  def encode(data: CharSequence, key: Long): Array[Char] = 
+    encode(data, toDigits(key))
+  
+  @throws(classOf[DataCharNotInAlphabetException])
+  def encode(data: CharSequence, key: Array[Int]): Array[Char] = 
     sumKeySeqWithText(data, key, alphabet, strictMode)(addByModulo)
-  }
-  
-  def decode(data: CharSequence, key: Long, alphabet: Alphabet): Array[Char] = 
-    decode(data, key, alphabet, false)
   
   @throws(classOf[DataCharNotInAlphabetException])
-  def decode(
-    data: CharSequence,
-    key: Long,
-    alphabet: Alphabet,
-    strictMode: Boolean
-  ): Array[Char] = {
-    decode(data, toDigits(key), alphabet, strictMode)
-  }
-  
-  def decode(data: CharSequence, key: Array[Int], alphabet: Alphabet): Array[Char] = 
-    decode(data, key, alphabet, false)
+  def decode(data: CharSequence, key: Long): Array[Char] = 
+    decode(data, toDigits(key))
   
   @throws(classOf[DataCharNotInAlphabetException])
-  def decode(
-    data: CharSequence,
-    key: Array[Int],
-    alphabet: Alphabet,
-    strictMode: Boolean
-  ): Array[Char] = {
+  def decode(data: CharSequence, key: Array[Int]): Array[Char] = 
     sumKeySeqWithText(data, key, alphabet, strictMode)(subtractByModulo)
-  }
   
 }

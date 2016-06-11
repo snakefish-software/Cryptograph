@@ -2,22 +2,21 @@ package snakefish.crypto
 package cipher.actual.symmetric
 
 object ROT13 {
+  def apply(alphabet: Alphabet, strictMode: Boolean = false) = 
+    new ROT13(alphabet, strictMode)
+}
+
+class ROT13(val alphabet: Alphabet, val strictMode: Boolean = false) {
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def encode(data: CharSequence, alphabet: Alphabet, strictMode: Boolean = false): Array[Char] =
-    cryptoFunc(data, alphabet, strictMode)(addByModulo)
+  def encode(data: CharSequence): Array[Char] =
+    cryptoFunc(data, addByModulo)
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def decode(data: CharSequence, alphabet: Alphabet, strictMode: Boolean = false): Array[Char] =
-    cryptoFunc(data, alphabet, strictMode)(subtractByModulo)
+  def decode(data: CharSequence): Array[Char] =
+    cryptoFunc(data, subtractByModulo)
 
-  private def cryptoFunc(
-    data: CharSequence,
-    alphabet: Alphabet,
-    strictMode: Boolean
-  )(
-    resIndexCalc: (Int, Int, Int) => Int
-  ) = {
+  private def cryptoFunc(data: CharSequence, resIndexCalc: (Int, Int, Int) => Int) = {
     sumKeySeqWithText(_ => 13)(data, alphabet, strictMode, resIndexCalc)
   }
 

@@ -1,9 +1,13 @@
 package snakefish.crypto
 package cipher.actual.symmetric
 
+import OneTimePad._
+
 object OneTimePad {
+  def apply(alphabet: Alphabet) = new OneTimePad(alphabet)
   
-  class KeyLengthInsuffisientException() extends Exception("Key length must be >= data length")
+  class KeyLengthInsuffisientException 
+      extends RuntimeException("Key length must be >= data length")
   
   @throws(classOf[KeyLengthInsuffisientException])
   def compute(data: Array[Byte], key: Array[Byte]): Array[Byte] = {
@@ -12,25 +16,27 @@ object OneTimePad {
     
     xor(data, key)
   }
+}
+
+class OneTimePad(val alphabet: Alphabet) {
   
   @throws(classOf[KeyLengthInsuffisientException])
   @throws(classOf[DataCharNotInAlphabetException])
   @throws(classOf[KeyCharNotInAlphabetException])
-  def encode(data: CharSequence, key: CharSequence, alphabet: Alphabet): Array[Char] = {
-    cryptoFunc(data, key, alphabet)(addByModulo)
+  def encode(data: CharSequence, key: CharSequence): Array[Char] = {
+    cryptoFunc(data, key)(addByModulo)
   }
   
   @throws(classOf[KeyLengthInsuffisientException])
   @throws(classOf[DataCharNotInAlphabetException])
   @throws(classOf[KeyCharNotInAlphabetException])
-  def decode(data: CharSequence, key: CharSequence, alphabet: Alphabet): Array[Char] = {
-    cryptoFunc(data, key, alphabet)(subtractByModulo)
+  def decode(data: CharSequence, key: CharSequence): Array[Char] = {
+    cryptoFunc(data, key)(subtractByModulo)
   }
   
   private def cryptoFunc(
     data: CharSequence,
-    key: CharSequence,
-    alphabet: Alphabet
+    key: CharSequence
   )(
     resIndexCalc: (Int, Int, Int) => Int
   ): Array[Char] = {

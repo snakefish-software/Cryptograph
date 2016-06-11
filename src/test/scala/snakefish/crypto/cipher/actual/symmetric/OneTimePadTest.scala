@@ -13,6 +13,8 @@ class OneTimePadTest extends BaseTest {
   private val charKey       = "lemonlemonlemon"
   private val charCifertext = "lxfopvefrnhr"
   
+  private val cifer = OneTimePad(Alphabet.ENGLISH)
+  
   ".compute(Array[Byte], Array[Byte])" must "correctly XOR 2 byte arrays" in {
     OneTimePad.compute(bytePlaintext, byteKey) must be (byteCifertext)
     OneTimePad.compute(byteCifertext, byteKey) must be (bytePlaintext)
@@ -23,40 +25,40 @@ class OneTimePadTest extends BaseTest {
   }
   
   ".encode(CharSequence, CharSequence, Alphabet)" must "correctly encode data using provided key and alphabet" in {
-    val _charCifertext = OneTimePad.encode(charPlaintext, charKey, Alphabet.ENGLISH)
+    val _charCifertext = cifer.encode(charPlaintext, charKey)
     _charCifertext must be (charCifertext.toCharArray)
   }
   
   ".decode(CharSequence, CharSequence, Alphabet)" must "correctly decode data using provided key and alphabet" in {
-    val _charPlaintext = OneTimePad.decode(charCifertext, charKey, Alphabet.ENGLISH)
+    val _charPlaintext = cifer.decode(charCifertext, charKey)
     _charPlaintext must be (charPlaintext.toCharArray)
   }
   
   ".encode(CharSequence, CharSequence, Alphabet)" must "throw an exception if key length < data length" in {
-    an [KeyLengthInsuffisientException] must be thrownBy OneTimePad.encode(charPlaintext, "lemon", Alphabet.ENGLISH)
+    an [KeyLengthInsuffisientException] must be thrownBy cifer.encode(charPlaintext, "lemon")
   }
   
   ".decode(CharSequence, CharSequence, Alphabet)" must "throw an exception if key length < data length" in {
-    an [KeyLengthInsuffisientException] must be thrownBy OneTimePad.decode(charCifertext, "lemon", Alphabet.ENGLISH)
+    an [KeyLengthInsuffisientException] must be thrownBy cifer.decode(charCifertext, "lemon")
   }
   
   ".encode(CharSequence, CharSequence, Alphabet)" must "throw an exception if data contains char that is missing in alphabet" in {
-    val ex = the [DataCharNotInAlphabetException] thrownBy OneTimePad.encode(" " + charPlaintext, charKey, Alphabet.ENGLISH)
+    val ex = the [DataCharNotInAlphabetException] thrownBy cifer.encode(" " + charPlaintext, charKey)
     ex.position must be (0)
   }
   
   ".decode(CharSequence, CharSequence, Alphabet)" must "throw an exception if data contains char that is missing in alphabet" in {
-    val ex = the [DataCharNotInAlphabetException] thrownBy OneTimePad.decode(" " + charCifertext, charKey, Alphabet.ENGLISH)
+    val ex = the [DataCharNotInAlphabetException] thrownBy cifer.decode(" " + charCifertext, charKey)
     ex.position must be (0)
   }
   
   ".encode(CharSequence, CharSequence, Alphabet)" must "throw an exception if key contains char that is missing in alphabet" in {
-    val ex = the [KeyCharNotInAlphabetException] thrownBy OneTimePad.encode(charPlaintext, " " + charKey, Alphabet.ENGLISH)
+    val ex = the [KeyCharNotInAlphabetException] thrownBy cifer.encode(charPlaintext, " " + charKey)
     ex.position must be (0)
   }
   
   ".decode(CharSequence, CharSequence, Alphabet)" must "throw an exception if key contains char that is missing in alphabet" in {
-    val ex = the [KeyCharNotInAlphabetException] thrownBy OneTimePad.decode(charCifertext, " " + charKey, Alphabet.ENGLISH)
+    val ex = the [KeyCharNotInAlphabetException] thrownBy cifer.decode(charCifertext, " " + charKey)
     ex.position must be (0)
   }
   

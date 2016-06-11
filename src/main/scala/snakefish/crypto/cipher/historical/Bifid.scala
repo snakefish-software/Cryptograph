@@ -5,30 +5,23 @@ import PolybiusSquare._
 import scala.collection.mutable.ArrayBuffer
 
 object Bifid {
+  def apply(square: PolybiusSquare, period: Int, strictMode: Boolean = false) = 
+    new Bifid(square, period, strictMode)
+}
+
+class Bifid(val square: PolybiusSquare, val period: Int, val strictMode: Boolean = false) {
 
   @throws(classOf[DataCharNotInSquareException])
   @throws(classOf[CoordinatesOutOfBoundsException])
-  def encode(
-    data: CharSequence,
-    square: PolybiusSquare,
-    period: Int,
-    strictMode: Boolean = false
-  ): Array[Char] = {
-    PolybiusSquare.compute(data, square, computeFunc(period, rowsCols), strictMode)
-  }
+  def encode(data: CharSequence): Array[Char] = 
+    PolybiusSquare.compute(data, square, computeFunc(rowsCols), strictMode)
 
   @throws(classOf[DataCharNotInSquareException])
   @throws(classOf[CoordinatesOutOfBoundsException])
-  def decode(
-    data: CharSequence,
-    square: PolybiusSquare,
-    period: Int,
-    strictMode: Boolean = false
-  ): Array[Char] = {
-    PolybiusSquare.compute(data, square, computeFunc(period, rowsColsReverse), strictMode)
-  }
+  def decode(data: CharSequence): Array[Char] = 
+    PolybiusSquare.compute(data, square, computeFunc(rowsColsReverse), strictMode)
 
-  private def computeFunc(period: Int, blockComputeFunc: (ArrayBuffer[Int], PolybiusSquare) => Array[Int]) = {
+  private def computeFunc(blockComputeFunc: (ArrayBuffer[Int], PolybiusSquare) => Array[Int]) = {
     (data: ArrayBuffer[Int], square: PolybiusSquare) =>
       {
         val result = new Array[Int](data.length)

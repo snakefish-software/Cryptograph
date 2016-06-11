@@ -4,64 +4,31 @@ package cipher.historical
 import scala.collection.mutable.ArrayBuffer
 
 object Vigenere {
-  
-  def encode(data: CharSequence, key: CharSequence, alphabet: Alphabet): Array[Char] = 
-    encode(data, key, alphabet, false)
+  def apply(alphabet: Alphabet, strictMode: Boolean = false) = 
+    new Vigenere(alphabet, strictMode)
+}
+
+class Vigenere(val alphabet: Alphabet, val strictMode: Boolean = false) {
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def encode(
-    data: CharSequence,
-    key: CharSequence,
-    alphabet: Alphabet,
-    strictMode: Boolean
-  ): Array[Char] = {
-    cryptoFunc(data, key, alphabet, strictMode)(addByModulo)
-  }
-  
-  def encode(data: CharSequence, key: Array[Int], alphabet: Alphabet): Array[Char] = 
-    encode(data, key, alphabet, false)
+  def encode(data: CharSequence, key: CharSequence): Array[Char] = 
+    cryptoFunc(data, key)(addByModulo)
   
   @throws(classOf[DataCharNotInAlphabetException])
-  def encode(
-    data: CharSequence,
-    key: Array[Int],
-    alphabet: Alphabet,
-    strictMode: Boolean
-  ): Array[Char] = {
+  def encode(data: CharSequence, key: Array[Int]): Array[Char] = 
     sumKeySeqWithText(data, key, alphabet, strictMode)(addByModulo)
-  }
-  
-  def decode(data: CharSequence, key: CharSequence, alphabet: Alphabet): Array[Char] = 
-    decode(data, key, alphabet, false)
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def decode(
-    data: CharSequence,
-    key: CharSequence,
-    alphabet: Alphabet,
-    strictMode: Boolean
-  ): Array[Char] = {
-    cryptoFunc(data, key, alphabet, strictMode)(subtractByModulo)
-  }
-  
-  def decode(data: CharSequence, key: Array[Int], alphabet: Alphabet): Array[Char] = 
-    decode(data, key, alphabet, false)
+  def decode(data: CharSequence, key: CharSequence): Array[Char] = 
+    cryptoFunc(data, key)(subtractByModulo)
   
   @throws(classOf[DataCharNotInAlphabetException])
-  def decode(
-    data: CharSequence,
-    key: Array[Int],
-    alphabet: Alphabet,
-    strictMode: Boolean
-  ): Array[Char] = {
+  def decode(data: CharSequence, key: Array[Int]): Array[Char] = 
     sumKeySeqWithText(data, key, alphabet, strictMode)(subtractByModulo)
-  }
 
   private def cryptoFunc(
     data: CharSequence,
-    key: CharSequence,
-    alphabet: Alphabet,
-    strictMode: Boolean
+    key: CharSequence
   )(
     resIndexCalc: (Int, Int, Int) => Int
   ): Array[Char] = {

@@ -1,22 +1,28 @@
 package snakefish.crypto
 package cipher.historical
 
+import Playfair._
 import PolybiusSquare._
 import scala.collection.mutable.ArrayBuffer
 
 object Playfair {
   
+  @throws(classOf[WrongSquareSizeException])
+  def apply(square: PolybiusSquare, placeholder: Char, strictMode: Boolean = false) = 
+    new Playfair(square, placeholder, strictMode)
+  
   class OddCifertextLengthException
       extends RuntimeException("Cifertext length must be even")
   
-  @throws(classOf[WrongSquareSizeException])
+}
+
+class Playfair(val square: PolybiusSquare, val placeholder: Char, val strictMode: Boolean = false) {
+  
+  if (square.lastRowLength != square.colsCount)
+      throw new WrongSquareSizeException("Last row of Polybius square is not filled")
+  
   @throws(classOf[DataCharNotInSquareException])
-  def encode(
-    data: CharSequence, 
-    square: PolybiusSquare, 
-    placeholder: Char, 
-    strictMode: Boolean = false
-  ): Array[Char] = {
+  def encode(data: CharSequence): Array[Char] = {
     val inSquareChars = filter(data, square, strictMode)
     val dataLen = inSquareChars.length
     val charsToComp = new StringBuilder(dataLen)
@@ -39,34 +45,21 @@ object Playfair {
       i += 1
     }
     
-    compute(charsToComp, square)(addByModulo)
+    compute(charsToComp, addByModulo)
   }
   
-  @throws(classOf[WrongSquareSizeException])
   @throws(classOf[OddCifertextLengthException])
   @throws(classOf[DataCharNotInSquareException])
-  def decode(
-    data: CharSequence, 
-    square: PolybiusSquare,
-    strictMode: Boolean = false
-  ): Array[Char] = {
+  def decode(data: CharSequence): Array[Char] = {
     val charsToComp = filter(data, square, strictMode)
     
     if (charsToComp.length % 2 != 0)
       throw new OddCifertextLengthException()
     
-    compute(charsToComp, square)(subtractByModulo)
+    compute(charsToComp, subtractByModulo)
   }
   
-  private def compute(
-    data: CharSequence, 
-    square: PolybiusSquare
-  )( 
-    sameRowColFunc: (Int, Int, Int) => Int
-  ): Array[Char] = {
-    if (square.lastRowLength != square.colsCount)
-      throw new WrongSquareSizeException("Last row of Polybius square is not filled")
-    
+  private def compute(data: CharSequence, sameRowColFunc: (Int, Int, Int) => Int): Array[Char] = {
     val result = new Array[Char](data.length)
     
     for (i <- 0 until data.length by 2) {

@@ -11,24 +11,27 @@ class NihilistTest extends BaseTest {
   private val crKey = "RUSSIAN123"
   private val square = PolybiusSquare("ZEBRAS", Alphabet.ENGLISH, Map('J' -> 'I'))
   
+  private val nonStrictCifer = Nihilist(square)
+  private val strictCifer = Nihilist(square, true)
+  
   ".encode" must "correctly encode data using provided parameters" in {
-    val _cifertext = Nihilist.encode(plaintext, crKey, square)
+    val _cifertext = nonStrictCifer.encode(plaintext, crKey)
     _cifertext must equal (cifertext)
   }
   
   ".decode" must "correctly decode data using provided parameters" in {
-    val _plaintext = Nihilist.decode(cifertext, crKey, square)
+    val _plaintext = nonStrictCifer.decode(cifertext, crKey)
     _plaintext must be ("dynamitewinterpalace".toCharArray)
   }
   
   ".encode(strictMode)" must "throw an exception if data contains char that is missing in Polybius square" in {
-    val ex = the [DataCharNotInSquareException] thrownBy Nihilist.encode(plaintext, crKey, square, true)
+    val ex = the [DataCharNotInSquareException] thrownBy strictCifer.encode(plaintext, crKey)
     ex.position must be (plaintext.indexOf(' '))
   }
    
   ".decode" must "throw an exception if cifertext contains wrong number" in {
     val wrongCifertext = Array(37, -300, 106, 62, 36)
-    val ex = the [CoordinatesOutOfBoundsException] thrownBy Nihilist.decode(wrongCifertext, crKey, square)
+    val ex = the [CoordinatesOutOfBoundsException] thrownBy nonStrictCifer.decode(wrongCifertext, crKey)
     ex.position must be (1)
   }
    

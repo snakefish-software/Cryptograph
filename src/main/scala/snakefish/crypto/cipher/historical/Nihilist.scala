@@ -5,15 +5,15 @@ import PolybiusSquare._
 import scala.collection.mutable.ArrayBuffer
 
 object Nihilist {
+  def apply(square: PolybiusSquare, strictMode: Boolean = false) = 
+    new Nihilist(square, strictMode)
+}
+
+class Nihilist(val square: PolybiusSquare, val strictMode: Boolean = false) {
   
   @throws(classOf[DataCharNotInSquareException])
-  def encode(
-    data: CharSequence,
-    key: CharSequence,
-    square: PolybiusSquare,
-    strictMode: Boolean = false
-  ): ArrayBuffer[Int] = {
-    val keyNums = toNums(key, square)
+  def encode(data: CharSequence, key: CharSequence): ArrayBuffer[Int] = {
+    val keyNums = toNums(key)
     val keyLength = keyNums.length
       
     val result = new ArrayBuffer[Int](data.length)
@@ -36,12 +36,8 @@ object Nihilist {
   }
 
   @throws(classOf[CoordinatesOutOfBoundsException])
-  def decode(
-    data: Array[Int],
-    key: CharSequence,
-    square: PolybiusSquare
-  ): ArrayBuffer[Char] = {
-    val keyNums = toNums(key, square)
+  def decode(data: Array[Int], key: CharSequence): ArrayBuffer[Char] = {
+    val keyNums = toNums(key)
     val keyLength = keyNums.length
     
     val result = new ArrayBuffer[Char](data.length)
@@ -62,7 +58,7 @@ object Nihilist {
     result
   }
   
-  private def toNums(chars: CharSequence, square: PolybiusSquare): ArrayBuffer[Int] = {
+  private def toNums(chars: CharSequence): ArrayBuffer[Int] = {
     val nums = new ArrayBuffer[Int](chars.length)
     for (i <- 0 until chars.length) {
       square.coords(chars.charAt(i)).foreach { 
