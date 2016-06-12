@@ -136,7 +136,7 @@ object PolybiusSquare {
     square: PolybiusSquare,
     computeFunc: (ArrayBuffer[Int], PolybiusSquare) => Array[Int],
     strictMode: Boolean = false
-  ): Array[Char] = {
+  ): String = {
     val dataNums = new ArrayBuffer[Int](data.length * 2)
     val notInSquareChars = new HashMap[Int, Char]()
     
@@ -174,7 +174,7 @@ object PolybiusSquare {
         } else throw new CoordinatesOutOfBoundsException(i, row, col)
       } else result(i) = notInSquareCh.get
     }
-    result
+    result.mkString("")
   }
   
   @throws(classOf[DataCharNotInSquareException])

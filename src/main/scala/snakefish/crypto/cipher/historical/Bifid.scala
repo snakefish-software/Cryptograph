@@ -13,12 +13,12 @@ class Bifid(val square: PolybiusSquare, val period: Int, val strictMode: Boolean
 
   @throws(classOf[DataCharNotInSquareException])
   @throws(classOf[CoordinatesOutOfBoundsException])
-  def encode(data: CharSequence): Array[Char] = 
+  def encode(data: CharSequence): String = 
     PolybiusSquare.compute(data, square, computeFunc(rowsCols), strictMode)
 
   @throws(classOf[DataCharNotInSquareException])
   @throws(classOf[CoordinatesOutOfBoundsException])
-  def decode(data: CharSequence): Array[Char] = 
+  def decode(data: CharSequence): String = 
     PolybiusSquare.compute(data, square, computeFunc(rowsColsReverse), strictMode)
 
   private def computeFunc(blockComputeFunc: (ArrayBuffer[Int], PolybiusSquare) => Array[Int]) = {

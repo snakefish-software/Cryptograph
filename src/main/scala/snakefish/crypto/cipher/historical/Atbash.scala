@@ -9,11 +9,11 @@ object Atbash {
 class Atbash(val alphabet: Alphabet, val strictMode: Boolean = false) {
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def compute(data: CharSequence): Array[Char] = {
+  def compute(data: CharSequence): String = {
     sumKeySeqWithText(identity)(data,
                                 alphabet,
                                 strictMode,
-                                (dataChIndex, _, alphabetLen) => alphabetLen - dataChIndex - 1);
+                                (dataChIndex, _, alphabetLen) => alphabetLen - dataChIndex - 1)
   }
 
 }

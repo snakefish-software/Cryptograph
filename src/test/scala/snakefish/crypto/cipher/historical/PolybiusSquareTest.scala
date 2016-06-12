@@ -42,68 +42,68 @@ class PolybiusSquareTest extends BaseTest {
   
   ".lowerSymbol" must "correctly compute result" in {
     val res1 = compute("AgN tZj12", LATIN, lowerSymbol)
-    res1 must be ("FmS yEo12".toCharArray)
+    res1 must be ("FmS yEo12")
     
     val res2 = compute("АжН фЫя", RUSSIAN_ALL, lowerSymbol)
-    res2 must be ("ЁмУ ъДв".toCharArray)
+    res2 must be ("ЁмУ ъДв")
     
     val res3 = compute("АзПцЮёЙъ", RUSSIAN_SHORT, lowerSymbol)
-    res3 must be ("ЖоХэДмПв".toCharArray)
+    res3 must be ("ЖоХэДмПв")
   }
   
   ".upperSymbol" must "correctly compute result" in {
     val res1 = compute("FmSyEo", LATIN, upperSymbol)
-    res1 must be ("AgNtZi".toCharArray)
+    res1 must be ("AgNtZi")
     
     val res2 = compute("ЁмУъДв", RUSSIAN_ALL, upperSymbol)
-    res2 must be ("АжНфЫя".toCharArray)
+    res2 must be ("АжНфЫя")
     
     val res3 = compute("ЖоХэДмПв", RUSSIAN_SHORT, upperSymbol)
-    res3 must be ("АзПцЮеИь".toCharArray)
+    res3 must be ("АзПцЮеИь")
   }
   
   ".rowsCols" must "correctly compute result" in {
     val res1 = compute("AgNtZ", LATIN, rowsCols)
-    res1 must be ("BoVhU".toCharArray)
+    res1 must be ("BoVhU")
     
     val res2 = compute("АжНфЫя", RUSSIAN_ALL, rowsCols)
-    res2 must be ("БоЬбОщ".toCharArray)
+    res2 must be ("БоЬбОщ")
     
     val res3 = compute("АзПцЮёЙъ", RUSSIAN_SHORT, rowsCols)
-    res3 must be ("БрЩлБрЯп".toCharArray)
+    res3 must be ("БрЩлБрЯп")
   }
   
   ".rowsColsReverse" must "correctly compute result" in {
     val res1 = compute("BoVhU", LATIN, rowsColsReverse)
-    res1 must be ("AgNtZ".toCharArray)
+    res1 must be ("AgNtZ")
     
     val res2 = compute("БоЬбОщ", RUSSIAN_ALL, rowsColsReverse)
-    res2 must be ("АжНфЫя".toCharArray)
+    res2 must be ("АжНфЫя")
     
     val res3 = compute("БрЩлБрЯп", RUSSIAN_SHORT, rowsColsReverse)
-    res3 must be ("АзПцЮеИь".toCharArray)
+    res3 must be ("АзПцЮеИь")
   }
   
   ".colsRows" must "correctly compute result" in {
     val res1 = compute("AgNtZ", LATIN, colsRows)
-    res1 must be ("BoVhU".toCharArray)
+    res1 must be ("BoVhU")
     
     val res2 = compute("АжНфЫя", RUSSIAN_ALL, colsRows)
-    res2 must be ("БоЩбОь".toCharArray)
+    res2 must be ("БоЩбОь")
     
     val res3 = compute("АзПцЮёЙъ", RUSSIAN_SHORT, colsRows)
-    res3 must be ("БрЯпБрЩл".toCharArray)
+    res3 must be ("БрЯпБрЩл")
   }
   
   ".colsRowsReverse" must "correctly compute result" in {
     val res1 = compute("BoVhU", LATIN, colsRowsReverse)
-    res1 must be ("AgNtZ".toCharArray)
+    res1 must be ("AgNtZ")
     
     val res2 = compute("БоЩбОь", RUSSIAN_ALL, colsRowsReverse)
-    res2 must be ("АжНфЫя".toCharArray)
+    res2 must be ("АжНфЫя")
     
     val res3 = compute("БрЯпБрЩл", RUSSIAN_SHORT, colsRowsReverse)
-    res3 must be ("АзПцЮеИь".toCharArray)
+    res3 must be ("АзПцЮеИь")
   }
   
   ".compute(strictMode)" must "throw an exception if symbol in income data is missing in square" in {

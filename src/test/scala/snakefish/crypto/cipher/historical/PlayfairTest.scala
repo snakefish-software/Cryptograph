@@ -21,12 +21,12 @@ class PlayfairTest extends BaseTest {
   
   ".encode" must "correctly encode data using provided parameters" in {
     val _cifertext = nonStrictCifer.encode(plaintext, 'x')
-    _cifertext must be (cifertext.toCharArray)
+    _cifertext must be (cifertext)
   }
   
   ".decode" must "correctly decode data using provided parameters" in {
     val _plaintext = nonStrictCifer.decode(cifertext)
-    _plaintext must be ("helxlooneandallx".toCharArray)
+    _plaintext must be ("helxlooneandallx")
   }
   
   ".encode(strictMode)" must "throw an exception if data contains char that is missing in Polybius square" in {

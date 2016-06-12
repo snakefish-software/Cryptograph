@@ -21,7 +21,7 @@ class NihilistTest extends BaseTest {
   
   ".decode" must "correctly decode data using provided parameters" in {
     val _plaintext = nonStrictCifer.decode(cifertext, crKey)
-    _plaintext must be ("dynamitewinterpalace".toCharArray)
+    _plaintext must be ("dynamitewinterpalace")
   }
   
   ".encode(strictMode)" must "throw an exception if data contains char that is missing in Polybius square" in {

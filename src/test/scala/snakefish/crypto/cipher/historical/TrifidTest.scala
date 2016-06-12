@@ -35,12 +35,12 @@ class TrifidTest extends BaseTest {
   
   ".encode" must "correctly encode data using provided parameters" in {
     val _cifertext = nonStrictCifer.encode(plaintext)
-    _cifertext must be (cifertext.toCharArray)
+    _cifertext must be (cifertext)
   }
   
   ".decode" must "correctly decode cifertext using provided parameters" in {
     val _plaintext = nonStrictCifer.decode(cifertext)
-    _plaintext must be (plaintext.toCharArray)
+    _plaintext must be (plaintext)
   }
   
   ".encode(strictMode)" must "throw an exception if plaintext contains symbols that are missing in cube" in {

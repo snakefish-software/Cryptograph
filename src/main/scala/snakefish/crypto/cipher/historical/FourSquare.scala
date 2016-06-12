@@ -41,7 +41,7 @@ class FourSquare(val plainSquare: PolybiusSquare,
   
   @throws(classOf[PlaceholderNotInSquareException])
   @throws(classOf[DataCharNotInSquareException])
-  def encode(data: CharSequence, placeholder: Char): Array[Char] = {
+  def encode(data: CharSequence, placeholder: Char): String = {
     if (!plainSquare.contains(placeholder))
       throw new PlaceholderNotInSquareException()
     
@@ -57,12 +57,12 @@ class FourSquare(val plainSquare: PolybiusSquare,
       result(i) = ciferSquare1(row1)(col2)
       result(i + 1) = ciferSquare2(row2)(col1)
     }
-    result
+    result.mkString("")
   }
   
   @throws(classOf[OddCifertextLengthException])
   @throws(classOf[DataCharNotInSquareException])
-  def decode(data: CharSequence): Array[Char] = {
+  def decode(data: CharSequence): String = {
     val inSquareChars = new ArrayBuffer[Char](data.length)
     
     var inSqIndex = 0;
@@ -86,7 +86,7 @@ class FourSquare(val plainSquare: PolybiusSquare,
       result(i) = plainSquare(row1)(col1)
       result(i + 1) = plainSquare(row2)(col2)
     }
-    result
+    result.mkString("")
   }
   
 }

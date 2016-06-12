@@ -41,7 +41,7 @@ package object crypto extends EraseInstances {
     alphabet: Alphabet,
     strictMode: Boolean,
     resIndexCalc: (Int, Int, Int) => Int
-  ): Array[Char] = {
+  ): String = {
     val dataLen = data.length()
     val result = new Array[Char](dataLen)
     
@@ -60,7 +60,7 @@ package object crypto extends EraseInstances {
       }
     }
     
-    result
+    result.mkString("")
   }
   
   def sumKeySeqWithText(
@@ -70,7 +70,7 @@ package object crypto extends EraseInstances {
     strictMode: Boolean
   )(
     resIndexCalc: (Int, Int, Int) => Int
-  ): Array[Char] = {
+  ): String = {
     val keyLength = key.length
     val keyF = { i: Int => if (keyLength > 0) key(i % keyLength) else 0 }
     sumKeySeqWithText(keyF)(data, alphabet, strictMode, resIndexCalc)

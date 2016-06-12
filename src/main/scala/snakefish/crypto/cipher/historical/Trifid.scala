@@ -22,16 +22,16 @@ class Trifid(val cube: Array[Array[Array[Char]]], val period: Int, val strictMod
   
   @throws(classOf[DataCharNotInCubeException])
   @throws(classOf[CoordinatesOutOfBoundsException])
-  def encode(data: CharSequence): Array[Char] = compute(data, encodeBlock)
+  def encode(data: CharSequence): String = compute(data, encodeBlock)
 
   @throws(classOf[DataCharNotInCubeException])
   @throws(classOf[CoordinatesOutOfBoundsException])
-  def decode(data: CharSequence): Array[Char] = compute(data, decodeBlock)
+  def decode(data: CharSequence): String = compute(data, decodeBlock)
   
   private def compute(
     data: CharSequence,
     blockComputeFunc: (ArrayBuffer[Int], Array[Int]) => Unit
-  ): Array[Char] = {
+  ): String = {
     val dataNums = new ArrayBuffer[Int](data.length * 3)
     val notInSquareChars = new HashMap[Int, Char]()
     val coords = new Array[Int](3)
@@ -72,7 +72,7 @@ class Trifid(val cube: Array[Array[Array[Char]]], val period: Int, val strictMod
       } else result(i) = notInSquareCh.get
     }
 
-    result
+    result.mkString("")
   }
   
   private def applyBlockFunc(

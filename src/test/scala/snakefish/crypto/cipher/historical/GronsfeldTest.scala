@@ -12,12 +12,12 @@ class GronsfeldTest extends BaseTest {
   
   ".encode" must "correctly encode data using provided key and alphabet" in {
     val _cifertext = nonStrictCifer.encode(plaintext, crKey)
-    _cifertext must be (cifertext.toCharArray)
+    _cifertext must be (cifertext)
   }
   
   ".decode" must "correctly decode data using provided key and alphabet" in {
     val _plaintext = nonStrictCifer.decode(cifertext, crKey)
-    _plaintext must be (plaintext.toCharArray)
+    _plaintext must be (plaintext)
   }
   
   ".encode(strictMode)" must "throw an exception if income data contains symbols that are missing in alphabet" in {

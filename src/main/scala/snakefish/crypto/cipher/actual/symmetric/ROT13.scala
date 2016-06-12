@@ -9,11 +9,11 @@ object ROT13 {
 class ROT13(val alphabet: Alphabet, val strictMode: Boolean = false) {
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def encode(data: CharSequence): Array[Char] = 
+  def encode(data: CharSequence): String = 
     sumKeySeqWithText(_ => 13)(data, alphabet, strictMode, addByModulo)
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def decode(data: CharSequence): Array[Char] = 
+  def decode(data: CharSequence): String = 
     sumKeySeqWithText(_ => 13)(data, alphabet, strictMode, subtractByModulo)
   
 }

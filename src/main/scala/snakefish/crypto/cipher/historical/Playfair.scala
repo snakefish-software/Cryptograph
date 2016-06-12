@@ -17,7 +17,7 @@ class Playfair(val square: PolybiusSquare, val strictMode: Boolean = false) {
   
   @throws(classOf[PlaceholderNotInSquareException])
   @throws(classOf[DataCharNotInSquareException])
-  def encode(data: CharSequence, placeholder: Char): Array[Char] = {
+  def encode(data: CharSequence, placeholder: Char): String = {
     if (!square.contains(placeholder))
       throw new PlaceholderNotInSquareException()
     
@@ -48,7 +48,7 @@ class Playfair(val square: PolybiusSquare, val strictMode: Boolean = false) {
   
   @throws(classOf[OddCifertextLengthException])
   @throws(classOf[DataCharNotInSquareException])
-  def decode(data: CharSequence): Array[Char] = {
+  def decode(data: CharSequence): String = {
     val charsToComp = filter(data, square, strictMode)
     
     if (charsToComp.length % 2 != 0)
@@ -57,7 +57,7 @@ class Playfair(val square: PolybiusSquare, val strictMode: Boolean = false) {
     compute(charsToComp, subtractByModulo)
   }
   
-  private def compute(data: CharSequence, sameRowColFunc: (Int, Int, Int) => Int): Array[Char] = {
+  private def compute(data: CharSequence, sameRowColFunc: (Int, Int, Int) => Int): String = {
     val result = new Array[Char](data.length)
     
     for (i <- 0 until data.length by 2) {
@@ -80,7 +80,7 @@ class Playfair(val square: PolybiusSquare, val strictMode: Boolean = false) {
       }
     }
     
-    result
+    result.mkString("")
   }
   
 }

@@ -21,12 +21,12 @@ class BifidTest extends BaseTest {
   
   ".encode" must "correctly encode data using provided Polibius square and period" in {
     val _cifertext = nonStrictCifer.encode(plaintext)
-    _cifertext must be (cifertext.toCharArray)
+    _cifertext must be (cifertext)
   }
   
   ".decode" must "correctly decode data using provided Polibius square and period" in {
     val _plaintext = nonStrictCifer.decode(cifertext)
-    _plaintext must be (plaintext.toCharArray)
+    _plaintext must be (plaintext)
   }
   
   ".encode(strictMode)" must "throw an exception if income data contains symbols that are missing in square" in {

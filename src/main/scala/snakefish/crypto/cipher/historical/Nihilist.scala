@@ -36,7 +36,7 @@ class Nihilist(val square: PolybiusSquare, val strictMode: Boolean = false) {
   }
 
   @throws(classOf[CoordinatesOutOfBoundsException])
-  def decode(data: Array[Int], key: CharSequence): ArrayBuffer[Char] = {
+  def decode(data: Array[Int], key: CharSequence): String = {
     val keyNums = toNums(key)
     val keyLength = keyNums.length
     
@@ -55,7 +55,7 @@ class Nihilist(val square: PolybiusSquare, val strictMode: Boolean = false) {
       } else throw new CoordinatesOutOfBoundsException(i, row, col)
     }
     
-    result
+    result.mkString("")
   }
   
   private def toNums(chars: CharSequence): ArrayBuffer[Int] = {

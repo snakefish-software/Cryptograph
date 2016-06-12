@@ -11,19 +11,19 @@ object Vigenere {
 class Vigenere(val alphabet: Alphabet, val strictMode: Boolean = false) {
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def encode(data: CharSequence, key: CharSequence): Array[Char] = 
+  def encode(data: CharSequence, key: CharSequence): String = 
     cryptoFunc(data, key)(addByModulo)
   
   @throws(classOf[DataCharNotInAlphabetException])
-  def encode(data: CharSequence, key: Array[Int]): Array[Char] = 
+  def encode(data: CharSequence, key: Array[Int]): String = 
     sumKeySeqWithText(data, key, alphabet, strictMode)(addByModulo)
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def decode(data: CharSequence, key: CharSequence): Array[Char] = 
+  def decode(data: CharSequence, key: CharSequence): String = 
     cryptoFunc(data, key)(subtractByModulo)
   
   @throws(classOf[DataCharNotInAlphabetException])
-  def decode(data: CharSequence, key: Array[Int]): Array[Char] = 
+  def decode(data: CharSequence, key: Array[Int]): String = 
     sumKeySeqWithText(data, key, alphabet, strictMode)(subtractByModulo)
 
   private def cryptoFunc(
@@ -31,7 +31,7 @@ class Vigenere(val alphabet: Alphabet, val strictMode: Boolean = false) {
     key: CharSequence
   )(
     resIndexCalc: (Int, Int, Int) => Int
-  ): Array[Char] = {
+  ): String = {
     val keyInts = new ArrayBuffer[Int](key.length)
     for (i <- 0 until key.length) {
       val keyChIndex = alphabet.indexOf(key.charAt(i))
