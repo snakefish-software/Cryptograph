@@ -6,23 +6,21 @@ import PolybiusSquare._
 import scala.collection.mutable.ArrayBuffer
 
 object Playfair {
-  
   @throws(classOf[WrongSquareSizeException])
-  def apply(square: PolybiusSquare, placeholder: Char, strictMode: Boolean = false) = 
-    new Playfair(square, placeholder, strictMode)
-  
-  class OddCifertextLengthException
-      extends RuntimeException("Cifertext length must be even")
-  
+  def apply(square: PolybiusSquare, strictMode: Boolean = false) = new Playfair(square, strictMode)
 }
 
-class Playfair(val square: PolybiusSquare, val placeholder: Char, val strictMode: Boolean = false) {
+class Playfair(val square: PolybiusSquare, val strictMode: Boolean = false) {
   
-  if (square.lastRowLength != square.colsCount)
+  if (!square.lastRowFilled)
       throw new WrongSquareSizeException("Last row of Polybius square is not filled")
   
+  @throws(classOf[PlaceholderNotInSquareException])
   @throws(classOf[DataCharNotInSquareException])
-  def encode(data: CharSequence): Array[Char] = {
+  def encode(data: CharSequence, placeholder: Char): Array[Char] = {
+    if (!square.contains(placeholder))
+      throw new PlaceholderNotInSquareException()
+    
     val inSquareChars = filter(data, square, strictMode)
     val dataLen = inSquareChars.length
     val charsToComp = new StringBuilder(dataLen)

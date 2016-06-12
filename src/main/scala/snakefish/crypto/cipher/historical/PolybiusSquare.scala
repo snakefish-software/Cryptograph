@@ -28,6 +28,7 @@ case class PolybiusSquare(square: Array[Array[Char]], missedToExisting: Map[Char
   def lastRowLength = square(square.length - 1).length
   def coords(ch: Char): Option[(Int, Int)] = charsToCoords.get(ch.toLower)
   def contains(ch: Char) = coords(ch).isDefined
+  def lastRowFilled = lastRowLength == colsCount
 }
 
 object PolybiusSquare {
@@ -177,7 +178,7 @@ object PolybiusSquare {
   }
   
   @throws(classOf[DataCharNotInSquareException])
-  def filter(data: CharSequence, square: PolybiusSquare, strictMode: Boolean): CharSequence = {
+  def filter(data: CharSequence, square: PolybiusSquare, strictMode: Boolean): StringBuilder = {
     val inSquareChars = new StringBuilder(data.length)
     
     for (i <- 0 until data.length) {
