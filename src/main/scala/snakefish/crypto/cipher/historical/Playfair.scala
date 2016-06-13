@@ -6,6 +6,7 @@ import PolybiusSquare._
 import scala.collection.mutable.ArrayBuffer
 
 object Playfair {
+  
   @throws(classOf[WrongSquareSizeException])
   def apply(square: PolybiusSquare, strictMode: Boolean = false) = new Playfair(square, strictMode)
 }

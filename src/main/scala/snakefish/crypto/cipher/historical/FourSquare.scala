@@ -20,7 +20,7 @@ object FourSquare {
                    strictMode)
   }
   
-  class SquaresDifferentSizeException
+  case class SquaresDifferentSizeException()
       extends RuntimeException("Some squares have different size")
   
 }

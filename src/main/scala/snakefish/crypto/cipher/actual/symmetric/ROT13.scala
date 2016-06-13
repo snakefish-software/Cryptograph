@@ -2,6 +2,7 @@ package snakefish.crypto
 package cipher.actual.symmetric
 
 object ROT13 {
+  
   def apply(alphabet: Alphabet, strictMode: Boolean = false) = 
     new ROT13(alphabet, strictMode)
 }

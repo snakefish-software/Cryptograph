@@ -5,6 +5,7 @@ import PolybiusSquare._
 import scala.collection.mutable.ArrayBuffer
 
 object Nihilist {
+  
   def apply(square: PolybiusSquare, strictMode: Boolean = false) = 
     new Nihilist(square, strictMode)
 }

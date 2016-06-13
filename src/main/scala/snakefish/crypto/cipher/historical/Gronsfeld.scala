@@ -2,6 +2,7 @@ package snakefish.crypto
 package cipher.historical
 
 object Gronsfeld {
+  
   def apply(alphabet: Alphabet, strictMode: Boolean = false) = 
     new Gronsfeld(alphabet, strictMode)
 }

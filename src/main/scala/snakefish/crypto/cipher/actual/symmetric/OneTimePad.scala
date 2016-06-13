@@ -4,9 +4,10 @@ package cipher.actual.symmetric
 import OneTimePad._
 
 object OneTimePad {
+  
   def apply(alphabet: Alphabet) = new OneTimePad(alphabet)
   
-  class KeyLengthInsuffisientException 
+  case class KeyLengthInsuffisientException()
       extends RuntimeException("Key length must be >= data length")
   
   @throws(classOf[KeyLengthInsuffisientException])

@@ -2,6 +2,7 @@ package snakefish.crypto
 package cipher.historical
 
 object Caesar {
+  
   def apply(alphabet: Alphabet, strictMode: Boolean = false) = 
     new Caesar(alphabet, strictMode)
 }

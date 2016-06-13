@@ -4,6 +4,7 @@ package cipher.historical
 import scala.collection.mutable.ArrayBuffer
 
 object Vigenere {
+  
   def apply(alphabet: Alphabet, strictMode: Boolean = false) = 
     new Vigenere(alphabet, strictMode)
 }

@@ -2,13 +2,14 @@ package snakefish.crypto
 
 import scala.language.implicitConversions
 
-class KeyCharNotInAlphabetException(val position: Int)
+case class KeyCharNotInAlphabetException(val position: Int)
     extends RuntimeException(s"Key char at position $position is missing in alphabet")
 
-class DataCharNotInAlphabetException(val position: Int)
+case class DataCharNotInAlphabetException(val position: Int)
     extends RuntimeException(s"Data char at position $position is missing in alphabet")
 
 object Alphabet {
+  
   val ENGLISH = Alphabet("abcdefghijklmnopqrstuvwxyz")
   val RUSSIAN = Alphabet("абвгдеёжзийклмнопрстуфхцчшщъыьэюя")
   val NUMBERS = Alphabet("0123456789")

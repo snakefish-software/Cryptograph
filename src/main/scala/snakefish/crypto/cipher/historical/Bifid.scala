@@ -5,6 +5,7 @@ import PolybiusSquare._
 import scala.collection.mutable.ArrayBuffer
 
 object Bifid {
+  
   def apply(square: PolybiusSquare, period: Int, strictMode: Boolean = false) = 
     new Bifid(square, period, strictMode)
 }

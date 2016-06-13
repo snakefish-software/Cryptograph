@@ -2,6 +2,7 @@ package snakefish.crypto
 package cipher.historical
 
 object Atbash {
+  
   def apply(alphabet: Alphabet, strictMode: Boolean = false) = 
     new Atbash(alphabet, strictMode)
 }

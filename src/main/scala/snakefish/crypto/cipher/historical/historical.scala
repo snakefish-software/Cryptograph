@@ -2,10 +2,10 @@ package snakefish.crypto.cipher
 
 package object historical {
   
-  class OddCifertextLengthException
+  case class OddCifertextLengthException()
       extends RuntimeException("Cifertext length must be even")
   
-  class PlaceholderNotInSquareException
+  case class PlaceholderNotInSquareException()
       extends RuntimeException("Placeholder char is missing in Polybius square")
   
 }
