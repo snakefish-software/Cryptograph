@@ -156,7 +156,7 @@ object PolybiusSquare {
     
     val compDataNums = computeFunc(dataNums, square)
     
-    val result = new Array[Char](data.length)
+    val result = new StringBuilder(data.length)
     var inSqInd = 0
     for (i <- 0 until data.length) {
       val notInSquareCh = notInSquareChars.get(i)
@@ -169,12 +169,12 @@ object PolybiusSquare {
           if (data.charAt(i).isUpper) {
             resCh = resCh.toUpper
           }
-          result(i) = resCh
+          result += resCh
           inSqInd += 1
         } else throw new CoordinatesOutOfBoundsException(i, row, col)
-      } else result(i) = notInSquareCh.get
+      } else result += notInSquareCh.get
     }
-    result.mkString("")
+    result.toString
   }
   
   @throws(classOf[DataCharNotInSquareException])

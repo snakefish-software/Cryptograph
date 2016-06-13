@@ -50,14 +50,14 @@ class FourSquare(val plainSquare: PolybiusSquare,
       inSquareChars.append(placeholder)
     }
       
-    val result = new Array[Char](inSquareChars.length)
+    val result = new StringBuilder(inSquareChars.length)
     for (i <- 0 until inSquareChars.length by 2) {
       val (row1, col1) = plainSquare.coords(inSquareChars.charAt(i)).get
       val (row2, col2) = plainSquare.coords(inSquareChars.charAt(i + 1)).get
-      result(i) = ciferSquare1(row1)(col2)
-      result(i + 1) = ciferSquare2(row2)(col1)
+      result += ciferSquare1(row1)(col2)
+      result += ciferSquare2(row2)(col1)
     }
-    result.mkString("")
+    result.toString
   }
   
   @throws(classOf[OddCifertextLengthException])
@@ -79,14 +79,14 @@ class FourSquare(val plainSquare: PolybiusSquare,
     if (inSquareChars.length % 2 != 0)
       throw new OddCifertextLengthException()
     
-    val result = new Array[Char](inSquareChars.length)
+    val result = new StringBuilder(inSquareChars.length)
     for (i <- 0 until inSquareChars.length by 2) {
       val (row1, col2) = ciferSquare1.coords(inSquareChars.charAt(i)).get
       val (row2, col1) = ciferSquare2.coords(inSquareChars.charAt(i + 1)).get
-      result(i) = plainSquare(row1)(col1)
-      result(i + 1) = plainSquare(row2)(col2)
+      result += plainSquare(row1)(col1)
+      result += plainSquare(row2)(col2)
     }
-    result.mkString("")
+    result.toString
   }
   
 }

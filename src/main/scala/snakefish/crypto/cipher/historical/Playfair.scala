@@ -58,7 +58,7 @@ class Playfair(val square: PolybiusSquare, val strictMode: Boolean = false) {
   }
   
   private def compute(data: CharSequence, sameRowColFunc: (Int, Int, Int) => Int): String = {
-    val result = new Array[Char](data.length)
+    val result = new StringBuilder(data.length)
     
     for (i <- 0 until data.length by 2) {
       val (row1, col1) = square.coords(data.charAt(i)).get
@@ -67,20 +67,20 @@ class Playfair(val square: PolybiusSquare, val strictMode: Boolean = false) {
       if (row1 == row2) {
         val col1New = sameRowColFunc(col1, 1, square.colsCount)
         val col2New = sameRowColFunc(col2, 1, square.colsCount)
-        result(i) = square(row1)(col1New)
-        result(i + 1) = square(row2)(col2New)
+        result += square(row1)(col1New)
+        result += square(row2)(col2New)
       } else if (col1 == col2) {
         val row1New = sameRowColFunc(row1, 1, square.rowsCount)
         val row2New = sameRowColFunc(row2, 1, square.rowsCount)
-        result(i) = square(row1New)(col1)
-        result(i + 1) = square(row2New)(col2)
+        result += square(row1New)(col1)
+        result += square(row2New)(col2)
       } else {
-        result(i) = square(row1)(col2)
-        result(i + 1) = square(row2)(col1)
+        result += square(row1)(col2)
+        result += square(row2)(col1)
       }
     }
     
-    result.mkString("")
+    result.toString
   }
   
 }

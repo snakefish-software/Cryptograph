@@ -43,7 +43,7 @@ package object crypto extends EraseInstances {
     resIndexCalc: (Int, Int, Int) => Int
   ): String = {
     val dataLen = data.length()
-    val result = new Array[Char](dataLen)
+    val result = new StringBuilder(dataLen)
     
     var calcIndex = 0
     for (i <- 0 until dataLen) {
@@ -51,16 +51,16 @@ package object crypto extends EraseInstances {
       val chIndex = alphabet.indexOf(dataCh)
       if (chIndex >= 0) {
         val resIndex = resIndexCalc(chIndex, keyProvider(calcIndex), alphabet.length)
-        result(i) = if (dataCh.isUpper) alphabet(resIndex).toUpper else alphabet(resIndex)
+        result += (if (dataCh.isUpper) alphabet(resIndex).toUpper else alphabet(resIndex))
         calcIndex += 1
       } else {
         if (strictMode) {
           throw new DataCharNotInAlphabetException(i)
-        } else result(i) = dataCh
+        } else result += dataCh
       }
     }
     
-    result.mkString("")
+    result.toString
   }
   
   def sumKeySeqWithText(

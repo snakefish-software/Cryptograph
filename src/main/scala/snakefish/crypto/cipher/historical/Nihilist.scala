@@ -40,7 +40,7 @@ class Nihilist(val square: PolybiusSquare, val strictMode: Boolean = false) {
     val keyNums = toNums(key)
     val keyLength = keyNums.length
     
-    val result = new ArrayBuffer[Char](data.length)
+    val result = new StringBuilder(data.length)
     val maxPossibleResNum = square.rowsCount * 10 + square.lastRowLength
     
     for (i <- 0 until data.length) {
@@ -55,7 +55,7 @@ class Nihilist(val square: PolybiusSquare, val strictMode: Boolean = false) {
       } else throw new CoordinatesOutOfBoundsException(i, row, col)
     }
     
-    result.mkString("")
+    result.toString
   }
   
   private def toNums(chars: CharSequence): ArrayBuffer[Int] = {

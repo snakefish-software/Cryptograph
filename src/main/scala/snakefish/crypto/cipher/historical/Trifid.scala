@@ -51,7 +51,7 @@ class Trifid(val cube: Array[Array[Array[Char]]], val period: Int, val strictMod
     
     applyBlockFunc(dataNums, blockComputeFunc)
     
-    val result = new Array[Char](data.length)
+    val result = new StringBuilder(data.length)
     var compInd = 0
     for (i <- 0 until data.length) {
       val notInSquareCh = notInSquareChars.get(i)
@@ -67,12 +67,12 @@ class Trifid(val cube: Array[Array[Array[Char]]], val period: Int, val strictMod
         if (data.charAt(i).isUpper) {
           resCh = resCh.toUpper
         }
-        result(i) = resCh
+        result += resCh
         compInd += 1
-      } else result(i) = notInSquareCh.get
+      } else result += notInSquareCh.get
     }
 
-    result.mkString("")
+    result.toString
   }
   
   private def applyBlockFunc(
