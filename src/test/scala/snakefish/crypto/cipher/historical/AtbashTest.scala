@@ -3,18 +3,18 @@ package cipher.historical
 
 class AtbashTest extends BaseTest {
   
-  ".compute" must "correctly compute result according to Atbash rules" in {
+  ".crypt" must "correctly compute result according to Atbash rules" in {
     val alphabetEn = Alphabet.ENGLISH.toString;
-    val resultEn = Atbash(Alphabet.ENGLISH).compute(alphabetEn)
+    val resultEn = Atbash(Alphabet.ENGLISH).crypt(alphabetEn)
     resultEn must be (alphabetEn.reverse)
     
     val alphabetRu = Alphabet.RUSSIAN.toString;
-    val resultRu = Atbash(Alphabet.RUSSIAN).compute(alphabetRu)
+    val resultRu = Atbash(Alphabet.RUSSIAN).crypt(alphabetRu)
     resultRu must be (alphabetRu.reverse)
   }
   
-  ".compute(strictMode)" must "throw an exception if income data contains symbols that are missing in alphabet" in {
-    val ex = the [DataCharNotInAlphabetException] thrownBy Atbash(Alphabet.ENGLISH, true).compute("abc ")
+  ".crypt(strictMode)" must "throw an exception if income data contains symbols that are missing in alphabet" in {
+    val ex = the [DataCharNotInAlphabetException] thrownBy Atbash(Alphabet.ENGLISH, true).crypt("abc ")
     ex.position must be (3)
   }
   

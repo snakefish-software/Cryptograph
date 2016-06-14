@@ -15,7 +15,7 @@ package object crypto extends EraseInstances {
   
   def xor(ch1: Char, ch2: Char): Char = (ch1 ^ ch2).toChar
   
-  def xor(data: Array[Byte], key: Array[Byte]): Array[Byte] = {
+  def xor(key: Array[Byte], data: Array[Byte]): Array[Byte] = {
     val result = new Array[Byte](data.length)
     val keyLen = key.length
     for (i <- 0 until data.length) {
@@ -24,7 +24,7 @@ package object crypto extends EraseInstances {
     result
   }
   
-  def xor(data: CharSequence, key: CharSequence): Array[Char] = {
+  def xor(key: CharSequence, data: CharSequence): Array[Char] = {
     val result = new Array[Char](data.length)
     val keyLen = key.length
     for (i <- 0 until data.length) {
@@ -64,8 +64,8 @@ package object crypto extends EraseInstances {
   }
   
   def sumKeySeqWithText(
-    data: CharSequence,
     key: Array[Int],
+    data: CharSequence,
     alphabet: Alphabet,
     strictMode: Boolean
   )(
@@ -91,7 +91,7 @@ package object crypto extends EraseInstances {
   def erase[R, E[R]](x: E[R])(implicit ev: Erase[E], evCh: EraseChar[R]): E[R] =
     ev.erase(x)(evCh)
   
-  def shuffle(data: CharSequence, key: Long): Array[Char] = {
+  def shuffle(key: Long, data: CharSequence): Array[Char] = {
     val rand = new SecureRandom()
     rand.setSeed(key)
     val dataLen = data.length
@@ -113,7 +113,7 @@ package object crypto extends EraseInstances {
     result
   }
   
-  def deshuffle(data: CharSequence, key: Long): Array[Char] = {
+  def deshuffle(key: Long, data: CharSequence): Array[Char] = {
     val rand = new SecureRandom()
     rand.setSeed(key)
     val dataLen = data.length

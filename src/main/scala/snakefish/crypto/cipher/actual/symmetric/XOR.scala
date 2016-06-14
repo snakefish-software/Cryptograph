@@ -3,10 +3,10 @@ package cipher.actual.symmetric
 
 object XOR {
   
-  def compute(data: Array[Byte], key: Array[Byte]): Array[Byte] = 
-    xor(data, key)
+  def crypt(key: Array[Byte], data: Array[Byte]): Array[Byte] = 
+    xor(key, data)
   
-  def compute(data: CharSequence, key: CharSequence): Array[Char] = 
-    xor(data, key)
+  def crypt(key: CharSequence, data: CharSequence): Array[Char] = 
+    xor(key, data)
   
 }

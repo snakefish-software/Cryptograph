@@ -5,8 +5,8 @@ import PolybiusSquare._
 
 class BifidTest extends BaseTest {
   
-  private val plaintext = "Defend the east wall of the castle"
-  private val cifertext = "Ffyhmk hyc plia shad tr lhc chlblr"
+  private val plaintext  = "Defend the east wall of the castle"
+  private val ciphertext = "Ffyhmk hyc plia shad tr lhc chlblr"
   private val period = 5
   private val square = PolybiusSquare(
       Array(Array('p', 'h', 'q', 'g', 'm'),
@@ -16,27 +16,27 @@ class BifidTest extends BaseTest {
             Array('w', 'b', 'u', 't', 'i')),
       Map('j' -> 'i'))
       
-  private val nonStrictCifer = Bifid(square, period)
-  private val strictCifer = Bifid(square, period, true)
+  private val nonStrictCipher = Bifid(square, period)
+  private val strictCipher = Bifid(square, period, true)
   
-  ".encode" must "correctly encode data using provided Polibius square and period" in {
-    val _cifertext = nonStrictCifer.encode(plaintext)
-    _cifertext must be (cifertext)
+  ".encrypt" must "correctly encrypt plaintext using provided Polibius square and period" in {
+    val _ciphertext = nonStrictCipher.encrypt(plaintext)
+    _ciphertext must be (ciphertext)
   }
   
-  ".decode" must "correctly decode data using provided Polibius square and period" in {
-    val _plaintext = nonStrictCifer.decode(cifertext)
+  ".decrypt" must "correctly decrypt ciphertext using provided Polibius square and period" in {
+    val _plaintext = nonStrictCipher.decrypt(ciphertext)
     _plaintext must be (plaintext)
   }
   
-  ".encode(strictMode)" must "throw an exception if income data contains symbols that are missing in square" in {
-    val ex = the [DataCharNotInSquareException] thrownBy strictCifer.encode(plaintext)
+  ".encrypt(strictMode)" must "throw an exception if income plaintext contains symbols that are missing in square" in {
+    val ex = the [DataCharNotInSquareException] thrownBy strictCipher.encrypt(plaintext)
     ex.position must be (plaintext.indexOf(' '))
   }
   
-  ".decode(strictMode)" must "throw an exception if income data contains symbols that are missing in square" in {
-    val ex = the [DataCharNotInSquareException] thrownBy strictCifer.decode(cifertext)
-    ex.position must be (cifertext.indexOf(' '))
+  ".decrypt(strictMode)" must "throw an exception if income ciphertext contains symbols that are missing in square" in {
+    val ex = the [DataCharNotInSquareException] thrownBy strictCipher.decrypt(ciphertext)
+    ex.position must be (ciphertext.indexOf(' '))
   }
   
 }

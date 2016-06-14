@@ -3,39 +3,39 @@ package cipher.historical
 
 class VigenereTest extends BaseTest {
   
-  private val plaintext = "Attack at dawn"
-  private val cifertext = "Lxfopv ef rnhr"
+  private val plaintext  = "Attack at dawn"
+  private val ciphertext = "Lxfopv ef rnhr"
   private val crKey = "L e M o N"
   
-  private val nonStrictCifer = Vigenere(Alphabet.ENGLISH)
-  private val strictCifer = Vigenere(Alphabet.ENGLISH, true)
+  private val nonStrictCipher = Vigenere(Alphabet.ENGLISH)
+  private val strictCipher = Vigenere(Alphabet.ENGLISH, true)
   
-  ".encode" must "correctly encode data using provided key and alphabet" in {
-    val _cifertext = nonStrictCifer.encode(plaintext, crKey)
-    _cifertext must be (cifertext)
+  ".encrypt" must "correctly encrypt plaintext using provided key and alphabet" in {
+    val _ciphertext = nonStrictCipher.encrypt(crKey, plaintext)
+    _ciphertext must be (ciphertext)
   }
   
-  ".decode" must "correctly decode data using provided key and alphabet" in {
-    val _plaintext = nonStrictCifer.decode(cifertext, crKey)
+  ".decrypt" must "correctly decrypt ciphertext using provided key and alphabet" in {
+    val _plaintext = nonStrictCipher.decrypt(crKey, ciphertext)
     _plaintext must be (plaintext)
   }
   
-  ".encode & .decode" must "left data as is if all key chars are missing in alphabet" in {
-    val _cifertext = nonStrictCifer.encode(plaintext, "123456")
-    _cifertext must be (plaintext)
+  ".encrypt & .decrypt" must "left data as is if all key chars are missing in alphabet" in {
+    val _ciphertext = nonStrictCipher.encrypt("123456", plaintext)
+    _ciphertext must be (plaintext)
     
-    val _plaintext = nonStrictCifer.decode(cifertext, "123456")
-    _plaintext must be (cifertext)
+    val _plaintext = nonStrictCipher.decrypt("123456", ciphertext)
+    _plaintext must be (ciphertext)
   }
   
-  ".encode(strictMode)" must "throw an exception if income data contains symbols that are missing in alphabet" in {
-    val ex = the [DataCharNotInAlphabetException] thrownBy strictCifer.encode(plaintext, crKey)
+  ".encrypt(strictMode)" must "throw an exception if income plaintext contains symbols that are missing in alphabet" in {
+    val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.encrypt(crKey, plaintext)
     ex.position must be (plaintext.indexOf(' '))
   }
   
-  ".decode(strictMode)" must "throw an exception if income data contains symbols that are missing in alphabet" in {
-    val ex = the [DataCharNotInAlphabetException] thrownBy strictCifer.decode(cifertext, crKey)
-    ex.position must be (cifertext.indexOf(' '))
+  ".decrypt(strictMode)" must "throw an exception if income ciphertext contains symbols that are missing in alphabet" in {
+    val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.decrypt(crKey, ciphertext)
+    ex.position must be (ciphertext.indexOf(' '))
   }
   
 }

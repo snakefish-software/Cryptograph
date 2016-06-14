@@ -11,11 +11,11 @@ object OneTimePad {
       extends RuntimeException("Key length must be >= data length")
   
   @throws(classOf[KeyLengthInsuffisientException])
-  def compute(data: Array[Byte], key: Array[Byte]): Array[Byte] = {
+  def crypt(key: Array[Byte], data: Array[Byte]): Array[Byte] = {
     if (key.length < data.length)
       throw new KeyLengthInsuffisientException()
     
-    xor(data, key)
+    xor(key, data)
   }
 }
 
@@ -24,20 +24,20 @@ class OneTimePad(val alphabet: Alphabet) {
   @throws(classOf[KeyLengthInsuffisientException])
   @throws(classOf[DataCharNotInAlphabetException])
   @throws(classOf[KeyCharNotInAlphabetException])
-  def encode(data: CharSequence, key: CharSequence): Array[Char] = {
-    cryptoFunc(data, key)(addByModulo)
+  def encrypt(key: CharSequence, plaintext: CharSequence): Array[Char] = {
+    crypt(key, plaintext)(addByModulo)
   }
   
   @throws(classOf[KeyLengthInsuffisientException])
   @throws(classOf[DataCharNotInAlphabetException])
   @throws(classOf[KeyCharNotInAlphabetException])
-  def decode(data: CharSequence, key: CharSequence): Array[Char] = {
-    cryptoFunc(data, key)(subtractByModulo)
+  def decrypt(key: CharSequence, ciphertext: CharSequence): Array[Char] = {
+    crypt(key, ciphertext)(subtractByModulo)
   }
   
-  private def cryptoFunc(
-    data: CharSequence,
-    key: CharSequence
+  private def crypt(
+    key: CharSequence,
+    data: CharSequence
   )(
     resIndexCalc: (Int, Int, Int) => Int
   ): Array[Char] = {

@@ -10,19 +10,19 @@ object Gronsfeld {
 class Gronsfeld(val alphabet: Alphabet, val strictMode: Boolean = false) {
   
   @throws(classOf[DataCharNotInAlphabetException])
-  def encode(data: CharSequence, key: Long): String = 
-    encode(data, toDigits(key))
+  def encrypt(key: Long, plaintext: CharSequence): String = 
+    encrypt(toDigits(key), plaintext)
   
   @throws(classOf[DataCharNotInAlphabetException])
-  def encode(data: CharSequence, key: Array[Int]): String = 
-    sumKeySeqWithText(data, key, alphabet, strictMode)(addByModulo)
+  def encrypt(key: Array[Int], plaintext: CharSequence): String = 
+    sumKeySeqWithText(key, plaintext, alphabet, strictMode)(addByModulo)
   
   @throws(classOf[DataCharNotInAlphabetException])
-  def decode(data: CharSequence, key: Long): String = 
-    decode(data, toDigits(key))
+  def decrypt(key: Long, ciphertext: CharSequence): String = 
+    decrypt(toDigits(key), ciphertext)
   
   @throws(classOf[DataCharNotInAlphabetException])
-  def decode(data: CharSequence, key: Array[Int]): String = 
-    sumKeySeqWithText(data, key, alphabet, strictMode)(subtractByModulo)
+  def decrypt(key: Array[Int], ciphertext: CharSequence): String = 
+    sumKeySeqWithText(key, ciphertext, alphabet, strictMode)(subtractByModulo)
   
 }

@@ -10,7 +10,7 @@ object Atbash {
 class Atbash(val alphabet: Alphabet, val strictMode: Boolean = false) {
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def compute(data: CharSequence): String = {
+  def crypt(data: CharSequence): String = {
     sumKeySeqWithText(identity)(data,
                                 alphabet,
                                 strictMode,

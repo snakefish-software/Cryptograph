@@ -5,8 +5,8 @@ import Trifid._
 
 class TrifidTest extends BaseTest {
   
-  private val plaintext = "Defend the east wall of the castle."
-  private val cifertext = "Suefec phs egyy jixi mf ofo cejlbsp"
+  private val plaintext  = "Defend the east wall of the castle."
+  private val ciphertext = "Suefec phs egyy jixi mf ofo cejlbsp"
   private val period = 5
   private val cube = Array(Array(Array('e', 'p', 's'),
                                  Array('d', 'u', 'c'),
@@ -20,8 +20,8 @@ class TrifidTest extends BaseTest {
                                  Array('r', 'i', 'j'),
                                  Array('h', 'a', 'q')))
                                  
-  private val nonStrictCifer = Trifid(cube, period)
-  private val strictCifer = Trifid(cube, period, true)
+  private val nonStrictCipher = Trifid(cube, period)
+  private val strictCipher = Trifid(cube, period, true)
                                  
   "DataCharNotInCubeException" must "have correct exception message" in {
     val ex = new DataCharNotInCubeException(5)
@@ -33,24 +33,24 @@ class TrifidTest extends BaseTest {
     ex.getMessage must be ("Coordinates (table = -1; row = -2; column = -3) of char at position 5 are out of cube bounds")
   }
   
-  ".encode" must "correctly encode data using provided parameters" in {
-    val _cifertext = nonStrictCifer.encode(plaintext)
-    _cifertext must be (cifertext)
+  ".encrypt" must "correctly encrypt plaintext using provided parameters" in {
+    val _ciphertext = nonStrictCipher.encrypt(plaintext)
+    _ciphertext must be (ciphertext)
   }
   
-  ".decode" must "correctly decode cifertext using provided parameters" in {
-    val _plaintext = nonStrictCifer.decode(cifertext)
+  ".decrypt" must "correctly decrypt ciphertext using provided parameters" in {
+    val _plaintext = nonStrictCipher.decrypt(ciphertext)
     _plaintext must be (plaintext)
   }
   
-  ".encode(strictMode)" must "throw an exception if plaintext contains symbols that are missing in cube" in {
-    val ex = the [DataCharNotInCubeException] thrownBy strictCifer.encode(plaintext)
+  ".encrypt(strictMode)" must "throw an exception if plaintext contains symbols that are missing in cube" in {
+    val ex = the [DataCharNotInCubeException] thrownBy strictCipher.encrypt(plaintext)
     ex.position must be (plaintext.indexOf(' '))
   }
   
-  ".decode(strictMode)" must "throw an exception if cifertext contains symbols that are missing in cube" in {
-    val ex = the [DataCharNotInCubeException] thrownBy strictCifer.decode(cifertext)
-    ex.position must be (cifertext.indexOf(' '))
+  ".decrypt(strictMode)" must "throw an exception if ciphertext contains symbols that are missing in cube" in {
+    val ex = the [DataCharNotInCubeException] thrownBy strictCipher.decrypt(ciphertext)
+    ex.position must be (ciphertext.indexOf(' '))
   }
   
 }

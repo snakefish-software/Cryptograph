@@ -33,16 +33,16 @@ case class PolybiusSquare(square: Array[Array[Char]], missedToExisting: Map[Char
 
 object PolybiusSquare {
   
-  case class KeyCharNotInSquareException(val position: Int) 
+  case class KeyCharNotInSquareException(position: Int) 
       extends RuntimeException(s"Key char at position $position is missing in Polybius square")
 
-  case class DataCharNotInSquareException(val position: Int) 
+  case class DataCharNotInSquareException(position: Int) 
       extends RuntimeException(s"Data char at position $position is missing in Polybius square")
   
-  case class CoordinatesOutOfBoundsException(val position: Int, val row: Int, val col: Int)
+  case class CoordinatesOutOfBoundsException(position: Int, row: Int, col: Int)
       extends RuntimeException(s"Coordinates (row = $row; column = $col) of char at position $position are out of Polybius square bounds")
   
-  case class WrongSquareSizeException(val msg: String)
+  case class WrongSquareSizeException(msg: String)
       extends RuntimeException(msg)
   
   implicit def squareToArray(square: PolybiusSquare): Array[Array[Char]] = square.square
@@ -111,7 +111,7 @@ object PolybiusSquare {
         sqChars += ch
     })
     
-    val shuffled = shuffle(sqChars, key)
+    val shuffled = shuffle(key, sqChars)
     
     PolybiusSquare(createSquare(shuffled), missedToExistingL)
   }

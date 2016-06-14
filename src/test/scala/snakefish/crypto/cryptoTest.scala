@@ -35,14 +35,14 @@ class cryptoTest extends BaseTest {
     val data = Array(byte("01010111"), byte("01101001"), byte("01101011"), byte("01101001"))
     val key  = Array(byte("11110011"))
     val exp  = Array(byte("10100100"), byte("10011010"), byte("10011000"), byte("10011010"))
-    xor(data, key) must be (exp)
+    xor(key, data) must be (exp)
   }
   
   ".xor(CharSequence, CharSequence)" must "correctly XOR 2 char sequences" in {
     val data = Array(char("10100100"), char("10011010"), char("10011000"), char("10011010"))
     val key  = Array(char("11110011"))
     val exp  = Array(char("01010111"), char("01101001"), char("01101011"), char("01101001"))
-    xor(data, key) must be (exp)
+    xor(key, data) must be (exp)
   }
   
   ".toDigits" must "return array of digits that make up a number" in {
@@ -54,18 +54,18 @@ class cryptoTest extends BaseTest {
   }
   
   ".shuffle" must "shuffle char sequence using provided key" in {
-    val shuffled1 = shuffle(plainText, shuffleKey1)
+    val shuffled1 = shuffle(shuffleKey1, plainText)
     shuffled1 must be (shuffledText1.toCharArray)
     
-    val shuffled2 = shuffle(plainText, shuffleKey2)
+    val shuffled2 = shuffle(shuffleKey2, plainText)
     shuffled2 must be (shuffledText2.toCharArray)
   }
   
   ".deshuffle" must "reverse the result of .shuffle()" in {
-    val plain1 = deshuffle(shuffledText1, shuffleKey1)
+    val plain1 = deshuffle(shuffleKey1, shuffledText1)
     plain1 must be (plainText.toCharArray)
     
-    val plain2 = deshuffle(shuffledText2, shuffleKey2)
+    val plain2 = deshuffle(shuffleKey2, shuffledText2)
     plain2 must be (plainText.toCharArray)
   }
   

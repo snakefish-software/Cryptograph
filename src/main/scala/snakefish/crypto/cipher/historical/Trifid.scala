@@ -10,10 +10,10 @@ object Trifid {
   def apply(cube: Array[Array[Array[Char]]], period: Int, strictMode: Boolean = false) = 
     new Trifid(cube, period, strictMode)
   
-  case class DataCharNotInCubeException(val position: Int) 
+  case class DataCharNotInCubeException(position: Int) 
       extends RuntimeException(s"Data char at position $position is missing in cube")
   
-  case class CoordinatesOutOfBoundsException(val position: Int, val table: Int, val row: Int, val col: Int)
+  case class CoordinatesOutOfBoundsException(position: Int, table: Int, row: Int, col: Int)
       extends RuntimeException(s"Coordinates (table = $table; row = $row; column = $col) of char at position $position are out of cube bounds")
   
 }
@@ -22,16 +22,15 @@ class Trifid(val cube: Array[Array[Array[Char]]], val period: Int, val strictMod
   
   @throws(classOf[DataCharNotInCubeException])
   @throws(classOf[CoordinatesOutOfBoundsException])
-  def encode(data: CharSequence): String = compute(data, encodeBlock)
+  def encrypt(plaintext: CharSequence): String = 
+    crypt(plaintext)(encryptBlock)
 
   @throws(classOf[DataCharNotInCubeException])
   @throws(classOf[CoordinatesOutOfBoundsException])
-  def decode(data: CharSequence): String = compute(data, decodeBlock)
+  def decrypt(ciphertext: CharSequence): String = 
+    crypt(ciphertext)(decryptBlock)
   
-  private def compute(
-    data: CharSequence,
-    blockComputeFunc: (ArrayBuffer[Int], Array[Int]) => Unit
-  ): String = {
+  private def crypt(data: CharSequence)(blockCrypt: (ArrayBuffer[Int], Array[Int]) => Unit): String = {
     val dataNums = new ArrayBuffer[Int](data.length * 3)
     val notInSquareChars = new HashMap[Int, Char]()
     val coords = new Array[Int](3)
@@ -49,7 +48,7 @@ class Trifid(val cube: Array[Array[Array[Char]]], val period: Int, val strictMod
       }
     }
     
-    applyBlockFunc(dataNums, blockComputeFunc)
+    applyBlockFunc(dataNums, blockCrypt)
     
     val result = new StringBuilder(data.length)
     var compInd = 0
@@ -126,7 +125,7 @@ class Trifid(val cube: Array[Array[Array[Char]]], val period: Int, val strictMod
     return false
   }
   
-  private def encodeBlock(data: ArrayBuffer[Int], result: Array[Int]): Unit = {
+  private def encryptBlock(data: ArrayBuffer[Int], result: Array[Int]): Unit = {
     val oneThird = data.length / 3
     for (i <- 0 until oneThird) {
       val table = data(i * 3)
@@ -138,7 +137,7 @@ class Trifid(val cube: Array[Array[Array[Char]]], val period: Int, val strictMod
     }
   }
   
-  private def decodeBlock(data: ArrayBuffer[Int], result: Array[Int]): Unit = {
+  private def decryptBlock(data: ArrayBuffer[Int], result: Array[Int]): Unit = {
     val oneThird = data.length / 3
     for (i <- 0 until oneThird) {
       val table = data(i)

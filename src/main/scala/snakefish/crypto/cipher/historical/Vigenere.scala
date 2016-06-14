@@ -12,24 +12,24 @@ object Vigenere {
 class Vigenere(val alphabet: Alphabet, val strictMode: Boolean = false) {
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def encode(data: CharSequence, key: CharSequence): String = 
-    cryptoFunc(data, key)(addByModulo)
+  def encrypt(key: CharSequence, plaintext: CharSequence): String = 
+    crypt(key, plaintext)(addByModulo)
   
   @throws(classOf[DataCharNotInAlphabetException])
-  def encode(data: CharSequence, key: Array[Int]): String = 
-    sumKeySeqWithText(data, key, alphabet, strictMode)(addByModulo)
+  def encrypt(key: Array[Int], plaintext: CharSequence): String = 
+    sumKeySeqWithText(key, plaintext, alphabet, strictMode)(addByModulo)
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def decode(data: CharSequence, key: CharSequence): String = 
-    cryptoFunc(data, key)(subtractByModulo)
+  def decrypt(key: CharSequence, ciphertext: CharSequence): String = 
+    crypt(key, ciphertext)(subtractByModulo)
   
   @throws(classOf[DataCharNotInAlphabetException])
-  def decode(data: CharSequence, key: Array[Int]): String = 
-    sumKeySeqWithText(data, key, alphabet, strictMode)(subtractByModulo)
+  def decrypt(key: Array[Int], ciphertext: CharSequence): String = 
+    sumKeySeqWithText(key, ciphertext, alphabet, strictMode)(subtractByModulo)
 
-  private def cryptoFunc(
-    data: CharSequence,
-    key: CharSequence
+  private def crypt(
+    key: CharSequence,
+    data: CharSequence
   )(
     resIndexCalc: (Int, Int, Int) => Int
   ): String = {
@@ -39,7 +39,7 @@ class Vigenere(val alphabet: Alphabet, val strictMode: Boolean = false) {
       if (keyChIndex >= 0)
         keyInts += keyChIndex
     }
-    sumKeySeqWithText(data, keyInts.toArray, alphabet, strictMode)(resIndexCalc)
+    sumKeySeqWithText(keyInts.toArray, data, alphabet, strictMode)(resIndexCalc)
   }
 
 }

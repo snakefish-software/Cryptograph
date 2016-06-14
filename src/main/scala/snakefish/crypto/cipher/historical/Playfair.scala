@@ -18,11 +18,11 @@ class Playfair(val square: PolybiusSquare, val strictMode: Boolean = false) {
   
   @throws(classOf[PlaceholderNotInSquareException])
   @throws(classOf[DataCharNotInSquareException])
-  def encode(data: CharSequence, placeholder: Char): String = {
+  def encrypt(plaintext: CharSequence, placeholder: Char): String = {
     if (!square.contains(placeholder))
       throw new PlaceholderNotInSquareException()
     
-    val inSquareChars = filter(data, square, strictMode)
+    val inSquareChars = filter(plaintext, square, strictMode)
     val dataLen = inSquareChars.length
     val charsToComp = new StringBuilder(dataLen)
     
@@ -44,21 +44,21 @@ class Playfair(val square: PolybiusSquare, val strictMode: Boolean = false) {
       i += 1
     }
     
-    compute(charsToComp, addByModulo)
+    crypt(charsToComp, addByModulo)
   }
   
-  @throws(classOf[OddCifertextLengthException])
+  @throws(classOf[OddCiphertextLengthException])
   @throws(classOf[DataCharNotInSquareException])
-  def decode(data: CharSequence): String = {
-    val charsToComp = filter(data, square, strictMode)
+  def decrypt(ciphertext: CharSequence): String = {
+    val charsToComp = filter(ciphertext, square, strictMode)
     
     if (charsToComp.length % 2 != 0)
-      throw new OddCifertextLengthException()
+      throw new OddCiphertextLengthException()
     
-    compute(charsToComp, subtractByModulo)
+    crypt(charsToComp, subtractByModulo)
   }
   
-  private def compute(data: CharSequence, sameRowColFunc: (Int, Int, Int) => Int): String = {
+  private def crypt(data: CharSequence, sameRowColFunc: (Int, Int, Int) => Int): String = {
     val result = new StringBuilder(data.length)
     
     for (i <- 0 until data.length by 2) {

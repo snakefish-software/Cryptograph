@@ -10,11 +10,11 @@ object Caesar {
 class Caesar(val alphabet: Alphabet, val strictMode: Boolean = false) {
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def encode(data: CharSequence, key: Int): String = 
-    sumKeySeqWithText(_ => key)(data, alphabet, strictMode, addByModulo)
+  def encrypt(key: Int, plaintext: CharSequence): String = 
+    sumKeySeqWithText(_ => key)(plaintext, alphabet, strictMode, addByModulo)
 
   @throws(classOf[DataCharNotInAlphabetException])
-  def decode(data: CharSequence, key: Int): String = 
-    sumKeySeqWithText(_ => key)(data, alphabet, strictMode, subtractByModulo)
+  def decrypt(key: Int, ciphertext: CharSequence): String = 
+    sumKeySeqWithText(_ => key)(ciphertext, alphabet, strictMode, subtractByModulo)
 
 }
