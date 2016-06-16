@@ -9,14 +9,17 @@ object FourSquare {
   
   @throws(classOf[SquaresDifferentSizeException])
   @throws(classOf[WrongSquareSizeException])
+  @throws(classOf[PlaceholderNotInSquareException])
   def apply(plainSquare: PolybiusSquare, 
             cipherSquare1: PolybiusSquare, 
             cipherSquare2: PolybiusSquare,
+            placeholder: Char,
             strictMode: Boolean = false
   ): FourSquare = {
     new FourSquare(plainSquare, 
                    cipherSquare1, 
-                   cipherSquare2, 
+                   cipherSquare2,
+                   placeholder,
                    strictMode)
   }
   
@@ -28,7 +31,10 @@ object FourSquare {
 class FourSquare(val plainSquare: PolybiusSquare, 
                  val cipherSquare1: PolybiusSquare, 
                  val cipherSquare2: PolybiusSquare, 
+                 private val _placeholder: Char, 
                  val strictMode: Boolean = false) {
+  
+  val placeholder = _placeholder.toLower
   
   if (plainSquare.rowsCount != cipherSquare1.rowsCount || 
       plainSquare.rowsCount != cipherSquare2.rowsCount || 
@@ -39,12 +45,11 @@ class FourSquare(val plainSquare: PolybiusSquare,
   if (!plainSquare.lastRowFilled || !cipherSquare1.lastRowFilled || !cipherSquare2.lastRowFilled)
     throw new WrongSquareSizeException("Last row of square is not filled")
   
-  @throws(classOf[PlaceholderNotInSquareException])
+  if (!plainSquare.contains(placeholder))
+    throw new PlaceholderNotInSquareException()
+  
   @throws(classOf[DataCharNotInSquareException])
-  def encrypt(plaintext: CharSequence, placeholder: Char): String = {
-    if (!plainSquare.contains(placeholder))
-      throw new PlaceholderNotInSquareException()
-    
+  def encrypt(plaintext: CharSequence): String = {
     val inSquareChars = filter(plaintext, plainSquare, strictMode)
     if (inSquareChars.length % 2 == 1) {
       inSquareChars.append(placeholder)
@@ -52,8 +57,8 @@ class FourSquare(val plainSquare: PolybiusSquare,
       
     val result = new StringBuilder(inSquareChars.length)
     for (i <- 0 until inSquareChars.length by 2) {
-      val (row1, col1) = plainSquare.coords(inSquareChars.charAt(i)).get
-      val (row2, col2) = plainSquare.coords(inSquareChars.charAt(i + 1)).get
+      val (row1, col1) = plainSquare.coords(inSquareChars(i)).get
+      val (row2, col2) = plainSquare.coords(inSquareChars(i + 1)).get
       result += cipherSquare1(row1)(col2)
       result += cipherSquare2(row2)(col1)
     }
@@ -79,13 +84,17 @@ class FourSquare(val plainSquare: PolybiusSquare,
     if (inSquareChars.length % 2 != 0)
       throw new OddCiphertextLengthException()
     
-    val result = new StringBuilder(inSquareChars.length)
+    var result = new StringBuilder(inSquareChars.length)
     for (i <- 0 until inSquareChars.length by 2) {
-      val (row1, col2) = cipherSquare1.coords(inSquareChars.charAt(i)).get
-      val (row2, col1) = cipherSquare2.coords(inSquareChars.charAt(i + 1)).get
+      val (row1, col2) = cipherSquare1.coords(inSquareChars(i)).get
+      val (row2, col1) = cipherSquare2.coords(inSquareChars(i + 1)).get
       result += plainSquare(row1)(col1)
       result += plainSquare(row2)(col2)
     }
+    
+    if (result.endsWith(placeholder.toString))
+      result = result.dropRight(1)
+      
     result.toString
   }
   
