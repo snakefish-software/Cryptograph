@@ -64,9 +64,13 @@ class Playfair(val square: PolybiusSquare, private val _placeholder: Char, val s
     for (i <- 0 until decrypted.length by 2) {
       val ch1 = decrypted(i)
       val ch2 = decrypted(i + 1)
+      
       result += ch1
-      val isPlaceholder = ch2 == placeholder &&
-                          (i + 2 == decrypted.length || decrypted(i + 2) == ch1)        
+      
+      val isPlaceholder = ch2 == placeholder && 
+                          i + 2 < decrypted.length && 
+                          decrypted(i + 2) == ch1       
+      
       if (!isPlaceholder)
         result += ch2
     }

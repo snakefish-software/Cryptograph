@@ -91,9 +91,6 @@ class FourSquare(val plainSquare: PolybiusSquare,
       result += plainSquare(row1)(col1)
       result += plainSquare(row2)(col2)
     }
-    
-    if (result.endsWith(placeholder.toString))
-      result = result.dropRight(1)
       
     result.toString
   }

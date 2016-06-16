@@ -30,7 +30,7 @@ class PlayfairTest extends BaseTest {
   
   ".decrypt" must "correctly decrypt ciphertext using provided parameters" in {
     val _plaintext = nonStrictCipher.decrypt(ciphertext)
-    _plaintext must be ("hellooneandall")
+    _plaintext must be ("hellooneandallx")
   }
   
   ".encrypt(strictMode)" must "throw an exception if plaintext contains char that is missing in Polybius square" in {
