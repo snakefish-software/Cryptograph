@@ -18,45 +18,50 @@ class RailFence(val rowsCount: Int) {
     throw new IllegalRowsCountException()
   
   def encrypt(plaintext: CharSequence): String = {
-    val ptLen = plaintext.length
-    val result = new StringBuilder(ptLen)
+    val ptLength = plaintext.length
+    val result = new StringBuilder(ptLength)
     
     val peakPeriod = 2 * rowsCount - 2
-    val peaks = 0 until ptLen by peakPeriod
+    val peaks = 0 until ptLength by peakPeriod
     
+    // First row
     for (peak <- peaks)
       result += plaintext.charAt(peak)
-      
+    
+    // Rows between first and last
     for (rows <- 1 until rowsCount - 1) {
       for (peak <- peaks) {
         val leftIndex = peak - rows
         val rightIndex = peak + rows
         if (leftIndex >= 0)
           result += plaintext.charAt(leftIndex)
-        if (rightIndex < ptLen)
+        if (rightIndex < ptLength)
           result += plaintext.charAt(rightIndex)
       }
     }
     
-    for (btm <- (peakPeriod / 2) until ptLen by peakPeriod)
+    // Last row
+    for (btm <- (peakPeriod / 2) until ptLength by peakPeriod)
       result += plaintext.charAt(btm)
       
     result.toString
   }
   
   def decrypt(ciphertext: CharSequence): String = {
-    val ciphertextLen = ciphertext.length
-    val result = new Array[Char](ciphertextLen)
+    val ctLength = ciphertext.length
+    val result = new Array[Char](ctLength)
     var ctIndex = 0
     
     val peakPeriod = 2 * rowsCount - 2
-    val peaks = 0 until ciphertextLen by peakPeriod
+    val peaks = 0 until ctLength by peakPeriod
     
+    // First row
     for (peak <- peaks) {
       result(peak) = ciphertext.charAt(ctIndex)
       ctIndex += 1
     }
     
+    // Rows between first and last
     for (row <- 1 until rowsCount - 1) {
       for (peak <- peaks) {
         val leftIndex = peak - row
@@ -65,14 +70,15 @@ class RailFence(val rowsCount: Int) {
           result(leftIndex) = ciphertext.charAt(ctIndex)
           ctIndex += 1
         }
-        if (rightIndex < ciphertextLen) {
+        if (rightIndex < ctLength) {
           result(rightIndex) = ciphertext.charAt(ctIndex)
           ctIndex += 1
         }
       }
     }
     
-    for (btm <- (peakPeriod / 2) until ciphertextLen by peakPeriod) {
+    // Last row
+    for (btm <- (peakPeriod / 2) until ctLength by peakPeriod) {
       result(btm) = ciphertext.charAt(ctIndex)
       ctIndex += 1
     }
