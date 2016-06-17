@@ -29,10 +29,10 @@ class RailFence(val rowsCount: Int) {
       result += plaintext.charAt(peak)
     
     // Rows between first and last
-    for (rows <- 1 until rowsCount - 1) {
+    for (row <- 1 until rowsCount - 1) {
       for (peak <- peaks) {
-        val leftIndex = peak - rows
-        val rightIndex = peak + rows
+        val leftIndex = peak - row
+        val rightIndex = peak + row
         if (leftIndex >= 0)
           result += plaintext.charAt(leftIndex)
         if (rightIndex < ptLength)
