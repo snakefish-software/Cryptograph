@@ -32,17 +32,17 @@ class Playfair(val square: PolybiusSquare, private val _placeholder: Char, val s
     var i = 0
     while (i < dataLen) {
       val ch1 = inSquareChars(i)
-      charsToComp.append(ch1)
+      charsToComp += ch1
       if (i + 1 < dataLen) {
         val ch2 = inSquareChars(i + 1)
         if (ch1 == ch2) {
-          charsToComp.append(placeholder)
+          charsToComp += placeholder
         } else {
-          charsToComp.append(ch2)
+          charsToComp += ch2
           i += 1
         }
       } else {
-        charsToComp.append(placeholder)
+        charsToComp += placeholder
       }
       i += 1
     }

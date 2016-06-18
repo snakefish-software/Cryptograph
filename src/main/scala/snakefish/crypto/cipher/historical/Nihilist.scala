@@ -6,14 +6,14 @@ import scala.collection.mutable.ArrayBuffer
 
 object Nihilist {
   
-  def apply(square: PolybiusSquare, strictMode: Boolean = false) = 
-    new Nihilist(square, strictMode)
+  def apply(key: CharSequence, square: PolybiusSquare, strictMode: Boolean = false) = 
+    new Nihilist(key, square, strictMode)
 }
 
-class Nihilist(val square: PolybiusSquare, val strictMode: Boolean = false) {
+class Nihilist(val key: CharSequence, val square: PolybiusSquare, val strictMode: Boolean = false) {
   
   @throws(classOf[DataCharNotInSquareException])
-  def encrypt(key: CharSequence, plaintext: CharSequence): ArrayBuffer[Int] = {
+  def encrypt(plaintext: CharSequence): ArrayBuffer[Int] = {
     val keyNums = toNums(key)
     val keyLength = keyNums.length
       
@@ -37,7 +37,7 @@ class Nihilist(val square: PolybiusSquare, val strictMode: Boolean = false) {
   }
 
   @throws(classOf[CoordinatesOutOfBoundsException])
-  def decrypt(key: CharSequence, ciphertext: Array[Int]): String = {
+  def decrypt(ciphertext: Array[Int]): String = {
     val keyNums = toNums(key)
     val keyLength = keyNums.length
     

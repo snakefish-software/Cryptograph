@@ -33,12 +33,12 @@ class TrifidTest extends BaseTest {
     ex.getMessage must be ("Coordinates (table = -1; row = -2; column = -3) of char at position 5 are out of cube bounds")
   }
   
-  ".encrypt" must "correctly encrypt plaintext using provided parameters" in {
+  ".encrypt" must "correctly encrypt plaintext" in {
     val _ciphertext = nonStrictCipher.encrypt(plaintext)
     _ciphertext must be (ciphertext)
   }
   
-  ".decrypt" must "correctly decrypt ciphertext using provided parameters" in {
+  ".decrypt" must "correctly decrypt ciphertext" in {
     val _plaintext = nonStrictCipher.decrypt(ciphertext)
     _plaintext must be (plaintext)
   }

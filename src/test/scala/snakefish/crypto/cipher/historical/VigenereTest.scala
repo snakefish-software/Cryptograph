@@ -7,34 +7,36 @@ class VigenereTest extends BaseTest {
   private val ciphertext = "Lxfopv ef rnhr"
   private val crKey = "L e M o N"
   
-  private val nonStrictCipher = Vigenere(Alphabet.ENGLISH)
-  private val strictCipher = Vigenere(Alphabet.ENGLISH, true)
+  private val nonStrictCipher = Vigenere(crKey, Alphabet.ENGLISH)
+  private val strictCipher = Vigenere(crKey, Alphabet.ENGLISH, true)
   
-  ".encrypt" must "correctly encrypt plaintext using provided key and alphabet" in {
-    val _ciphertext = nonStrictCipher.encrypt(crKey, plaintext)
+  ".encrypt" must "correctly encrypt plaintext" in {
+    val _ciphertext = nonStrictCipher.encrypt(plaintext)
     _ciphertext must be (ciphertext)
   }
   
-  ".decrypt" must "correctly decrypt ciphertext using provided key and alphabet" in {
-    val _plaintext = nonStrictCipher.decrypt(crKey, ciphertext)
+  ".decrypt" must "correctly decrypt ciphertext" in {
+    val _plaintext = nonStrictCipher.decrypt(ciphertext)
     _plaintext must be (plaintext)
   }
   
   ".encrypt & .decrypt" must "left data as is if all key chars are missing in alphabet" in {
-    val _ciphertext = nonStrictCipher.encrypt("123456", plaintext)
+    val numKeyCipher = Vigenere("123456", Alphabet.ENGLISH)
+    
+    val _ciphertext = numKeyCipher.encrypt(plaintext)
     _ciphertext must be (plaintext)
     
-    val _plaintext = nonStrictCipher.decrypt("123456", ciphertext)
+    val _plaintext = numKeyCipher.decrypt(ciphertext)
     _plaintext must be (ciphertext)
   }
   
-  ".encrypt(strictMode)" must "throw an exception if income plaintext contains symbols that are missing in alphabet" in {
-    val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.encrypt(crKey, plaintext)
+  ".encrypt(strictMode)" must "throw an exception if plaintext contains symbols that are missing in alphabet" in {
+    val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.encrypt(plaintext)
     ex.position must be (plaintext.indexOf(' '))
   }
   
-  ".decrypt(strictMode)" must "throw an exception if income ciphertext contains symbols that are missing in alphabet" in {
-    val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.decrypt(crKey, ciphertext)
+  ".decrypt(strictMode)" must "throw an exception if ciphertext contains symbols that are missing in alphabet" in {
+    val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.decrypt(ciphertext)
     ex.position must be (ciphertext.indexOf(' '))
   }
   

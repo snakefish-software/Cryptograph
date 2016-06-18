@@ -19,12 +19,12 @@ class BifidTest extends BaseTest {
   private val nonStrictCipher = Bifid(square, period)
   private val strictCipher = Bifid(square, period, true)
   
-  ".encrypt" must "correctly encrypt plaintext using provided Polibius square and period" in {
+  ".encrypt" must "correctly encrypt plaintext" in {
     val _ciphertext = nonStrictCipher.encrypt(plaintext)
     _ciphertext must be (ciphertext)
   }
   
-  ".decrypt" must "correctly decrypt ciphertext using provided Polibius square and period" in {
+  ".decrypt" must "correctly decrypt ciphertext" in {
     val _plaintext = nonStrictCipher.decrypt(ciphertext)
     _plaintext must be (plaintext)
   }

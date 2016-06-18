@@ -41,12 +41,12 @@ class FourSquareTest extends BaseTest {
     an [PlaceholderNotInSquareException] must be thrownBy FourSquare(LATIN, cipherSquare, cipherSquare, 'щ')
   }
   
-  ".encrypt" must "correctly encrypt plaintext using provided parameters" in {
+  ".encrypt" must "correctly encrypt plaintext" in {
     val _ciphertext = nonStrictCipher.encrypt(plaintext)
     _ciphertext must be (ciphertext)
   }
   
-  ".decrypt" must "correctly decrypt ciphertext using provided parameters" in {
+  ".decrypt" must "correctly decrypt ciphertext" in {
     val _plaintext = nonStrictCipher.decrypt(ciphertext)
     _plaintext must be ("hellostrangerx")
   }

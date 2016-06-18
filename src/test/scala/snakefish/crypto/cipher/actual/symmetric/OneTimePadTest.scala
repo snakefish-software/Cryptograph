@@ -24,12 +24,12 @@ class OneTimePadTest extends BaseTest {
     an [KeyLengthInsuffisientException] must be thrownBy OneTimePad.crypt(Array(byte("11110011")), bytePlaintext)
   }
   
-  ".encrypt(CharSequence, CharSequence, Alphabet)" must "correctly encrypt plaintext using provided key and alphabet" in {
+  ".encrypt(CharSequence, CharSequence, Alphabet)" must "correctly encrypt plaintext" in {
     val _charCiphertext = cipher.encrypt(charKey, charPlaintext)
     _charCiphertext must be (charCiphertext.toCharArray)
   }
   
-  ".decrypt(CharSequence, CharSequence, Alphabet)" must "correctly decrypt ciphertext using provided key and alphabet" in {
+  ".decrypt(CharSequence, CharSequence, Alphabet)" must "correctly decrypt ciphertext" in {
     val _charPlaintext = cipher.decrypt(charKey, charCiphertext)
     _charPlaintext must be (charPlaintext.toCharArray)
   }

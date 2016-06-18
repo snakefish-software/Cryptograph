@@ -9,12 +9,12 @@ class ROT13Test extends BaseTest {
   private val nonStrictCipher = ROT13(Alphabet.ENGLISH)
   private val strictCipher = ROT13(Alphabet.ENGLISH, true)
   
-  ".encrypt" must "correctly encrypt plaintext using provided key and alphabet" in {
+  ".encrypt" must "correctly encrypt plaintext" in {
     val _ciphertext = nonStrictCipher.encrypt(plaintext)
     _ciphertext must be (ciphertext)
   }
   
-  ".decrypt" must "correctly decrypt ciphertext using provided key and alphabet" in {
+  ".decrypt" must "correctly decrypt ciphertext" in {
     val _plaintext = nonStrictCipher.decrypt(ciphertext)
     _plaintext must be (plaintext)
   }
