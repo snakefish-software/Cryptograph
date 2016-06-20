@@ -42,11 +42,10 @@ package object crypto extends EraseInstances {
     strictMode: Boolean,
     resIndexCalc: (Int, Int, Int) => Int
   ): String = {
-    val dataLen = data.length()
-    val result = new StringBuilder(dataLen)
-    
+    val result = new StringBuilder(data.length)
     var calcIndex = 0
-    for (i <- 0 until dataLen) {
+    
+    for (i <- 0 until data.length) {
       val dataCh = data.charAt(i)
       val chIndex = alphabet.indexOf(dataCh)
       if (chIndex >= 0) {

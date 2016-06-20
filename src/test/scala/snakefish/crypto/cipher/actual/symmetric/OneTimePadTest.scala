@@ -24,40 +24,40 @@ class OneTimePadTest extends BaseTest {
     an [KeyLengthInsuffisientException] must be thrownBy OneTimePad.crypt(Array(byte("11110011")), bytePlaintext)
   }
   
-  ".encrypt(CharSequence, CharSequence, Alphabet)" must "correctly encrypt plaintext" in {
+  ".encrypt(CharSequence, CharSequence)" must "correctly encrypt plaintext" in {
     val _charCiphertext = cipher.encrypt(charKey, charPlaintext)
     _charCiphertext must be (charCiphertext.toCharArray)
   }
   
-  ".decrypt(CharSequence, CharSequence, Alphabet)" must "correctly decrypt ciphertext" in {
+  ".decrypt(CharSequence, CharSequence)" must "correctly decrypt ciphertext" in {
     val _charPlaintext = cipher.decrypt(charKey, charCiphertext)
     _charPlaintext must be (charPlaintext.toCharArray)
   }
   
-  ".encrypt(CharSequence, CharSequence, Alphabet)" must "throw an exception if key length < data length" in {
+  ".encrypt(CharSequence, CharSequence)" must "throw an exception if key length < data length" in {
     an [KeyLengthInsuffisientException] must be thrownBy cipher.encrypt("lemon", charPlaintext)
   }
   
-  ".decrypt(CharSequence, CharSequence, Alphabet)" must "throw an exception if key length < data length" in {
+  ".decrypt(CharSequence, CharSequence)" must "throw an exception if key length < data length" in {
     an [KeyLengthInsuffisientException] must be thrownBy cipher.decrypt("lemon", charCiphertext)
   }
   
-  ".encrypt(CharSequence, CharSequence, Alphabet)" must "throw an exception if plaintext contains char that is missing in alphabet" in {
+  ".encrypt(CharSequence, CharSequence)" must "throw an exception if plaintext contains char that is missing in alphabet" in {
     val ex = the [DataCharNotInAlphabetException] thrownBy cipher.encrypt(charKey, " " + charPlaintext)
     ex.position must be (0)
   }
   
-  ".decrypt(CharSequence, CharSequence, Alphabet)" must "throw an exception if ciphertext contains char that is missing in alphabet" in {
+  ".decrypt(CharSequence, CharSequence)" must "throw an exception if ciphertext contains char that is missing in alphabet" in {
     val ex = the [DataCharNotInAlphabetException] thrownBy cipher.decrypt(charKey, " " + charCiphertext)
     ex.position must be (0)
   }
   
-  ".encrypt(CharSequence, CharSequence, Alphabet)" must "throw an exception if key contains char that is missing in alphabet" in {
+  ".encrypt(CharSequence, CharSequence)" must "throw an exception if key contains char that is missing in alphabet" in {
     val ex = the [KeyCharNotInAlphabetException] thrownBy cipher.encrypt(" " + charKey, charPlaintext)
     ex.position must be (0)
   }
   
-  ".decrypt(CharSequence, CharSequence, Alphabet)" must "throw an exception if key contains char that is missing in alphabet" in {
+  ".decrypt(CharSequence, CharSequence)" must "throw an exception if key contains char that is missing in alphabet" in {
     val ex = the [KeyCharNotInAlphabetException] thrownBy cipher.decrypt(" " + charKey, charCiphertext)
     ex.position must be (0)
   }

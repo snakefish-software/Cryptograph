@@ -29,12 +29,12 @@ class BifidTest extends BaseTest {
     _plaintext must be (plaintext)
   }
   
-  ".encrypt(strictMode)" must "throw an exception if income plaintext contains symbols that are missing in square" in {
+  ".encrypt(strictMode)" must "throw an exception if plaintext contains symbols that are missing in square" in {
     val ex = the [DataCharNotInSquareException] thrownBy strictCipher.encrypt(plaintext)
     ex.position must be (plaintext.indexOf(' '))
   }
   
-  ".decrypt(strictMode)" must "throw an exception if income ciphertext contains symbols that are missing in square" in {
+  ".decrypt(strictMode)" must "throw an exception if ciphertext contains symbols that are missing in square" in {
     val ex = the [DataCharNotInSquareException] thrownBy strictCipher.decrypt(ciphertext)
     ex.position must be (ciphertext.indexOf(' '))
   }

@@ -19,12 +19,12 @@ class CaesarTest extends BaseTest {
     _plaintext must be (plaintext)
   }
   
-  ".encrypt(strictMode)" must "throw an exception if income plaintext contains symbols that are missing in alphabet" in {
+  ".encrypt(strictMode)" must "throw an exception if plaintext contains symbols that are missing in alphabet" in {
     val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.encrypt(plaintext)
     ex.position must be (plaintext.indexOf(' '))
   }
   
-  ".decrypt(strictMode)" must "throw an exception if income ciphertext contains symbols that are missing in alphabet" in {
+  ".decrypt(strictMode)" must "throw an exception if ciphertext contains symbols that are missing in alphabet" in {
     val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.decrypt(ciphertext)
     ex.position must be (ciphertext.indexOf(' '))
   }
