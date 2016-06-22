@@ -3,6 +3,7 @@ package cipher.historical
 
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.HashMap
+import scala.language.implicitConversions
 
 case class PolybiusSquare(square: Array[Array[Char]], missedToExisting: Map[Char, Char] = Map()) {
   

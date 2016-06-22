@@ -136,4 +136,17 @@ package object crypto extends EraseInstances {
     result
   }
 
+  def splitAt(str: String, length: Int): Array[String] = {
+    def splitRec(input: String, result: ArrayBuffer[String]): ArrayBuffer[String] = {
+      input match {
+        case "" => result
+        case str =>
+          val (head, rest) = input.splitAt(length)
+          splitRec(rest, result :+ head)
+      }
+    }
+
+    splitRec(str, new ArrayBuffer[String]).toArray
+  }
+
 }
