@@ -5,24 +5,7 @@ import PolybiusSquare._
 
 class AdfgxTest extends BaseTest {
 
-  private val square = PolybiusSquare(
-    Array(
-      Array('F', 'N', 'H', 'E', 'Q'),
-      Array('R', 'D', 'Z', 'O', 'C'),
-      Array('I', 'S', 'A', 'G', 'U'),
-      Array('B', 'V', 'K', 'P', 'W'),
-      Array('X', 'M', 'Y', 'T', 'L')
-    ),
-    Map('J' -> 'I')
-  )
-  val cipherText = "FFFFFFFFGFDDXGDAXDXGGXGX"
-
-  ".encode" should "correctly encode data using provided parameters" in {
-    val encoded = Adfgx.encode("ATTACK AT DAWN", "BATTLE", square)
-    encoded must be (cipherText)
-  }
-
-  ".encode" should "correctly handle blocks with different length" in {
+  "Adfgx" should "encode" in {
 
     val sq = PolybiusSquare(
       Array(
@@ -38,9 +21,64 @@ class AdfgxTest extends BaseTest {
     Adfgx.encode("ATTACK AT ONCE", "CARGO", sq) must be ("FAXDFADDDGDGFFFAFAXAFAFX")
   }
 
-  ".decode" should "correctly decode data using provided parameters" in {
-    val plainText = Adfgx.decode(cipherText, "BATTLE", square)
-    plainText must be ("ATTACKATDAWN")
+  it should "encode if key has repeated chars" in {
+    val square = PolybiusSquare(
+      Array(
+        Array('F', 'N', 'H', 'E', 'Q'),
+        Array('R', 'D', 'Z', 'O', 'C'),
+        Array('I', 'S', 'A', 'G', 'U'),
+        Array('B', 'V', 'K', 'P', 'W'),
+        Array('X', 'M', 'Y', 'T', 'L')
+      ),
+      Map('J' -> 'I')
+    )
+
+    Adfgx.encode("ATTACK AT DAWN", "BATTLE", square) must be ("FFFFFFFFGFDDXGDAXDXGGXGX")
   }
-  
+
+  it should "decode" in {
+    val square = PolybiusSquare(
+      Array(
+        Array('F', 'N', 'H', 'E', 'Q'),
+        Array('R', 'D', 'Z', 'O', 'C'),
+        Array('I', 'S', 'A', 'G', 'U'),
+        Array('B', 'V', 'K', 'P', 'W'),
+        Array('X', 'M', 'Y', 'T', 'L')
+      ),
+      Map('J' -> 'I')
+    )
+
+    Adfgx.decode("FFFFFFFFGFDDXGDAXDXGGXGX", "BATTLE", square) must be ("ATTACKATDAWN")
+  }
+
+  "Adfgvx" should "encode" in {
+    val sq = PolybiusSquare(
+      Array(
+        Array('1', 'G', 'R', '4', 'H', 'D'),
+        Array('E', '2', 'A', 'V', '9', 'M'),
+        Array('8', 'P', 'I', 'N', 'K', 'Z'),
+        Array('B', 'Y', 'U', 'F', '6', 'T'),
+        Array('5', 'G', 'X', 'S', '3', 'O'),
+        Array('W', 'L', 'Q', '7', 'C', '0')
+      ))
+
+    val encoded = Adfgvx.encode("ATTACK WILL BEGIN IN 11 AM", "SECRET", sq)
+    encoded must be ("GXFGFFDFFADDFAGFXDFADXVFAFGFDDXXVFAXVDAGAX")
+  }
+
+  it should "decode" in {
+    val sq = PolybiusSquare(
+      Array(
+        Array('1', 'G', 'R', '4', 'H', 'D'),
+        Array('E', '2', 'A', 'V', '9', 'M'),
+        Array('8', 'P', 'I', 'N', 'K', 'Z'),
+        Array('B', 'Y', 'U', 'F', '6', 'T'),
+        Array('5', 'G', 'X', 'S', '3', 'O'),
+        Array('W', 'L', 'Q', '7', 'C', '0')
+      ))
+
+    val plainText = Adfgvx.decode("GXFGFFDFFADDFAGFXDFADXVFAFGFDDXXVFAXVDAGAX", "SECRET", sq)
+    plainText must be ("ATTACKWILLBEGININ11AM")
+  }
+
 }

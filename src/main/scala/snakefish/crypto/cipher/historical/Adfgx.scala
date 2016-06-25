@@ -5,16 +5,24 @@ import scala.collection.mutable.Map
 import scala.collection.mutable.ListMap
 import scala.collection.mutable.ArrayBuffer
 
-object Adfgx {
+object Adfgx extends AdfgvxCipher {
+  val cipherChars = "ADFGX"
+}
 
-  private val ADFGX = "ADFGX"
+object Adfgvx extends AdfgvxCipher {
+  val cipherChars = "ADFGVX"
+}
+
+trait AdfgvxCipher {
+
+  def cipherChars: String
 
   def encrypt(data: String, key: String, square: PolybiusSquare): String = {
     val indexedKey = key.zipWithIndex
     val polibiusMap = Map[Char, String]()
 
     for(i <- 0 until square.colsCount; j <- 0 until square.rowsCount) {
-      polibiusMap += square(i)(j) -> s"${ADFGX.charAt(i)}${ADFGX.charAt(j)}"
+      polibiusMap += square(i)(j) -> s"${cipherChars.charAt(i)}${cipherChars.charAt(j)}"
     }
     square.missedToExisting.foreach { case (k, v) =>
       polibiusMap.get(v).foreach { s =>
@@ -49,7 +57,7 @@ object Adfgx {
     val polibiusMap = Map[(Char, Char), Char]()
 
     for(i <- 0 until square.colsCount; j <- 0 until square.rowsCount) {
-      polibiusMap += (ADFGX.charAt(i), ADFGX.charAt(j)) -> square(i)(j)
+      polibiusMap += (cipherChars.charAt(i), cipherChars.charAt(j)) -> square(i)(j)
     }
 
     val transpositionMap =
