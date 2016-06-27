@@ -1,5 +1,5 @@
 package snakefish.crypto
-package cipher.symmetric
+package cipher.classical
 
 object ROT13 {
   

@@ -1,5 +1,6 @@
 package snakefish.crypto
 package cipher.classical
+package transposition
 
 import RailFence._
 

@@ -1,5 +1,5 @@
 package snakefish.crypto
-package cipher.symmetric
+package cipher.classical
 
 class ROT13Test extends BaseTest {
   
