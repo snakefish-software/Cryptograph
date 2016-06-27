@@ -15,7 +15,7 @@ class AtbashTest extends BaseTest {
     Atbash(Alphabet.ENGLISH).crypt("") must be ("")
   }
   
-  ".crypt(strictMode)" must "throw an exception if data contains symbols that are missing in alphabet" in {
+  it must "throw an exception in strict mode if data contains symbols that are missing in alphabet" in {
     val ex = the [DataCharNotInAlphabetException] thrownBy Atbash(Alphabet.ENGLISH, true).crypt("abc ")
     ex.position must be (3)
   }

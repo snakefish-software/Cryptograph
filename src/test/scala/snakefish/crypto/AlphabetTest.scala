@@ -19,7 +19,7 @@ class AlphabetTest extends BaseTest {
     alphabet.toString must be (plainAlphabet)
   }
   
-  ".apply" must "remove duplicate characters from alphabet string" in {
+  it must "remove duplicate characters from alphabet string" in {
     val alphabet = Alphabet("аббвгдеежзиайкллллмнмн")
     alphabet.toString must be (plainAlphabet)
   }
@@ -29,12 +29,12 @@ class AlphabetTest extends BaseTest {
     alphabet.length must be (plainAlphabet.length)
   }
   
-  ".+(string)" must "concatenate string with existing Alphabet" in {
+  ".+" must "concatenate string with existing Alphabet" in {
     val alphabet = Alphabet(plainAlphabet) + "йклмнщшцщшъ"
     alphabet.toString must be (plainAlphabet + "щшцъ")
   }
   
-  ".+(Alphabet)" must "concatenate 2 Alphabets" in {
+  it must "concatenate 2 Alphabets" in {
     val alphabet = Alphabet(plainAlphabet) + Alphabet("йклмнщшцщшъ")
     alphabet.toString must be (plainAlphabet + "щшцъ")
   }

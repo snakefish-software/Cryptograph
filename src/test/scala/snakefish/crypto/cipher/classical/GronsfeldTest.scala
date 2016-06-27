@@ -16,6 +16,11 @@ class GronsfeldTest extends BaseTest {
     nonStrictCipher.encrypt("") must be ("")
   }
   
+  it must "throw an exception in strict mode if plaintext contains symbols that are missing in alphabet" in {
+    val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.encrypt(plaintext)
+    ex.position must be (plaintext.indexOf(' '))
+  }
+  
   ".decrypt" must "correctly decrypt ciphertext" in {
     val _plaintext = nonStrictCipher.decrypt(ciphertext)
     _plaintext must be (plaintext)
@@ -23,12 +28,7 @@ class GronsfeldTest extends BaseTest {
     nonStrictCipher.decrypt("") must be ("")
   }
   
-  ".encrypt(strictMode)" must "throw an exception if plaintext contains symbols that are missing in alphabet" in {
-    val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.encrypt(plaintext)
-    ex.position must be (plaintext.indexOf(' '))
-  }
-  
-  ".decrypt(strictMode)" must "throw an exception if ciphertext contains symbols that are missing in alphabet" in {
+  it must "throw an exception in strict mode if ciphertext contains symbols that are missing in alphabet" in {
     val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.decrypt(ciphertext)
     ex.position must be (ciphertext.indexOf(' '))
   }

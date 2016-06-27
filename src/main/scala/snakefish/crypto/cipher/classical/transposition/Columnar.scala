@@ -20,7 +20,7 @@ class Columnar(private val _key: Array[Int]) {
     val colsCount = key.length
     val cols = new Array[StringBuilder](colsCount)
     for (i <- 0 until colsCount) {
-      cols(i) = new StringBuilder("")
+      cols(i) = new StringBuilder()
     }
     
     for (i <- 0 until plaintext.length) {

@@ -19,7 +19,7 @@ class PlayfairTest extends BaseTest {
     an [WrongSquareSizeException] must be thrownBy Playfair(notFilledLastRowSquare, 'a')
   }
   
-  ".apply" must "throw an exception if placeholder is missing in Polybius square" in {
+  it must "throw an exception if placeholder is missing in Polybius square" in {
     an [PlaceholderNotInSquareException] must be thrownBy Playfair(PolybiusSquare.LATIN, 'щ')
   }
   
@@ -30,6 +30,11 @@ class PlayfairTest extends BaseTest {
     nonStrictCipher.encrypt("") must be ("")
   }
   
+  it must "throw an exception in strict mode if plaintext contains char that is missing in Polybius square" in {
+    val ex = the [DataCharNotInSquareException] thrownBy strictCipher.encrypt(plaintext)
+    ex.position must be (plaintext.indexOf(' '))
+  }
+  
   ".decrypt" must "correctly decrypt ciphertext" in {
     val _plaintext = nonStrictCipher.decrypt(ciphertext)
     _plaintext must be ("hellooneandallx")
@@ -37,17 +42,12 @@ class PlayfairTest extends BaseTest {
     nonStrictCipher.decrypt("") must be ("")
   }
   
-  ".encrypt(strictMode)" must "throw an exception if plaintext contains char that is missing in Polybius square" in {
-    val ex = the [DataCharNotInSquareException] thrownBy strictCipher.encrypt(plaintext)
-    ex.position must be (plaintext.indexOf(' '))
-  }
-  
-  ".decrypt(strictMode)" must "throw an exception if ciphertext contains char that is missing in Polybius square" in {
+  it must "throw an exception in strict mode if ciphertext contains char that is missing in Polybius square" in {
     val ex = the [DataCharNotInSquareException] thrownBy strictCipher.decrypt(plaintext)
     ex.position must be (plaintext.indexOf(' '))
   }
   
-  ".decrypt" must "throw an exception if ciphertext length is odd" in {
+  it must "throw an exception if ciphertext length is odd" in {
     an [OddCiphertextLengthException] must be thrownBy nonStrictCipher.decrypt("g")
   }
   

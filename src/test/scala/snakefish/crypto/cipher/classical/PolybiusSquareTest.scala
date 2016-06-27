@@ -21,17 +21,15 @@ class PolybiusSquareTest extends BaseTest {
   }
   
   ".apply(key: CharSequence, alphabet, missedOnExisting)" must "create Polibius square instance from provided arguments" in {
-    val square = PolybiusSquare("QwErTy", Alphabet.ENGLISH, Map('J' -> 'I'))
+    var square = PolybiusSquare("QwErTy", Alphabet.ENGLISH, Map('J' -> 'I'))
     square.square must equal(Array(Array('q', 'w', 'e', 'r', 't'), 
                                    Array('y', 'a', 'b', 'c', 'd'),
                                    Array('f', 'g', 'h', 'i', 'k'),
                                    Array('l', 'm', 'n', 'o', 'p'),
                                    Array('s', 'u', 'v', 'x', 'z')))
     square.missedToExisting must contain only(('j' -> 'i'))
-  }
-  
-  ".apply(key: Long, alphabet, missedOnExisting)" must "create Polibius square instance from provided arguments" in {
-    val square = PolybiusSquare(123456789, Alphabet.ENGLISH, Map('J' -> 'I'))
+    
+    square = PolybiusSquare(123456789, Alphabet.ENGLISH, Map('J' -> 'I'))
     square.square must equal(Array(Array('l', 's', 'r', 'k', 'p'),
                                    Array('q', 'a', 'o', 'g', 'x'),
                                    Array('u', 't', 'd', 'f', 'y'),
@@ -106,16 +104,16 @@ class PolybiusSquareTest extends BaseTest {
     res3 must be ("АзПцЮеИь")
   }
   
-  ".compute(strictMode)" must "throw an exception if symbol in income data is missing in square" in {
-    val ex = the [DataCharNotInSquareException] thrownBy compute("F12yEo", LATIN, upperSymbol, true)
-    ex.position must be (1)
-  }
-  
   ".compute" must "throw an exception if symbol in computed data is missing in square" in {
     val ex = the [CoordinatesOutOfBoundsException] thrownBy compute("ц", RUSSIAN_ALL, colsRows)
     ex.position must be (0)
     ex.row must be (5)
     ex.col must be (3)
+  }
+  
+  it must "throw an exception in strict mode if symbol in income data is missing in square" in {
+    val ex = the [DataCharNotInSquareException] thrownBy compute("F12yEo", LATIN, upperSymbol, true)
+    ex.position must be (1)
   }
   
 }

@@ -11,12 +11,12 @@ class XORTest extends BaseTest {
   private val charKey        = Array(char("11110011"))
   private val charCiphertext = Array(char("10100100"), char("10011010"), char("10011000"), char("10011010"))
   
-  ".crypt(Array[Byte], Array[Byte])" must "correctly XOR 2 byte arrays" in {
+  ".crypt" must "correctly XOR 2 byte arrays" in {
     XOR.crypt(byteKey, bytePlaintext) must be (byteCiphertext)
     XOR.crypt(byteKey, byteCiphertext) must be (bytePlaintext)
   }
   
-  ".crypt(CharSequence, CharSequence)" must "correctly XOR 2 char sequences" in {
+  it must "correctly XOR 2 char sequences" in {
     XOR.crypt(charKey, charPlaintext) must be (charCiphertext)
     XOR.crypt(charKey, charCiphertext) must be (charPlaintext)
   }

@@ -21,19 +21,19 @@ class NihilistTest extends BaseTest {
     nonStrictCipher.encrypt("") must equal (Array[Int]())
   }
   
+  it must "throw an exception in strict mode if plaintext contains char that is missing in Polybius square" in {
+    val ex = the [DataCharNotInSquareException] thrownBy strictCipher.encrypt(plaintext)
+    ex.position must be (plaintext.indexOf(' '))
+  }
+  
   ".decrypt" must "correctly decrypt ciphertext" in {
     val _plaintext = nonStrictCipher.decrypt(ciphertext)
     _plaintext must be ("dynamitewinterpalace")
     
     nonStrictCipher.decrypt(Array[Int]()) must be ("")
   }
-  
-  ".encrypt(strictMode)" must "throw an exception if plaintext contains char that is missing in Polybius square" in {
-    val ex = the [DataCharNotInSquareException] thrownBy strictCipher.encrypt(plaintext)
-    ex.position must be (plaintext.indexOf(' '))
-  }
    
-  ".decrypt" must "throw an exception if ciphertext contains wrong number" in {
+  it must "throw an exception if ciphertext contains wrong number" in {
     val wrongCiphertext = Array(37, -300, 106, 62, 36)
     val ex = the [CoordinatesOutOfBoundsException] thrownBy nonStrictCipher.decrypt(wrongCiphertext)
     ex.position must be (1)
