@@ -85,7 +85,7 @@ class RailFence(val rowsCount: Int) {
       ctIndex += 1
     }
     
-    result.mkString("")
+    result.mkString
   }
   
 }
