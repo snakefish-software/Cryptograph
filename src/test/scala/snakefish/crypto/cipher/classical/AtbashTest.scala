@@ -11,6 +11,8 @@ class AtbashTest extends BaseTest {
     val alphabetRu = Alphabet.RUSSIAN.toString;
     val resultRu = Atbash(Alphabet.RUSSIAN).crypt(alphabetRu)
     resultRu must be (alphabetRu.reverse)
+    
+    Atbash(Alphabet.ENGLISH).crypt("") must be ("")
   }
   
   ".crypt(strictMode)" must "throw an exception if data contains symbols that are missing in alphabet" in {

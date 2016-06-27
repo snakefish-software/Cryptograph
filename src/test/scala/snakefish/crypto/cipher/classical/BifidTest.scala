@@ -22,11 +22,15 @@ class BifidTest extends BaseTest {
   ".encrypt" must "correctly encrypt plaintext" in {
     val _ciphertext = nonStrictCipher.encrypt(plaintext)
     _ciphertext must be (ciphertext)
+    
+    nonStrictCipher.encrypt("") must be ("")
   }
   
   ".decrypt" must "correctly decrypt ciphertext" in {
     val _plaintext = nonStrictCipher.decrypt(ciphertext)
     _plaintext must be (plaintext)
+    
+    nonStrictCipher.decrypt("") must be ("")
   }
   
   ".encrypt(strictMode)" must "throw an exception if plaintext contains symbols that are missing in square" in {

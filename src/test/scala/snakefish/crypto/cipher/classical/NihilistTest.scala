@@ -17,11 +17,15 @@ class NihilistTest extends BaseTest {
   ".encrypt" must "correctly encrypt plaintext" in {
     val _ciphertext = nonStrictCipher.encrypt(plaintext)
     _ciphertext must equal (ciphertext)
+    
+    nonStrictCipher.encrypt("") must equal (Array[Int]())
   }
   
   ".decrypt" must "correctly decrypt ciphertext" in {
     val _plaintext = nonStrictCipher.decrypt(ciphertext)
     _plaintext must be ("dynamitewinterpalace")
+    
+    nonStrictCipher.decrypt(Array[Int]()) must be ("")
   }
   
   ".encrypt(strictMode)" must "throw an exception if plaintext contains char that is missing in Polybius square" in {

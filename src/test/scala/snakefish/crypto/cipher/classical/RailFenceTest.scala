@@ -16,11 +16,15 @@ class RailFenceTest extends BaseTest {
   ".encrypt" must "correctly encrypt plaintext" in {
     val _ciphertext = cipher.encrypt(plaintext)
     _ciphertext must be (ciphertext)
+    
+    cipher.encrypt("") must be ("")
   }
   
   ".decrypt" must "correctly decrypt ciphertext" in {
     val _plaintext = cipher.decrypt(ciphertext)
     _plaintext must be (plaintext)
+    
+    cipher.decrypt("") must be ("")
   }
   
 }
