@@ -50,14 +50,12 @@ class Columnar(key: CharSequence, alphabet: Alphabet) {
     
     val result = new StringBuilder(ctLength)
     for {
-       row <- 0 until rowsCount - 1
-       col <- 0 until colsCount
+       rowIndex <- 0 until rowsCount
+       colIndex <- 0 until colsCount
     } {
-      result.append(cols(col).charAt(row))
-    }
-    
-    for (col <- 0 until lastRowLength if rowsCount >= 1) {
-      result.append(cols(col).charAt(rowsCount - 1))
+      val col = cols(colIndex)
+      if (rowIndex < col.length)
+        result += col.charAt(rowIndex)
     }
     
     result.toString
