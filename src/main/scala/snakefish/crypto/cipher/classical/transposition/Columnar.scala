@@ -8,7 +8,7 @@ object Columnar {
 }
 
 class Columnar(key: CharSequence, alphabet: Alphabet) 
-  extends columnarTransposition(key, alphabet, true) {
+  extends СolumnarTransposition(key, alphabet, true) {
   
   def colsToCiphertext(cols: Array[StringBuilder], ciphertext: StringBuilder): Unit = {
     for (i <- 0 until colsCount) {

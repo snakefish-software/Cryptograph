@@ -2,9 +2,9 @@ package snakefish.crypto
 package cipher.classical
 package transposition
 
-private[transposition] abstract class columnarTransposition(key: CharSequence, 
-                                                            alphabet: Alphabet, 
-                                                            sameKeyLetterAsNext: Boolean) {
+abstract class СolumnarTransposition(key: CharSequence, 
+                                     alphabet: Alphabet, 
+                                     sameKeyLetterAsNext: Boolean) {
   
   protected val keyNums = normalizeKey(indicesInAlphabet(key, alphabet), sameKeyLetterAsNext)
   protected val colsCount = keyNums.length
