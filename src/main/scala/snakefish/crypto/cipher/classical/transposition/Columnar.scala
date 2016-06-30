@@ -7,37 +7,18 @@ object Columnar {
   def apply(key: CharSequence, alphabet: Alphabet) = new Columnar(key, alphabet)
 }
 
-class Columnar(key: CharSequence, alphabet: Alphabet) {
+class Columnar(key: CharSequence, alphabet: Alphabet) 
+  extends columnarTransposition(key, alphabet, true) {
   
-  private val keyNums = normalizeKey(indicesInAlphabet(key, alphabet), true)
-  
-  def encrypt(plaintext: CharSequence): String = {
-    val ptLength = plaintext.length
-    val colsCount = keyNums.length
-    val rowsCount = Math.ceil(ptLength.toDouble / colsCount).toInt
-    
-    val cols = createEmptyCols(colsCount, rowsCount)
-    
-    for (i <- 0 until ptLength) {
-      cols(i % colsCount) += plaintext.charAt(i)
-    }
-    
-    val result = new StringBuilder(ptLength)
+  def colsToCiphertext(cols: Array[StringBuilder], ciphertext: StringBuilder): Unit = {
     for (i <- 0 until colsCount) {
-      result append cols(keyNums.indexOf(i))
+      ciphertext append cols(keyNums.indexOf(i))
     }
-    
-    result.toString
   }
   
-  def decrypt(ciphertext: CharSequence): String = {
-    val ctLength = ciphertext.length
-    val colsCount = keyNums.length
-    val rowsCount = Math.ceil(ctLength.toDouble / colsCount).toInt
-    val lastRowLength = colsCount - (colsCount * rowsCount - ctLength)
-    
-    val cols = createEmptyCols(colsCount, rowsCount)
-    
+  def ciphertextToCols(ciphertext: CharSequence, cols: Array[StringBuilder]): Unit = {
+    val rowsCount = getRowsCount(ciphertext.length)
+    val lastRowLength = getLastRowLength(ciphertext.length)
     var ctPos = 0
     for (colNum <- 0 until colsCount) {
       val colIndex = keyNums.indexOf(colNum)
@@ -47,26 +28,6 @@ class Columnar(key: CharSequence, alphabet: Alphabet) {
       }
       ctPos += colHeight
     }
-    
-    val result = new StringBuilder(ctLength)
-    for {
-       rowIndex <- 0 until rowsCount
-       colIndex <- 0 until colsCount
-    } {
-      val col = cols(colIndex)
-      if (rowIndex < col.length)
-        result += col.charAt(rowIndex)
-    }
-    
-    result.toString
-  }
-  
-  private def createEmptyCols(colsCount: Int, colsHeight: Int): Array[StringBuilder] = {
-    val cols = new Array[StringBuilder](colsCount)
-    for (i <- 0 until colsCount) {
-      cols(i) = new StringBuilder(colsHeight)
-    }
-    cols
   }
   
 }
