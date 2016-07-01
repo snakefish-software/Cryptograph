@@ -51,6 +51,12 @@ abstract class СolumnarTransposition(key: CharSequence,
     
   protected def getLastRowLength(dataLength: Int): Int = 
     colsCount - (colsCount * getRowsCount(dataLength) - dataLength)
+    
+  protected def getColHeight(dataLength: Int, colIndex: Int): Int = {
+    val rowsCount = getRowsCount(dataLength)
+    val lastRowLength = getLastRowLength(dataLength)
+    if (colIndex >= lastRowLength) rowsCount - 1 else rowsCount
+  }
   
   private def createEmptyCols(colsHeight: Int): Array[StringBuilder] = {
     val cols = new Array[StringBuilder](colsCount)
