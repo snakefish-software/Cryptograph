@@ -8,7 +8,7 @@ object Double {
     new Double(key1, key2, alphabet)
 }
 
-class Double(key1: CharSequence, key2: CharSequence, alphabet: Alphabet) {
+class Double(val key1: CharSequence, val key2: CharSequence, val alphabet: Alphabet) {
   
   private val columnar1 = Columnar(key1, alphabet)
   private val columnar2 = Columnar(key2, alphabet)
