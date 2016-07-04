@@ -11,8 +11,5 @@ object ADFGVX {
 }
 
 class ADFGVX(square: PolybiusSquare, transpositionKey: CharSequence, strictMode: Boolean = false)
-    extends ADFGX(square, transpositionKey, strictMode) {
-  
-  override protected val cipherChars = "ADFGVX"
-  
-}
+    extends { override protected val cipherChars = "ADFGVX" }
+    with ADFGX(square, transpositionKey, strictMode)

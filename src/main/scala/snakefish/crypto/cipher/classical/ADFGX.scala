@@ -15,13 +15,15 @@ object ADFGX {
       extends RuntimeException(s"Ciphertext char at position $position is not one of '$cipherChars' chars")
 }
 
-class ADFGX(square: PolybiusSquare, transpositionKey: CharSequence, strictMode: Boolean = false) {
+class ADFGX (val square: PolybiusSquare, 
+             val transpositionKey: CharSequence, 
+             val strictMode: Boolean = false) {
   
   protected val cipherChars = "ADFGX"
-  private val cipherCharsLength = cipherChars.length
+  private val cipherCharsLen = cipherChars.length
   
-  if (square.rowsCount != cipherCharsLength || square.colsCount != cipherCharsLength)
-    throw new WrongSquareSizeException(s"Square must have a $cipherCharsLength x $cipherCharsLength size")
+  if (square.rowsCount != cipherCharsLen || square.colsCount != cipherCharsLen)
+    throw new WrongSquareSizeException(s"Square must have a $cipherCharsLen x $cipherCharsLen size")
   
   private val transposition = Columnar(transpositionKey, Alphabet.ENGLISH)
   
@@ -54,12 +56,12 @@ class ADFGX(square: PolybiusSquare, transpositionKey: CharSequence, strictMode: 
         throw new WrongCiphertextException(i, cipherChars)
     
     val plaintext = new StringBuilder(ctLength / 2)
-    val ctUntransposed = transposition.decrypt(ciphertext)
+    val ctTransposed = transposition.decrypt(ciphertext)
     for (i <- 0 until ctLength by 2) {
-      val rowCh = ctUntransposed.charAt(i)
+      val rowCh = ctTransposed.charAt(i)
       val row = cipherChars.indexOf(rowCh.toUpper)
       
-      val colCh = ctUntransposed.charAt(i + 1)
+      val colCh = ctTransposed.charAt(i + 1)
       val col = cipherChars.indexOf(colCh.toUpper)
       
       plaintext += square(row)(col)
