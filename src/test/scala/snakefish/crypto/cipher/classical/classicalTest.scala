@@ -8,7 +8,7 @@ class classicalTest extends BaseTest {
   private val shuffleKey1 = 123456789
   private val shuffledText2 = "icfrtlrysehhu itepasq  eoeeTe crpnt tsn"
   private val shuffleKey2 = 987654321
-  
+
   ".toDigits" must "return array of digits that make up a number" in {
     val res1 = toDigits(1234567890)
     res1 must be (Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 0))

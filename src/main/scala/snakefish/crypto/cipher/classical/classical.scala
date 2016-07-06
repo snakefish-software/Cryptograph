@@ -74,7 +74,7 @@ package object classical {
   }
   
   def shuffle(key: Long, data: CharSequence): Array[Char] = {
-    val rand = new SecureRandom()
+    val rand = SecureRandom.getInstance("SHA1PRNG")
     rand.setSeed(key)
     val dataLen = data.length
     val result = new Array[Char](dataLen)
@@ -96,7 +96,7 @@ package object classical {
   }
   
   def deshuffle(key: Long, data: CharSequence): Array[Char] = {
-    val rand = new SecureRandom()
+    val rand = SecureRandom.getInstance("SHA1PRNG")
     rand.setSeed(key)
     val dataLen = data.length
     val result = new Array[Char](dataLen)
