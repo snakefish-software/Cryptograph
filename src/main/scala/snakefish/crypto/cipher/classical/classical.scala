@@ -2,7 +2,6 @@ package snakefish.crypto
 package cipher
 
 import scala.collection.mutable.ArrayBuffer
-import java.security.SecureRandom
 import java.util.BitSet
 
 package object classical {
@@ -74,7 +73,7 @@ package object classical {
   }
   
   def shuffle(key: Long, data: CharSequence): Array[Char] = {
-    val rand = SecureRandom.getInstance("SHA1PRNG")
+    val rand = secureRandom()
     rand.setSeed(key)
     val dataLen = data.length
     val result = new Array[Char](dataLen)
@@ -96,7 +95,7 @@ package object classical {
   }
   
   def deshuffle(key: Long, data: CharSequence): Array[Char] = {
-    val rand = SecureRandom.getInstance("SHA1PRNG")
+    val rand = secureRandom()
     rand.setSeed(key)
     val dataLen = data.length
     val result = new Array[Char](dataLen)

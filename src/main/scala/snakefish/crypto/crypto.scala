@@ -1,6 +1,7 @@
 package snakefish
 
 import scala.language.higherKinds
+import java.security.SecureRandom
 
 package object crypto extends EraseInstances {
 
@@ -34,5 +35,8 @@ package object crypto extends EraseInstances {
   
   def erase[R, E[R]](x: E[R])(implicit ev: Erase[E], evCh: EraseChar[R]): E[R] =
     ev.erase(x)(evCh)
+    
+  def secureRandom(): SecureRandom = 
+    SecureRandom.getInstance("SHA1PRNG")
 
 }
