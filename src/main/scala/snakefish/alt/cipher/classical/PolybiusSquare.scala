@@ -212,6 +212,39 @@ object PolybiusSquare {
     inSquareChars
   }
 
+  def lowerSymbol(data: ArrayBuffer[Int], square: PolybiusSquare): Array[Int] = {
+    val result = new Array[Int](data.length)
+    for (i <- 0 until data.length by 2) {
+      val row = data(i)
+      val col = data(i + 1)
+
+      var newRow = addByModulo(row, 1, square.rowsCount)
+      if (col >= square.row(newRow).length) {
+        newRow = 0
+      }
+      result(i) = newRow
+      result(i + 1) = col
+    }
+    result
+  }
+
+  def upperSymbol(data: ArrayBuffer[Int], square: PolybiusSquare): Array[Int] = {
+    val result = new Array[Int](data.length)
+    for (i <- 0 until data.length by 2) {
+      val row = data(i)
+      val col = data(i + 1)
+
+      var newRow = subtractByModulo(row, 1, square.rowsCount)
+      if (col >= square.row(newRow).length) {
+        newRow -= 1
+      }
+
+      result(i) = newRow
+      result(i + 1) = col
+    }
+    result
+  }
+
   def rowsCols(data: ArrayBuffer[Int], square: PolybiusSquare): Array[Int] = {
     val result = new Array[Int](data.length)
     val middle = data.length / 2
