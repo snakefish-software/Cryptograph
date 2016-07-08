@@ -4,7 +4,7 @@ package cipher.classical
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.HashMap
 import scala.language.implicitConversions
-import PolybiusSquare.Coord
+import PolybiusSquare._
 
 sealed trait PolybiusSquare {
   def row(row: Int): Array[Char]
@@ -15,6 +15,17 @@ sealed trait PolybiusSquare {
   def coords(ch: Char): Option[Coord]
   def lastRowLength: Int
   def lastRowFilled: Boolean
+  def strict: PolybiusSquare
+}
+
+trait StrictPolybiusSquare extends PolybiusSquare {
+
+  abstract override def coords(ch: Char): Option[Coord] = {
+    super.coords(ch) match {
+      case None => throw new DataCharNotInSquareException(ch)
+      case x => x
+    }
+  }
 }
 
 object PolybiusSquare {
@@ -34,6 +45,8 @@ object PolybiusSquare {
     def coords(x: Char): Option[Coord] = coordinates.get(x.toLower)
     def lastRowLength = square(square.length - 1).length
     def lastRowFilled = lastRowLength == colsCount
+
+    def strict = new PolybiusSquareImpl(this.square, this.coordinates) with StrictPolybiusSquare
 
     private def opt[T](x: Array[T], i: Int): Option[T] = {
       if (x.length < (i + 1)) None
@@ -168,11 +181,7 @@ object PolybiusSquare {
         case Some((row, col)) =>
           dataNums += row
           dataNums += col
-
-        case None =>
-          if (strictMode) {
-            throw new DataCharNotInSquareException(i)
-          } else notInSquareChars.put(i, dataCh)
+        case None => notInSquareChars.put(i, dataCh)
       }
     }
 

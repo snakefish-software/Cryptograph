@@ -110,10 +110,9 @@ class PolybiusSquareSpec extends BaseSpec {
     ex.row must be (5)
     ex.col must be (3)
   }
-  
-  it must "throw an exception in strict mode if symbol in income data is missing in square" in {
-    val ex = the [DataCharNotInSquareException] thrownBy compute("F12yEo", LATIN, upperSymbol, true)
-    ex.position must be (1)
+
+  it must "throw an exception in strict mode if symbol in input data is missing from square" in {
+    val ex = the [DataCharNotInSquareException] thrownBy compute("F12yEo", LATIN.strict, upperSymbol, true)
   }
   
 }
