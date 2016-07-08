@@ -103,14 +103,14 @@ object PolybiusSquare {
     
     PolybiusSquare(createSquare(sqChars), missedToExistingL)
   }
-  
-  def apply(key: Long, alphabet: Alphabet): PolybiusSquare = 
+
+  def apply(key: Long, alphabet: Alphabet): PolybiusSquare =
     apply(key, alphabet, Map[Char, Char]())
-  
+
   def apply(key: Long, alphabet: Alphabet, missedToExisting: Map[Char, Char]): PolybiusSquare = {
     val missedToExistingL = missedToExisting map { case (k, v) => (k.toLower, v.toLower) }
     val sqChars = new StringBuilder(alphabet.length)
-    
+
     alphabet.toString.foreach(ch => {
       if (!missedToExistingL.contains(ch) && !sqChars.contains(ch))
         sqChars += ch
@@ -120,7 +120,7 @@ object PolybiusSquare {
     
     PolybiusSquare(createSquare(shuffled), missedToExistingL)
   }
-  
+
   private def createSquare(chars: CharSequence): Array[Array[Char]] = {
     val rowsCount = Math.sqrt(chars.length).toInt
     val colsCount = Math.ceil(chars.length.toDouble / rowsCount).toInt

@@ -69,11 +69,12 @@ object PolybiusSquare {
     val lowerSubstitutions = substitutions map { case (k, v) => (k.toLower, v.toLower) }
     val squareChars = new ArrayBuffer[Char](alphabet.length)
 
-    def tryToAddToSquare(ch: Char): Unit = {
-      if (lowerSubstitutions.contains(ch)) return
-      if (squareChars.contains(ch)) return
-      if (!alphabet.contains(ch)) return
-        squareChars += ch
+    def tryToAddToSquare(x: Char): Unit = {
+      if (lowerSubstitutions.contains(x)) return
+      if (squareChars.contains(x)) return
+      if (!alphabet.contains(x)) return
+
+      squareChars += x
     }
 
     for (i <- 0 until key.length) {
@@ -81,9 +82,9 @@ object PolybiusSquare {
       tryToAddToSquare(keyCh)
     }
 
-    alphabet.toString.foreach(tryToAddToSquare)
+    alphabet.chars.foreach(tryToAddToSquare)
 
-    PolybiusSquare(makeSquareFrom(squareChars), lowerSubstitutions)
+    apply(makeSquareFrom(squareChars), lowerSubstitutions, false)
   }
 
   def apply(key: Long, alphabet: Alphabet): PolybiusSquare =
@@ -94,10 +95,9 @@ object PolybiusSquare {
     val squareChars = new StringBuilder(alphabet.length)
 
     alphabet.chars.foreach(ch =>
-      if (!subs.contains(ch) && !squareChars.contains(ch)) squareChars += ch
-    )
+      if (!subs.contains(ch) && !squareChars.contains(ch)) squareChars += ch)
 
-    PolybiusSquare(makeSquareFrom(shuffle(key, squareChars)), subs)
+    apply(makeSquareFrom(shuffle(key, squareChars)), subs)
   }
 
   private def makeSquareFrom(chars: CharSequence): Array[Array[Char]] = {
