@@ -49,7 +49,7 @@ class ADFGX private [classical](
       val colCh = ctTransposed.charAt(i + 1)
       val col = cipherChars.indexOf(colCh.toUpper)
       
-      plaintext += square(row)(col)
+      square.charAt(row, col).foreach(plaintext += _)
     }
     
     plaintext.toString

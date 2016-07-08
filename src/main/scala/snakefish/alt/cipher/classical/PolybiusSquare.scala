@@ -4,135 +4,152 @@ package cipher.classical
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.HashMap
 import scala.language.implicitConversions
+import PolybiusSquare.Coord
 
-case class PolybiusSquare(square: Array[Array[Char]], missedToExisting: Map[Char, Char] = Map()) {
-  
-  private val charsToCoords = new HashMap[Char, (Int, Int)]()
-  
-  for {
-    row <- 0 until square.length
-    col <- 0 until square(row).length
-  } {
-    val chLower = square(row)(col).toLower
-    charsToCoords.put(chLower, (row, col))
-  }
-  
-  for ((missed, existing) <- missedToExisting) {
-    val existingCoords = charsToCoords.get(existing.toLower)
-    if (existingCoords.isDefined)
-      charsToCoords.put(missed.toLower, existingCoords.get)
-  }
-  
-  def apply(row: Int): Array[Char] = square(row)
-  
-  def rowsCount = square.length
-  def colsCount = square(0).length
-  
-  def coords(ch: Char): Option[(Int, Int)] = charsToCoords.get(ch.toLower)
-  def contains(ch: Char) = coords(ch).isDefined
-  
-  def lastRowLength = square(square.length - 1).length
-  def lastRowFilled = lastRowLength == colsCount
-  
+sealed trait PolybiusSquare {
+  def row(row: Int): Array[Char]
+  def charAt(row: Int, col: Int): Option[Char]
+  def contains(ch: Char): Boolean
+  def rowsCount: Int
+  def colsCount: Int
+  def coords(ch: Char): Option[Coord]
+  def lastRowLength: Int
+  def lastRowFilled: Boolean
 }
 
 object PolybiusSquare {
-  
-  case class KeyCharNotInSquareException(position: Int) 
-      extends RuntimeException(s"Key char at position $position is missing in Polybius square")
 
-  case class DataCharNotInSquareException(position: Int) 
-      extends RuntimeException(s"Data char at position $position is missing in Polybius square")
-  
-  case class CoordinatesOutOfBoundsException(position: Int, row: Int, col: Int)
-      extends RuntimeException(s"Coordinates (row = $row; column = $col) of char at position $position are out of Polybius square bounds")
-  
-  case class WrongSquareSizeException(msg: String)
-      extends RuntimeException(msg)
-  
-  implicit def squareToArray(square: PolybiusSquare): Array[Array[Char]] = square.square
-  
-  implicit def arrayToSquare(array: Array[Array[Char]]): PolybiusSquare = PolybiusSquare(array)
+  type Coord = (Int, Int) // (row, col)
 
-  val LATIN = PolybiusSquare(
-    Array(Array('a', 'b', 'c', 'd', 'e'),
-          Array('f', 'g', 'h', 'i', 'k'),
-          Array('l', 'm', 'n', 'o', 'p'),
-          Array('q', 'r', 's', 't', 'u'),
-          Array('v', 'w', 'x', 'y', 'z')),
-    Map('j' -> 'i'))
+  private class PolybiusSquareImpl(
+    square: Array[Array[Char]],
+    coordinates: Map[Char, Coord]
+  ) extends PolybiusSquare {
 
-  val RUSSIAN_ALL = PolybiusSquare(
-    Array(Array('а', 'б', 'в', 'г', 'д', 'е'),
-          Array('ё', 'ж', 'з', 'и', 'й', 'к'),
-          Array('л', 'м', 'н', 'о', 'п', 'р'),
-          Array('с', 'т', 'у', 'ф', 'х', 'ц'),
-          Array('ч', 'ш', 'щ', 'ъ', 'ы', 'ь'),
-          Array('э', 'ю', 'я')))
+    def charAt(row: Int, col: Int) = opt(square, row).flatMap(opt(_, col))
+    def row(row: Int) = square(row)
+    def contains(x: Char) = coordinates.contains(x.toLower)
+    def rowsCount = square.length
+    def colsCount = square(0).length
+    def coords(x: Char): Option[Coord] = coordinates.get(x.toLower)
+    def lastRowLength = square(square.length - 1).length
+    def lastRowFilled = lastRowLength == colsCount
 
-  val RUSSIAN_SHORT = PolybiusSquare(
-    Array(Array('а', 'б', 'в', 'г', 'д', 'е'),
-          Array('ж', 'з', 'и', 'к', 'л', 'м'),
-          Array('н', 'о', 'п', 'р', 'с', 'т'),
-          Array('у', 'ф', 'х', 'ц', 'ч', 'ш'),
-          Array('щ', 'ы', 'ь', 'э', 'ю', 'я')),
-    Map('ё' -> 'е',
-        'й' -> 'и',
-        'ъ' -> 'ь'))
-  
-  def apply(key: CharSequence, alphabet: Alphabet): PolybiusSquare = 
+    private def opt[T](x: Array[T], i: Int): Option[T] = {
+      if (x.length < (i + 1)) None
+      else Option(x(i))
+    }
+  }
+
+  def apply(
+    square: Array[Array[Char]],
+    substitutions: Map[Char, Char] = Map(),
+    strict: Boolean = false
+  ): PolybiusSquare = {
+
+    val coords = new HashMap[Char, Coord]()
+
+    for {
+      row <- 0 until square.length
+      col <- 0 until square(row).length
+    } coords.put(square(row)(col).toLower, (row, col))
+
+    for {
+      (missing, existing) <- substitutions
+      coord <- coords.get(existing.toLower)
+    } coords.put(missing.toLower, coord)
+
+    new PolybiusSquareImpl(square, coords.toMap)
+  }
+
+  def apply(key: CharSequence, alphabet: Alphabet): PolybiusSquare =
     apply(key, alphabet, Map[Char, Char]())
 
-  def apply(key: CharSequence, alphabet: Alphabet, missedToExisting: Map[Char, Char]): PolybiusSquare = {
-    val missedToExistingL = missedToExisting map { case (k, v) => (k.toLower, v.toLower) }
-    val sqChars = new ArrayBuffer[Char](alphabet.length)
-    
+  def apply(key: CharSequence, alphabet: Alphabet, substitutions: Map[Char, Char]): PolybiusSquare = {
+    val lowerSubstitutions = substitutions map { case (k, v) => (k.toLower, v.toLower) }
+    val squareChars = new ArrayBuffer[Char](alphabet.length)
+
     def tryToAddToSquare(ch: Char): Unit = {
-      if (missedToExistingL.contains(ch)) return
-      if (sqChars.contains(ch)) return
+      if (lowerSubstitutions.contains(ch)) return
+      if (squareChars.contains(ch)) return
       if (!alphabet.contains(ch)) return
-      sqChars += ch
+        squareChars += ch
     }
 
     for (i <- 0 until key.length) {
       val keyCh = key.charAt(i).toLower
       tryToAddToSquare(keyCh)
     }
-    
+
     alphabet.toString.foreach(tryToAddToSquare)
-    
-    PolybiusSquare(createSquare(sqChars), missedToExistingL)
+
+    PolybiusSquare(makeSquareFrom(squareChars), lowerSubstitutions)
   }
-  
-  def apply(key: Long, alphabet: Alphabet): PolybiusSquare = 
+
+  def apply(key: Long, alphabet: Alphabet): PolybiusSquare =
     apply(key, alphabet, Map[Char, Char]())
-  
-  def apply(key: Long, alphabet: Alphabet, missedToExisting: Map[Char, Char]): PolybiusSquare = {
-    val missedToExistingL = missedToExisting map { case (k, v) => (k.toLower, v.toLower) }
-    val sqChars = new StringBuilder(alphabet.length)
-    
-    alphabet.toString.foreach(ch => {
-      if (!missedToExistingL.contains(ch) && !sqChars.contains(ch))
-        sqChars += ch
-    })
-    
-    val shuffled = shuffle(key, sqChars)
-    
-    PolybiusSquare(createSquare(shuffled), missedToExistingL)
+
+  def apply(key: Long, alphabet: Alphabet, substitutions: Map[Char, Char]): PolybiusSquare = {
+    val subs = substitutions map { case (k, v) => (k.toLower, v.toLower) }
+    val squareChars = new StringBuilder(alphabet.length)
+
+    alphabet.chars.foreach(ch =>
+      if (!subs.contains(ch) && !squareChars.contains(ch)) squareChars += ch
+    )
+
+    PolybiusSquare(makeSquareFrom(shuffle(key, squareChars)), subs)
   }
-  
-  private def createSquare(chars: CharSequence): Array[Array[Char]] = {
-    val rowsCount = Math.sqrt(chars.length).toInt
-    val colsCount = Math.ceil(chars.length.toDouble / rowsCount).toInt
-    
-    val square = Array.ofDim[Char](rowsCount, colsCount)
+
+  private def makeSquareFrom(chars: CharSequence): Array[Array[Char]] = {
+    val rows = Math.sqrt(chars.length).toInt
+    val cols = Math.ceil(chars.length.toDouble / rows).toInt
+
+    val square = Array.ofDim[Char](rows, cols)
     for (i <- 0 until chars.length) {
-      val row = i / colsCount
-      val col = i % colsCount
+      val row = i / cols
+      val col = i % cols
       square(row)(col) = chars.charAt(i)
     }
     square
   }
+
+  case class KeyCharNotInSquareException(position: Int)
+      extends RuntimeException(s"Key char at position $position is missing in Polybius square")
+
+  case class DataCharNotInSquareException(position: Int)
+      extends RuntimeException(s"Data char at position $position is missing in Polybius square")
+
+  case class CoordinatesOutOfBoundsException(position: Int, row: Int, col: Int)
+      extends RuntimeException(s"Coordinates (row = $row; column = $col) of char at position $position are out of Polybius square bounds")
+
+  case class WrongSquareSizeException(msg: String)
+      extends RuntimeException(msg)
+
+  val LATIN = PolybiusSquare(
+    Array(Array('a', 'b', 'c', 'd', 'e'),
+      Array('f', 'g', 'h', 'i', 'k'),
+      Array('l', 'm', 'n', 'o', 'p'),
+      Array('q', 'r', 's', 't', 'u'),
+      Array('v', 'w', 'x', 'y', 'z')),
+    Map('j' -> 'i'))
+
+  val RUSSIAN_ALL = PolybiusSquare(
+    Array(Array('а', 'б', 'в', 'г', 'д', 'е'),
+      Array('ё', 'ж', 'з', 'и', 'й', 'к'),
+      Array('л', 'м', 'н', 'о', 'п', 'р'),
+      Array('с', 'т', 'у', 'ф', 'х', 'ц'),
+      Array('ч', 'ш', 'щ', 'ъ', 'ы', 'ь'),
+      Array('э', 'ю', 'я')))
+
+  val RUSSIAN_SHORT = PolybiusSquare(
+    Array(Array('а', 'б', 'в', 'г', 'д', 'е'),
+      Array('ж', 'з', 'и', 'к', 'л', 'м'),
+      Array('н', 'о', 'п', 'р', 'с', 'т'),
+      Array('у', 'ф', 'х', 'ц', 'ч', 'ш'),
+      Array('щ', 'ы', 'ь', 'э', 'ю', 'я')),
+    Map('ё' -> 'е',
+      'й' -> 'и',
+      'ъ' -> 'ь'))
 
   @throws(classOf[DataCharNotInSquareException])
   @throws(classOf[CoordinatesOutOfBoundsException])
@@ -144,55 +161,54 @@ object PolybiusSquare {
   ): String = {
     val dataNums = new ArrayBuffer[Int](data.length * 2)
     val notInSquareChars = new HashMap[Int, Char]()
-    
+
     for (i <- 0 until data.length) {
       val dataCh = data.charAt(i)
       square.coords(dataCh) match {
         case Some((row, col)) =>
           dataNums += row
           dataNums += col
-        
+
         case None =>
           if (strictMode) {
             throw new DataCharNotInSquareException(i)
           } else notInSquareChars.put(i, dataCh)
       }
     }
-    
+
     val compDataNums = computeFunc(dataNums, square)
-    
+
     val result = new StringBuilder(data.length)
-    var inSqInd = 0
+    var inSquareIndex = 0
     for (i <- 0 until data.length) {
       val notInSquareCh = notInSquareChars.get(i)
       if (notInSquareCh.isEmpty) {
-        val row = compDataNums(inSqInd * 2)
-        val col = compDataNums(inSqInd * 2 + 1)
-        
-        if (row < square.rowsCount && col < square(row).length) {
-          var resCh = square(row)(col)
-          if (data.charAt(i).isUpper) {
-            resCh = resCh.toUpper
+        val row = compDataNums(inSquareIndex * 2)
+        val col = compDataNums(inSquareIndex * 2 + 1)
+
+        if (row < square.rowsCount && col < square.row(row).length) {
+          square.charAt(row, col).foreach { x =>
+            if (data.charAt(i).isUpper) result += x.toUpper
+            else result += x
+            inSquareIndex += 1
           }
-          result += resCh
-          inSqInd += 1
         } else throw new CoordinatesOutOfBoundsException(i, row, col)
       } else result += notInSquareCh.get
     }
     result.toString
   }
-  
+
   @throws(classOf[DataCharNotInSquareException])
   def filter(data: CharSequence, square: PolybiusSquare, strictMode: Boolean): StringBuilder = {
     val inSquareChars = new StringBuilder(data.length)
-    
+
     for (i <- 0 until data.length) {
       val ch = data.charAt(i)
       if (square.contains(ch))
         inSquareChars.append(ch)
       else if (strictMode) throw new DataCharNotInSquareException(i)
     }
-    
+
     inSquareChars
   }
 
