@@ -31,7 +31,7 @@ package object classical {
         calcIndex += 1
       } else {
         if (strictMode) {
-          throw new DataCharNotInAlphabetException(i)
+          throw new DataCharNotInAlphabetException(dataChar, i)
         } else result += dataChar
       }
     }

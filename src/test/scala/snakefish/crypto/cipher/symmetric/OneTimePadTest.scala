@@ -35,11 +35,13 @@ class OneTimePadTest extends BaseTest {
   
   it must "throw an exception if plaintext contains char that is missing in alphabet" in {
     val ex = the [DataCharNotInAlphabetException] thrownBy cipher.encrypt(charKey, " " + charPlaintext)
+    ex.char must be (' ')
     ex.position must be (0)
   }
   
   it must "throw an exception if key contains char that is missing in alphabet" in {
     val ex = the [KeyCharNotInAlphabetException] thrownBy cipher.encrypt(" " + charKey, charPlaintext)
+    ex.char must be (' ')
     ex.position must be (0)
   }
   
@@ -54,11 +56,13 @@ class OneTimePadTest extends BaseTest {
   
   it must "throw an exception if ciphertext contains char that is missing in alphabet" in {
     val ex = the [DataCharNotInAlphabetException] thrownBy cipher.decrypt(charKey, " " + charCiphertext)
+    ex.char must be (' ')
     ex.position must be (0)
   }
   
   it must "throw an exception if key contains char that is missing in alphabet" in {
     val ex = the [KeyCharNotInAlphabetException] thrownBy cipher.decrypt(" " + charKey, charCiphertext)
+    ex.char must be (' ')
     ex.position must be (0)
   }
   

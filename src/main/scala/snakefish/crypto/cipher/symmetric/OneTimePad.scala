@@ -46,16 +46,20 @@ class OneTimePad(val alphabet: Alphabet) {
     
     val result = new Array[Char](data.length)
     for (i <- 0 until data.length) {
-      val dataCharIndex = alphabet.indexOf(data.charAt(i))
+      val dataChar = data.charAt(i)
+      val dataCharIndex = alphabet.indexOf(dataChar)
       if (dataCharIndex < 0) {
         erase(result)
-        throw new DataCharNotInAlphabetException(i)
+        throw new DataCharNotInAlphabetException(dataChar, i)
       }
-      val keyCharIndex = alphabet.indexOf(key.charAt(i))
+      
+      val keyChar = key.charAt(i)
+      val keyCharIndex = alphabet.indexOf(keyChar)
       if (keyCharIndex < 0) {
         erase(result)
-        throw new KeyCharNotInAlphabetException(i)
+        throw new KeyCharNotInAlphabetException(keyChar, i)
       }
+      
       val resultCharIndex = resultIndexCalc(dataCharIndex, keyCharIndex, alphabet.length)
       result(i) = alphabet(resultCharIndex)
     }

@@ -5,13 +5,13 @@ class AlphabetTest extends BaseTest {
   private val plainAlphabet = "абвгдежзийклмн"
   
   "KeyCharNotInAlphabetException" must "have correct exception message" in {
-    val ex = new KeyCharNotInAlphabetException(5)
-    ex.getMessage must be ("Key char at position 5 is missing in alphabet")
+    val ex = new KeyCharNotInAlphabetException('a', 5)
+    ex.getMessage must be ("Char 'a' at position 5 is missing in alphabet")
   }
   
   "DataCharNotInAlphabetException" must "have correct exception message" in {
-    val ex = new DataCharNotInAlphabetException(5)
-    ex.getMessage must be ("Data char at position 5 is missing in alphabet")
+    val ex = new DataCharNotInAlphabetException('a', 5)
+    ex.getMessage must be ("Char 'a' at position 5 is missing in alphabet")
   }
   
   ".apply" must "create Alphabet instance from string" in {

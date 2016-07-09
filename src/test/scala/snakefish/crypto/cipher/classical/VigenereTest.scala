@@ -19,6 +19,7 @@ class VigenereTest extends BaseTest {
   
   it must "throw an exception in strict mode if plaintext contains symbols that are missing in alphabet" in {
     val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.encrypt(plaintext)
+    ex.char must be (' ')
     ex.position must be (plaintext.indexOf(' '))
   }
   
@@ -31,6 +32,7 @@ class VigenereTest extends BaseTest {
   
   it must "throw an exception in strict mode if ciphertext contains symbols that are missing in alphabet" in {
     val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.decrypt(ciphertext)
+    ex.char must be (' ')
     ex.position must be (ciphertext.indexOf(' '))
   }
   
