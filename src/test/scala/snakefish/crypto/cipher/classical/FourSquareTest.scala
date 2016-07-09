@@ -50,6 +50,7 @@ class FourSquareTest extends BaseTest {
   
   it must "throw an exception in strict mode if plaintext contains char that is missing in plain Polybius square" in {
     val ex = the [DataCharNotInSquareException] thrownBy strictCipher.encrypt(plaintext)
+    ex.char must be (' ')
     ex.position must be (plaintext.indexOf(' '))
   }
   
@@ -62,6 +63,7 @@ class FourSquareTest extends BaseTest {
   
   it must "throw an exception in strict mode if ciphertext contains char that is missing in relevant cipher Polybius squares" in {
     val ex = the [DataCharNotInSquareException] thrownBy strictCipher.decrypt("абв гд")
+    ex.char must be (' ')
     ex.position must be (3)
   }
   

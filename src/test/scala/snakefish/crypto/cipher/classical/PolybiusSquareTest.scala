@@ -6,13 +6,13 @@ import PolybiusSquare._
 class PolybiusSquareTest extends BaseTest {
   
   "KeyCharNotInSquareException" must "have correct exception message" in {
-    val ex = new KeyCharNotInSquareException(5)
-    ex.getMessage must be ("Key char at position 5 is missing in Polybius square")
+    val ex = new KeyCharNotInSquareException('a', 5)
+    ex.getMessage must be ("Char 'a' at position 5 is missing in Polybius square")
   }
   
   "DataCharNotInSquareException" must "have correct exception message" in {
-    val ex = new DataCharNotInSquareException(5)
-    ex.getMessage must be ("Data char at position 5 is missing in Polybius square")
+    val ex = new DataCharNotInSquareException('a', 5)
+    ex.getMessage must be ("Char 'a' at position 5 is missing in Polybius square")
   }
   
   "CoordinatesOutOfBoundsException" must "have correct exception message" in {

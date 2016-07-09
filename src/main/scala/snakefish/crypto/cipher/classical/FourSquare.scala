@@ -72,13 +72,13 @@ class FourSquare(val plainSquare: PolybiusSquare,
     
     var inSquareIndex = 0;
     for (i <- 0 until ciphertext.length) {
-      val ch = ciphertext.charAt(i)
-      val isInSquare = (inSquareIndex % 2 == 0 && cipherSquare1.contains(ch)) ||
-                       (inSquareIndex % 2 == 1 && cipherSquare2.contains(ch))
+      val ctChar = ciphertext.charAt(i)
+      val isInSquare = (inSquareIndex % 2 == 0 && cipherSquare1.contains(ctChar)) ||
+                       (inSquareIndex % 2 == 1 && cipherSquare2.contains(ctChar))
       if (isInSquare) {
-        inSquareChars += ch
+        inSquareChars += ctChar
         inSquareIndex += 1
-      } else if (strictMode) throw new DataCharNotInSquareException(i)
+      } else if (strictMode) throw new DataCharNotInSquareException(ctChar, i)
     }
     
     if (inSquareChars.length % 2 != 0)

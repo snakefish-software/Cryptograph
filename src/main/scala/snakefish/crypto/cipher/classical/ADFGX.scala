@@ -38,7 +38,7 @@ class ADFGX (val square: PolybiusSquare,
           ptInCipherChars += cipherChars.charAt(row)
           ptInCipherChars += cipherChars.charAt(col)
         case None =>
-          if (strictMode) throw new DataCharNotInSquareException(i)
+          if (strictMode) throw new DataCharNotInSquareException(ptChar, i)
       }
     }
     transposition.encrypt(ptInCipherChars)

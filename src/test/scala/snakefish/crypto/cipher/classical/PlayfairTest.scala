@@ -32,6 +32,7 @@ class PlayfairTest extends BaseTest {
   
   it must "throw an exception in strict mode if plaintext contains char that is missing in Polybius square" in {
     val ex = the [DataCharNotInSquareException] thrownBy strictCipher.encrypt(plaintext)
+    ex.char must be (' ')
     ex.position must be (plaintext.indexOf(' '))
   }
   
@@ -44,6 +45,7 @@ class PlayfairTest extends BaseTest {
   
   it must "throw an exception in strict mode if ciphertext contains char that is missing in Polybius square" in {
     val ex = the [DataCharNotInSquareException] thrownBy strictCipher.decrypt(plaintext)
+    ex.char must be (' ')
     ex.position must be (plaintext.indexOf(' '))
   }
   

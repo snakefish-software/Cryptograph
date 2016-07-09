@@ -43,6 +43,7 @@ class ADFGXTest extends BaseTest {
   
   it must "throw an exception in strict mode if plaintext contains char that is missing in Polybius square" in {
     val ex = the [DataCharNotInSquareException] thrownBy strictCipher.encrypt(plaintext)
+    ex.char must be (' ')
     ex.position must be (plaintext.indexOf(' '))
   }
   

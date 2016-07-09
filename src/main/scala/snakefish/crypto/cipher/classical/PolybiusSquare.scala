@@ -38,11 +38,11 @@ case class PolybiusSquare(square: Array[Array[Char]], missedToExisting: Map[Char
 
 object PolybiusSquare {
   
-  case class KeyCharNotInSquareException(position: Int) 
-      extends RuntimeException(s"Key char at position $position is missing in Polybius square")
+  case class KeyCharNotInSquareException(char: Char, position: Int) 
+      extends RuntimeException(s"Char '$char' at position $position is missing in Polybius square")
 
-  case class DataCharNotInSquareException(position: Int) 
-      extends RuntimeException(s"Data char at position $position is missing in Polybius square")
+  case class DataCharNotInSquareException(char: Char, position: Int) 
+      extends RuntimeException(s"Char '$char' at position $position is missing in Polybius square")
   
   case class CoordinatesOutOfBoundsException(position: Int, row: Int, col: Int)
       extends RuntimeException(s"Coordinates (row = $row; column = $col) of char at position $position are out of Polybius square bounds")
@@ -154,7 +154,7 @@ object PolybiusSquare {
         
         case None =>
           if (strictMode) {
-            throw new DataCharNotInSquareException(i)
+            throw new DataCharNotInSquareException(dataChar, i)
           } else notInSquareChars.put(i, dataChar)
       }
     }
@@ -190,7 +190,7 @@ object PolybiusSquare {
       val dataChar = data.charAt(i)
       if (square.contains(dataChar)) {
         inSquareChars.append(dataChar)
-      } else if (strictMode) throw new DataCharNotInSquareException(i)
+      } else if (strictMode) throw new DataCharNotInSquareException(dataChar, i)
     }
     
     inSquareChars

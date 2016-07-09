@@ -21,7 +21,8 @@ class Nihilist(val key: CharSequence, val square: PolybiusSquare, val strictMode
     var keyCharIndex = 0
     
     for (i <- 0 until plaintext.length) {
-      square.coords(plaintext.charAt(i)) match {
+      val ptChar = plaintext.charAt(i)
+      square.coords(ptChar) match {
         case Some((row, col)) =>
           val ptNum = toInt(row, col)
           val keyNum = if (keyLength > 0) keyNums(keyCharIndex % keyLength) else 0
@@ -29,7 +30,7 @@ class Nihilist(val key: CharSequence, val square: PolybiusSquare, val strictMode
           keyCharIndex += 1
         
         case None =>
-          if (strictMode) throw new DataCharNotInSquareException(i)
+          if (strictMode) throw new DataCharNotInSquareException(ptChar, i)
       }
     }
     
