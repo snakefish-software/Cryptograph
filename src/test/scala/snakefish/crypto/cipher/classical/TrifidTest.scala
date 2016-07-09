@@ -24,8 +24,8 @@ class TrifidTest extends BaseTest {
   private val strictCipher = Trifid(cube, period, true)
                                  
   "DataCharNotInCubeException" must "have correct exception message" in {
-    val ex = new DataCharNotInCubeException(5)
-    ex.getMessage must be ("Data char at position 5 is missing in cube")
+    val ex = new DataCharNotInCubeException('a', 5)
+    ex.getMessage must be ("Char 'a' at position 5 is missing in cube")
   }
   
   "CoordinatesOutOfBoundsException" must "have correct exception message" in {
@@ -54,6 +54,7 @@ class TrifidTest extends BaseTest {
   
   it must "throw an exception in strict mode if ciphertext contains symbols that are missing in cube" in {
     val ex = the [DataCharNotInCubeException] thrownBy strictCipher.decrypt(ciphertext)
+    ex.char must be (' ')
     ex.position must be (ciphertext.indexOf(' '))
   }
   

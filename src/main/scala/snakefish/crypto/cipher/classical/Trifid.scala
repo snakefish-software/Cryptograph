@@ -10,8 +10,8 @@ object Trifid {
   def apply(cube: Array[Array[Array[Char]]], period: Int, strictMode: Boolean = false) = 
     new Trifid(cube, period, strictMode)
   
-  case class DataCharNotInCubeException(position: Int) 
-      extends RuntimeException(s"Data char at position $position is missing in cube")
+  case class DataCharNotInCubeException(char: Char, position: Int) 
+      extends RuntimeException(s"Char '$char' at position $position is missing in cube")
   
   case class CoordinatesOutOfBoundsException(position: Int, table: Int, row: Int, col: Int)
       extends RuntimeException(s"Coordinates (table = $table; row = $row; column = $col) of char at position $position are out of cube bounds")
@@ -42,7 +42,7 @@ class Trifid(val cube: Array[Array[Array[Char]]], val period: Int, val strictMod
         dataNums += coords(1)
         dataNums += coords(2)
       } else {
-        if (strictMode) throw new DataCharNotInCubeException(i)
+        if (strictMode) throw new DataCharNotInCubeException(dataChar, i)
         else notInSquareChars.put(i, dataChar)
       }
     }
