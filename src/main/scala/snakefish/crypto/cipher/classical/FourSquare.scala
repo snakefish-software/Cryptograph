@@ -42,7 +42,7 @@ class FourSquare(val plainSquare: PolybiusSquare,
       plainSquare.colsCount != cipherSquare2.colsCount)
     throw new SquaresDifferentSizeException()
   
-  if (!plainSquare.lastRowFilled || !cipherSquare1.lastRowFilled || !cipherSquare2.lastRowFilled)
+  if (!plainSquare.lastRowIsFilled || !cipherSquare1.lastRowIsFilled || !cipherSquare2.lastRowIsFilled)
     throw new WrongSquareSizeException("Last row of square is not filled")
   
   if (!plainSquare.contains(placeholder))
@@ -55,14 +55,14 @@ class FourSquare(val plainSquare: PolybiusSquare,
       inSquareChars.append(placeholder)
     }
       
-    val result = new StringBuilder(inSquareChars.length)
+    val ciphertext = new StringBuilder(inSquareChars.length)
     for (i <- 0 until inSquareChars.length by 2) {
       val (row1, col1) = plainSquare.coords(inSquareChars(i)).get
       val (row2, col2) = plainSquare.coords(inSquareChars(i + 1)).get
-      result += cipherSquare1(row1)(col2)
-      result += cipherSquare2(row2)(col1)
+      ciphertext += cipherSquare1(row1)(col2)
+      ciphertext += cipherSquare2(row2)(col1)
     }
-    result.toString
+    ciphertext.toString
   }
   
   @throws(classOf[OddCiphertextLengthException])
@@ -70,29 +70,29 @@ class FourSquare(val plainSquare: PolybiusSquare,
   def decrypt(ciphertext: CharSequence): String = {
     val inSquareChars = new ArrayBuffer[Char](ciphertext.length)
     
-    var inSqIndex = 0;
+    var inSquareIndex = 0;
     for (i <- 0 until ciphertext.length) {
       val ch = ciphertext.charAt(i)
-      val isInSquare = (inSqIndex % 2 == 0 && cipherSquare1.contains(ch)) ||
-                       (inSqIndex % 2 == 1 && cipherSquare2.contains(ch))
+      val isInSquare = (inSquareIndex % 2 == 0 && cipherSquare1.contains(ch)) ||
+                       (inSquareIndex % 2 == 1 && cipherSquare2.contains(ch))
       if (isInSquare) {
         inSquareChars += ch
-        inSqIndex += 1
+        inSquareIndex += 1
       } else if (strictMode) throw new DataCharNotInSquareException(i)
     }
     
     if (inSquareChars.length % 2 != 0)
       throw new OddCiphertextLengthException()
     
-    var result = new StringBuilder(inSquareChars.length)
+    var plaintext = new StringBuilder(inSquareChars.length)
     for (i <- 0 until inSquareChars.length by 2) {
       val Some((row1, col2)) = cipherSquare1.coords(inSquareChars(i))
       val Some((row2, col1)) = cipherSquare2.coords(inSquareChars(i + 1))
-      result += plainSquare(row1)(col1)
-      result += plainSquare(row2)(col2)
+      plaintext += plainSquare(row1)(col1)
+      plaintext += plainSquare(row2)(col2)
     }
       
-    result.toString
+    plaintext.toString
   }
   
 }

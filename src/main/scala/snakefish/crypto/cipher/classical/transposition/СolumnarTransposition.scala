@@ -13,7 +13,7 @@ abstract class СolumnarTransposition(val key: CharSequence,
   
   def ciphertextToCols(ciphertext: CharSequence, cols: Array[StringBuilder]): Unit
   
-  def encrypt(plaintext: CharSequence): String = {
+  final def encrypt(plaintext: CharSequence): String = {
     val ptLength = plaintext.length
     val cols = createEmptyCols(getRowsCount(ptLength))
     
@@ -26,7 +26,7 @@ abstract class СolumnarTransposition(val key: CharSequence,
     ciphertext.toString
   }
   
-  def decrypt(ciphertext: CharSequence): String = {
+  final def decrypt(ciphertext: CharSequence): String = {
     val ctLength = ciphertext.length
     val rowsCount = getRowsCount(ctLength)
     
@@ -46,13 +46,13 @@ abstract class СolumnarTransposition(val key: CharSequence,
     plaintext.toString
   }
   
-  protected def getRowsCount(dataLength: Int): Int = 
+  final protected def getRowsCount(dataLength: Int): Int = 
     Math.ceil(dataLength.toDouble / colsCount).toInt
     
-  protected def getLastRowLength(dataLength: Int): Int = 
+  final protected def getLastRowLength(dataLength: Int): Int = 
     colsCount - (colsCount * getRowsCount(dataLength) - dataLength)
     
-  protected def getColHeight(dataLength: Int, colIndex: Int): Int = {
+  final protected def getColHeight(dataLength: Int, colIndex: Int): Int = {
     val rowsCount = getRowsCount(dataLength)
     val lastRowLength = getLastRowLength(dataLength)
     if (colIndex >= lastRowLength) rowsCount - 1 else rowsCount

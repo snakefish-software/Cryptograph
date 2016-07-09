@@ -17,7 +17,7 @@ class Playfair(val square: PolybiusSquare, private val _placeholder: Char, val s
   
   val placeholder = _placeholder.toLower
   
-  if (!square.lastRowFilled)
+  if (!square.lastRowIsFilled)
     throw new WrongSquareSizeException("Last row of Polybius square is not filled")
   
   if (!square.contains(placeholder))
@@ -26,14 +26,14 @@ class Playfair(val square: PolybiusSquare, private val _placeholder: Char, val s
   @throws(classOf[DataCharNotInSquareException])
   def encrypt(plaintext: CharSequence): String = {
     val inSquareChars = filter(plaintext, square, strictMode)
-    val dataLen = inSquareChars.length
-    val charsToComp = new StringBuilder(dataLen)
+    val dataLength = inSquareChars.length
+    val charsToComp = new StringBuilder(dataLength)
     
     var i = 0
-    while (i < dataLen) {
+    while (i < dataLength) {
       val ch1 = inSquareChars(i)
       charsToComp += ch1
-      if (i + 1 < dataLen) {
+      if (i + 1 < dataLength) {
         val ch2 = inSquareChars(i + 1)
         if (ch1 == ch2) {
           charsToComp += placeholder
@@ -59,23 +59,23 @@ class Playfair(val square: PolybiusSquare, private val _placeholder: Char, val s
       throw new OddCiphertextLengthException()
     
     val decrypted = crypt(charsToComp, subtractByModulo)
-    val result = new StringBuilder(decrypted.length)
+    val plaintext = new StringBuilder(decrypted.length)
 
     for (i <- 0 until decrypted.length by 2) {
       val ch1 = decrypted(i)
       val ch2 = decrypted(i + 1)
       
-      result += ch1
+      plaintext += ch1
       
       val isPlaceholder = ch2 == placeholder && 
                           i + 2 < decrypted.length && 
                           decrypted(i + 2) == ch1       
       
       if (!isPlaceholder)
-        result += ch2
+        plaintext += ch2
     }
     
-    result.toString
+    plaintext.toString
   }
   
   private def crypt(data: CharSequence, sameRowColFunc: (Int, Int, Int) => Int): StringBuilder = {

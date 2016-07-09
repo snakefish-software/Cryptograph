@@ -36,40 +36,38 @@ class Trifid(val cube: Array[Array[Array[Char]]], val period: Int, val strictMod
     val coords = new Array[Int](3)
     
     for (i <- 0 until data.length) {
-      val dataCh = data.charAt(i)
-      if (compCoords(dataCh, coords)) {
+      val dataChar = data.charAt(i)
+      if (compCoords(dataChar, coords)) {
         dataNums += coords(0)
         dataNums += coords(1)
         dataNums += coords(2)
       } else {
-        if (strictMode) 
-          throw new DataCharNotInCubeException(i)
-        
-        else notInSquareChars.put(i, dataCh)
+        if (strictMode) throw new DataCharNotInCubeException(i)
+        else notInSquareChars.put(i, dataChar)
       }
     }
     
     applyBlockFunc(dataNums, blockCrypt)
     
     val result = new StringBuilder(data.length)
-    var compInd = 0
+    var compIndex = 0
     for (i <- 0 until data.length) {
-      val notInSquareCh = notInSquareChars.get(i)
-      if (notInSquareCh.isEmpty) {
-        val table = dataNums(compInd * 3)
-        val row = dataNums(compInd * 3 + 1)
-        val col = dataNums(compInd * 3 + 2)
+      val notInSquareChar = notInSquareChars.get(i)
+      if (notInSquareChar.isEmpty) {
+        val table = dataNums(compIndex * 3)
+        val row = dataNums(compIndex * 3 + 1)
+        val col = dataNums(compIndex * 3 + 2)
         
         if (table >= cube.length || row >= cube(table).length || col >= cube(table)(row).length)
           throw new CoordinatesOutOfBoundsException(i, table, row, col)
           
-        var resCh = cube(table)(row)(col)
+        var resultChar = cube(table)(row)(col)
         if (data.charAt(i).isUpper) {
-          resCh = resCh.toUpper
+          resultChar = resultChar.toUpper
         }
-        result += resCh
-        compInd += 1
-      } else result += notInSquareCh.get
+        result += resultChar
+        compIndex += 1
+      } else result += notInSquareChar.get
     }
 
     result.toString
@@ -84,13 +82,13 @@ class Trifid(val cube: Array[Array[Array[Char]]], val period: Int, val strictMod
     if (fullBlocksCount > 0) {
       val dataBlock = ArrayBuffer.fill(blockSize)(0)
       val compBlock = new Array[Int](blockSize)
-      for (blockInd <- 0 until fullBlocksCount) {
+      for (blockIndex <- 0 until fullBlocksCount) {
         for (i <- 0 until blockSize) {
-          dataBlock(i) = data(blockInd * blockSize + i)
+          dataBlock(i) = data(blockIndex * blockSize + i)
         }
         blockComputeFunc(dataBlock, compBlock)
         for (i <- 0 until blockSize) {
-          data(blockInd * blockSize + i) = compBlock(i)
+          data(blockIndex * blockSize + i) = compBlock(i)
         }  
       }
     }
@@ -108,14 +106,13 @@ class Trifid(val cube: Array[Array[Array[Char]]], val period: Int, val strictMod
   }
   
   private def compCoords(ch: Char, coords: Array[Int]): Boolean = {
-    val chLower = ch.toLower
-    
+    val charLower = ch.toLower
     for {
       table <- 0 until cube.length
       row   <- 0 until cube(table).length
       col   <- 0 until cube(table)(row).length
     } {
-      if (chLower == cube(table)(row)(col).toLower) {
+      if (charLower == cube(table)(row)(col).toLower) {
         coords(0) = table
         coords(1) = row
         coords(2) = col

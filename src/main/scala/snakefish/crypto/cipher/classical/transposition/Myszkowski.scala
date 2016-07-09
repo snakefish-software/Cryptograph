@@ -32,8 +32,9 @@ class Myszkowski(key: CharSequence, alphabet: Alphabet)
         colIndex <- colsIndices
       } {
         val col = cols(colIndex)
-        if (rowIndex < col.length)
+        if (rowIndex < col.length) {
           ciphertext += col.charAt(rowIndex)
+        }
       }
     }
   }

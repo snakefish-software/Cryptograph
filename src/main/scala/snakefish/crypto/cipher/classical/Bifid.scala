@@ -31,13 +31,13 @@ class Bifid(val square: PolybiusSquare, val period: Int, val strictMode: Boolean
         val fullBlocksCount = data.length / blockSize
         if (fullBlocksCount > 0) {
           val dataBlock = ArrayBuffer.fill(blockSize)(0)
-          for (blockInd <- 0 until fullBlocksCount) {
+          for (blockIndex <- 0 until fullBlocksCount) {
             for (i <- 0 until blockSize) {
-              dataBlock(i) = data(blockInd * blockSize + i)
+              dataBlock(i) = data(blockIndex * blockSize + i)
             }
             val compBlock = blockComputeFunc(dataBlock, square)
             for (i <- 0 until blockSize) {
-              result(blockInd * blockSize + i) = compBlock(i)
+              result(blockIndex * blockSize + i) = compBlock(i)
             }
           }
         }

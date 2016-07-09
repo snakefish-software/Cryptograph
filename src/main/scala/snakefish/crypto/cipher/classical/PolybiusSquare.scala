@@ -13,8 +13,8 @@ case class PolybiusSquare(square: Array[Array[Char]], missedToExisting: Map[Char
     row <- 0 until square.length
     col <- 0 until square(row).length
   } {
-    val chLower = square(row)(col).toLower
-    charsToCoords.put(chLower, (row, col))
+    val charLower = square(row)(col).toLower
+    charsToCoords.put(charLower, (row, col))
   }
   
   for ((missed, existing) <- missedToExisting) {
@@ -25,14 +25,14 @@ case class PolybiusSquare(square: Array[Array[Char]], missedToExisting: Map[Char
   
   def apply(row: Int): Array[Char] = square(row)
   
-  def rowsCount = square.length
-  def colsCount = square(0).length
+  def rowsCount: Int = square.length
+  def colsCount: Int = square(0).length
   
   def coords(ch: Char): Option[(Int, Int)] = charsToCoords.get(ch.toLower)
-  def contains(ch: Char) = coords(ch).isDefined
+  def contains(ch: Char): Boolean = coords(ch).isDefined
   
-  def lastRowLength = square(square.length - 1).length
-  def lastRowFilled = lastRowLength == colsCount
+  def lastRowLength: Int = square(square.length - 1).length
+  def lastRowIsFilled: Boolean = lastRowLength == colsCount
   
 }
 
@@ -84,41 +84,41 @@ object PolybiusSquare {
     apply(key, alphabet, Map[Char, Char]())
 
   def apply(key: CharSequence, alphabet: Alphabet, missedToExisting: Map[Char, Char]): PolybiusSquare = {
-    val missedToExistingL = missedToExisting map { case (k, v) => (k.toLower, v.toLower) }
-    val sqChars = new ArrayBuffer[Char](alphabet.length)
+    val missedToExistingLower = missedToExisting map { case (k, v) => (k.toLower, v.toLower) }
+    val squareChars = new ArrayBuffer[Char](alphabet.length)
     
     def tryToAddToSquare(ch: Char): Unit = {
-      if (missedToExistingL.contains(ch)) return
-      if (sqChars.contains(ch)) return
+      if (missedToExistingLower.contains(ch)) return
+      if (squareChars.contains(ch)) return
       if (!alphabet.contains(ch)) return
-      sqChars += ch
+      squareChars += ch
     }
 
     for (i <- 0 until key.length) {
-      val keyCh = key.charAt(i).toLower
-      tryToAddToSquare(keyCh)
+      val keyChar = key.charAt(i).toLower
+      tryToAddToSquare(keyChar)
     }
     
     alphabet.toString.foreach(tryToAddToSquare)
     
-    PolybiusSquare(createSquare(sqChars), missedToExistingL)
+    PolybiusSquare(createSquare(squareChars), missedToExistingLower)
   }
   
   def apply(key: Long, alphabet: Alphabet): PolybiusSquare = 
     apply(key, alphabet, Map[Char, Char]())
   
   def apply(key: Long, alphabet: Alphabet, missedToExisting: Map[Char, Char]): PolybiusSquare = {
-    val missedToExistingL = missedToExisting map { case (k, v) => (k.toLower, v.toLower) }
-    val sqChars = new StringBuilder(alphabet.length)
+    val missedToExistingLower = missedToExisting map { case (k, v) => (k.toLower, v.toLower) }
+    val squareChars = new StringBuilder(alphabet.length)
     
     alphabet.toString.foreach(ch => {
-      if (!missedToExistingL.contains(ch) && !sqChars.contains(ch))
-        sqChars += ch
+      if (!missedToExistingLower.contains(ch) && !squareChars.contains(ch))
+        squareChars += ch
     })
     
-    val shuffled = shuffle(key, sqChars)
+    val shuffled = shuffle(key, squareChars)
     
-    PolybiusSquare(createSquare(shuffled), missedToExistingL)
+    PolybiusSquare(createSquare(shuffled), missedToExistingLower)
   }
   
   private def createSquare(chars: CharSequence): Array[Array[Char]] = {
@@ -146,8 +146,8 @@ object PolybiusSquare {
     val notInSquareChars = new HashMap[Int, Char]()
     
     for (i <- 0 until data.length) {
-      val dataCh = data.charAt(i)
-      square.coords(dataCh) match {
+      val dataChar = data.charAt(i)
+      square.coords(dataChar) match {
         case Some((row, col)) =>
           dataNums += row
           dataNums += col
@@ -155,29 +155,29 @@ object PolybiusSquare {
         case None =>
           if (strictMode) {
             throw new DataCharNotInSquareException(i)
-          } else notInSquareChars.put(i, dataCh)
+          } else notInSquareChars.put(i, dataChar)
       }
     }
     
     val compDataNums = computeFunc(dataNums, square)
     
     val result = new StringBuilder(data.length)
-    var inSqInd = 0
+    var inSquareIndex = 0
     for (i <- 0 until data.length) {
-      val notInSquareCh = notInSquareChars.get(i)
-      if (notInSquareCh.isEmpty) {
-        val row = compDataNums(inSqInd * 2)
-        val col = compDataNums(inSqInd * 2 + 1)
+      val notInSquareChar = notInSquareChars.get(i)
+      if (notInSquareChar.isEmpty) {
+        val row = compDataNums(inSquareIndex * 2)
+        val col = compDataNums(inSquareIndex * 2 + 1)
         
         if (row < square.rowsCount && col < square(row).length) {
-          var resCh = square(row)(col)
+          var resultChar = square(row)(col)
           if (data.charAt(i).isUpper) {
-            resCh = resCh.toUpper
+            resultChar = resultChar.toUpper
           }
-          result += resCh
-          inSqInd += 1
+          result += resultChar
+          inSquareIndex += 1
         } else throw new CoordinatesOutOfBoundsException(i, row, col)
-      } else result += notInSquareCh.get
+      } else result += notInSquareChar.get
     }
     result.toString
   }
@@ -187,10 +187,10 @@ object PolybiusSquare {
     val inSquareChars = new StringBuilder(data.length)
     
     for (i <- 0 until data.length) {
-      val ch = data.charAt(i)
-      if (square.contains(ch))
-        inSquareChars.append(ch)
-      else if (strictMode) throw new DataCharNotInSquareException(i)
+      val dataChar = data.charAt(i)
+      if (square.contains(dataChar)) {
+        inSquareChars.append(dataChar)
+      } else if (strictMode) throw new DataCharNotInSquareException(i)
     }
     
     inSquareChars

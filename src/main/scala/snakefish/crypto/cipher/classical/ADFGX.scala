@@ -58,11 +58,11 @@ class ADFGX (val square: PolybiusSquare,
     val plaintext = new StringBuilder(ctLength / 2)
     val ctTransposed = transposition.decrypt(ciphertext)
     for (i <- 0 until ctLength by 2) {
-      val rowCh = ctTransposed.charAt(i)
-      val row = cipherChars.indexOf(rowCh.toUpper)
+      val rowChar = ctTransposed.charAt(i)
+      val row = cipherChars.indexOf(rowChar.toUpper)
       
-      val colCh = ctTransposed.charAt(i + 1)
-      val col = cipherChars.indexOf(colCh.toUpper)
+      val colChar = ctTransposed.charAt(i + 1)
+      val col = cipherChars.indexOf(colChar.toUpper)
       
       plaintext += square(row)(col)
     }

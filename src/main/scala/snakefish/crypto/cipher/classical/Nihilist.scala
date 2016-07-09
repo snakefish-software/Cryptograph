@@ -17,23 +17,23 @@ class Nihilist(val key: CharSequence, val square: PolybiusSquare, val strictMode
     val keyNums = toNums(key)
     val keyLength = keyNums.length
       
-    val result = new ArrayBuffer[Int](plaintext.length)
-    var keyChIndex = 0
+    val ciphertext = new ArrayBuffer[Int](plaintext.length)
+    var keyCharIndex = 0
     
     for (i <- 0 until plaintext.length) {
       square.coords(plaintext.charAt(i)) match {
         case Some((row, col)) =>
           val ptNum = toInt(row, col)
-          val keyNum = if (keyLength > 0) keyNums(keyChIndex % keyLength) else 0
-          result += ptNum + keyNum
-          keyChIndex += 1
+          val keyNum = if (keyLength > 0) keyNums(keyCharIndex % keyLength) else 0
+          ciphertext += ptNum + keyNum
+          keyCharIndex += 1
         
         case None =>
           if (strictMode) throw new DataCharNotInSquareException(i)
       }
     }
     
-    result
+    ciphertext
   }
 
   @throws(classOf[CoordinatesOutOfBoundsException])
@@ -41,7 +41,7 @@ class Nihilist(val key: CharSequence, val square: PolybiusSquare, val strictMode
     val keyNums = toNums(key)
     val keyLength = keyNums.length
     
-    val result = new StringBuilder(ciphertext.length)
+    val plaintext = new StringBuilder(ciphertext.length)
     val maxPossibleResNum = square.rowsCount * 10 + square.lastRowLength
     
     for (i <- 0 until ciphertext.length) {
@@ -52,11 +52,11 @@ class Nihilist(val key: CharSequence, val square: PolybiusSquare, val strictMode
       val rowCorrect = row >= 0 && row < square.rowsCount
       
       if (rowCorrect && col >= 0 && col < square(row).length) {
-        result += square(row)(col)
+        plaintext += square(row)(col)
       } else throw new CoordinatesOutOfBoundsException(i, row, col)
     }
     
-    result.toString
+    plaintext.toString
   }
   
   private def toNums(chars: CharSequence): ArrayBuffer[Int] = {

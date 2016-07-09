@@ -39,25 +39,25 @@ class OneTimePad(val alphabet: Alphabet) {
     key: CharSequence,
     data: CharSequence
   )(
-    resIndexCalc: (Int, Int, Int) => Int
+    resultIndexCalc: (Int, Int, Int) => Int
   ): Array[Char] = {
     if (key.length < data.length)
       throw new KeyLengthInsuffisientException()
     
     val result = new Array[Char](data.length)
     for (i <- 0 until data.length) {
-      val dataChInd = alphabet.indexOf(data.charAt(i))
-      if (dataChInd < 0) {
+      val dataCharIndex = alphabet.indexOf(data.charAt(i))
+      if (dataCharIndex < 0) {
         erase(result)
         throw new DataCharNotInAlphabetException(i)
       }
-      val keyChInd = alphabet.indexOf(key.charAt(i))
-      if (keyChInd < 0) {
+      val keyCharIndex = alphabet.indexOf(key.charAt(i))
+      if (keyCharIndex < 0) {
         erase(result)
         throw new KeyCharNotInAlphabetException(i)
       }
-      val resChInd = resIndexCalc(dataChInd, keyChInd, alphabet.length)
-      result(i) = alphabet(resChInd)
+      val resultCharIndex = resultIndexCalc(dataCharIndex, keyCharIndex, alphabet.length)
+      result(i) = alphabet(resultCharIndex)
     }
     result
   }

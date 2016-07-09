@@ -15,20 +15,18 @@ package object crypto extends EraseInstances {
   
   def xor(key: Array[Byte], data: Array[Byte]): Array[Byte] = {
     val result = new Array[Byte](data.length)
-    val keyLen = key.length
     for (i <- 0 until data.length) {
-      result(i) = xor(data(i), key(i % keyLen))
+      result(i) = xor(data(i), key(i % key.length))
     }
     result
   }
   
   def xor(key: CharSequence, data: CharSequence): Array[Char] = {
     val result = new Array[Char](data.length)
-    val keyLen = key.length
     for (i <- 0 until data.length) {
-      val dataCh = data.charAt(i)
-      val keyCh = key.charAt(i % keyLen)
-      result(i) = xor(dataCh, keyCh)
+      val dataChar = data.charAt(i)
+      val keyChar = key.charAt(i % key.length)
+      result(i) = xor(dataChar, keyChar)
     }
     result
   }
@@ -36,7 +34,7 @@ package object crypto extends EraseInstances {
   def erase[R, E[R]](x: E[R])(implicit ev: Erase[E], evCh: EraseChar[R]): E[R] =
     ev.erase(x)(evCh)
     
-  def secureRandom(): SecureRandom = 
+  def getRandomInstance(): SecureRandom = 
     SecureRandom.getInstance("SHA1PRNG")
 
 }

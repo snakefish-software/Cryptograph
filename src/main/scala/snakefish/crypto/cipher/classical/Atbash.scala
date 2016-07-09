@@ -14,7 +14,7 @@ class Atbash(val alphabet: Alphabet, val strictMode: Boolean = false) {
     sumKeySeqWithText(identity)(data,
                                 alphabet,
                                 strictMode,
-                                (dataChIndex, _, alphabetLen) => alphabetLen - dataChIndex - 1)
+                                (dataCharIndex, _, alphabetLength) => alphabetLength - dataCharIndex - 1)
   }
 
 }
