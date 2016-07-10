@@ -11,7 +11,7 @@ object ADFGX {
   def apply(square: PolybiusSquare, transpositionKey: CharSequence, strictMode: Boolean = false) = 
     new ADFGX(square, transpositionKey, strictMode)
   
-  case class WrongCiphertextException(char: Char, position: Int, private val cipherChars: String) 
+  case class WrongCiphertextCharException(char: Char, position: Int, private val cipherChars: String) 
       extends RuntimeException(s"Ciphertext char '$char' at position $position is not one of '$cipherChars' chars")
 }
 
@@ -45,7 +45,7 @@ class ADFGX (val square: PolybiusSquare,
   }
   
   @throws(classOf[OddCiphertextLengthException])
-  @throws(classOf[WrongCiphertextException])
+  @throws(classOf[WrongCiphertextCharException])
   def decrypt(ciphertext: CharSequence): String = {
     val ctLength = ciphertext.length
     
@@ -55,7 +55,7 @@ class ADFGX (val square: PolybiusSquare,
     for (i <- 0 until ctLength) {
       val ctChar = ciphertext.charAt(i)
       if (!cipherChars.contains(ctChar.toUpper)) 
-        throw new WrongCiphertextException(ctChar, i, cipherChars)
+        throw new WrongCiphertextCharException(ctChar, i, cipherChars)
     }
     
     val plaintext = new StringBuilder(ctLength / 2)

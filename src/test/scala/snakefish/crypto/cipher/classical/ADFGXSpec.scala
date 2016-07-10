@@ -25,7 +25,7 @@ class ADFGXSpec extends BaseSpec {
   private val strictCipher = ADFGX(square, transpositionKey, true)
   
   "WrongCiphertextException" must "have correct exception message" in {
-    val ex = new WrongCiphertextException('a', 5, "ADFGX")
+    val ex = new WrongCiphertextCharException('a', 5, "ADFGX")
     ex.getMessage must be ("Ciphertext char 'a' at position 5 is not one of 'ADFGX' chars")
   }
   
@@ -59,7 +59,7 @@ class ADFGXSpec extends BaseSpec {
   }
   
   it must "throw an exception if ciphertext contains char that is not one of 'ADFGX' chars" in {
-    val ex = the [WrongCiphertextException] thrownBy nonStrictCipher.decrypt("a1dfgx")
+    val ex = the [WrongCiphertextCharException] thrownBy nonStrictCipher.decrypt("a1dfgx")
     ex.char must be ('1')
     ex.position must be (1)
   }
