@@ -1,7 +1,7 @@
 package snakefish.crypto
 package cipher.symmetric
 
-class XORTest extends BaseTest {
+class XORSpec extends BaseSpec {
   
   private val bytePlaintext  = Array(byte("01010111"), byte("01101001"), byte("01101011"), byte("01101001"))
   private val byteKey        = Array(byte("11110011"))

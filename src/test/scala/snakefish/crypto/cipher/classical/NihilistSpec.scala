@@ -4,7 +4,7 @@ package cipher.classical
 import PolybiusSquare._
 import Nihilist._
 
-class NihilistTest extends BaseTest {
+class NihilistSpec extends BaseSpec {
   
   private val plaintext  = "DYNAMITE WINTER PALACE"
   private val ciphertext = Array(37, 106, 62, 36, 67, 47, 86, 26, 104, 53, 62, 77, 27, 55, 57, 66, 55, 36, 54, 27)

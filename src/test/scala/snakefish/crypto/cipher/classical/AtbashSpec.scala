@@ -1,7 +1,7 @@
 package snakefish.crypto
 package cipher.classical
 
-class AtbashTest extends BaseTest {
+class AtbashSpec extends BaseSpec {
   
   ".crypt" must "correctly compute result according to Atbash rules" in {
     val alphabetEn = Alphabet.ENGLISH.toString;

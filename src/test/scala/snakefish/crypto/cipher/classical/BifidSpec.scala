@@ -3,7 +3,7 @@ package cipher.classical
 
 import PolybiusSquare._
 
-class BifidTest extends BaseTest {
+class BifidSpec extends BaseSpec {
   
   private val plaintext  = "Defend the east wall of the castle"
   private val ciphertext = "Ffyhmk hyc plia shad tr lhc chlblr"

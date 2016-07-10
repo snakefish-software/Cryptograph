@@ -1,14 +1,13 @@
 package snakefish.crypto
 package cipher.classical
 
-class VigenereTest extends BaseTest {
+class GronsfeldSpec extends BaseSpec {
   
-  private val plaintext  = "Attack at dawn"
-  private val ciphertext = "Lxfopv ef rnhr"
-  private val crKey = "L e M o N"
+  private val plaintext  = "GrOnS fElD"
+  private val ciphertext = "IrPsU fFqF"
   
-  private val nonStrictCipher = Vigenere(crKey, Alphabet.ENGLISH)
-  private val strictCipher = Vigenere(crKey, Alphabet.ENGLISH, true)
+  private val nonStrictCipher = Gronsfeld(2015, Alphabet.ENGLISH)
+  private val strictCipher = Gronsfeld(2015, Alphabet.ENGLISH, true)
   
   ".encrypt" must "correctly encrypt plaintext" in {
     val _ciphertext = nonStrictCipher.encrypt(plaintext)
@@ -34,16 +33,6 @@ class VigenereTest extends BaseTest {
     val ex = the [DataCharNotInAlphabetException] thrownBy strictCipher.decrypt(ciphertext)
     ex.char must be (' ')
     ex.position must be (ciphertext.indexOf(' '))
-  }
-  
-  ".encrypt & .decrypt" must "left data as is if all key chars are missing in alphabet" in {
-    val numKeyCipher = Vigenere("123456", Alphabet.ENGLISH)
-    
-    val _ciphertext = numKeyCipher.encrypt(plaintext)
-    _ciphertext must be (plaintext)
-    
-    val _plaintext = numKeyCipher.decrypt(ciphertext)
-    _plaintext must be (ciphertext)
   }
   
 }

@@ -1,6 +1,6 @@
 package snakefish.crypto
 
-class AlphabetTest extends BaseTest {
+class AlphabetSpec extends BaseSpec {
   
   private val plainAlphabet = "абвгдежзийклмн"
   

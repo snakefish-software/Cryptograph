@@ -3,7 +3,7 @@ package cipher.classical
 
 import PolybiusSquare._
 
-class PolybiusSquareTest extends BaseTest {
+class PolybiusSquareSpec extends BaseSpec {
   
   "KeyCharNotInSquareException" must "have correct exception message" in {
     val ex = new KeyCharNotInSquareException('a', 5)

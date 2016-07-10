@@ -2,7 +2,7 @@ package snakefish.crypto
 package cipher.classical
 package transposition
  
-class transpositionTest extends BaseTest {
+class transpositionSpec extends BaseSpec {
    
   ".normalizeKey" must "create correct 0-based key for transpostion ciphers" in {
     normalizeKey(

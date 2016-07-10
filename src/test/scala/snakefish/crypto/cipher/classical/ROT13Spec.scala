@@ -1,13 +1,13 @@
 package snakefish.crypto
 package cipher.classical
 
-class CaesarTest extends BaseTest {
+class ROT13Spec extends BaseSpec {
   
-  private val plaintext  = "Съешь же ещё этих мягких французских булок, да выпей чаю."
-  private val ciphertext = "Фэзыя йз зьи ахлш пвёнлш чугрщцкфнлш дцосн, жг еютзм ъгб."
+  private val plaintext  = "How can you tell an extrovert from an introvert at NSA? Va gur ryringbef, gur rkgebireg ybbxf ng gur BGURE thl'f fubrf."
+  private val ciphertext = "Ubj pna lbh gryy na rkgebireg sebz na vagebireg ng AFN? In the elevators, the extrovert looks at the OTHER guy's shoes."
   
-  private val nonStrictCipher = Caesar(3, Alphabet.RUSSIAN)
-  private val strictCipher = Caesar(3, Alphabet.RUSSIAN, true)
+  private val nonStrictCipher = ROT13(Alphabet.ENGLISH)
+  private val strictCipher = ROT13(Alphabet.ENGLISH, true)
   
   ".encrypt" must "correctly encrypt plaintext" in {
     val _ciphertext = nonStrictCipher.encrypt(plaintext)

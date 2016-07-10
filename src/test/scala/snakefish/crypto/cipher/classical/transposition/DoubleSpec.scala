@@ -2,12 +2,12 @@ package snakefish.crypto
 package cipher.classical
 package transposition
 
-class MyszkowskiTest extends BaseTest {
+class DoubleSpec extends BaseSpec {
   
   private val plaintext  = "Hello World from Kiev"
-  private val ciphertext = "llmlrove o rKeHoWdf i"
+  private val ciphertext = "leimrfloWo dvK leHr o"
   
-  private val cipher = Myszkowski("TOMATO", Alphabet.ENGLISH)
+  private val cipher = Double("TOMATO", "TOMATOS_123", Alphabet.ENGLISH)
   
   ".encrypt" must "correctly transpose plaintext" in {
     val _ciphertext = cipher.encrypt(plaintext)

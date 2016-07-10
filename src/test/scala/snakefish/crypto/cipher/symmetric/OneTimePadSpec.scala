@@ -3,7 +3,7 @@ package cipher.symmetric
 
 import OneTimePad._
 
-class OneTimePadTest extends BaseTest {
+class OneTimePadSpec extends BaseSpec {
   
   private val bytePlaintext  = Array(byte("01010111"), byte("01101001"), byte("01101011"), byte("01101001"))
   private val byteKey        = Array(byte("11110011"), byte("11110011"), byte("11110011"), byte("11110011"), byte("11110011"))

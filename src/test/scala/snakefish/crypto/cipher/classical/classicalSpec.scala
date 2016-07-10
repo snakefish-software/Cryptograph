@@ -1,7 +1,7 @@
 package snakefish.crypto
 package cipher.classical
 
-class classicalTest extends BaseTest {
+class classicalSpec extends BaseSpec {
   
   private val plainText = "The technique encrypts pairs of letters"
   private val shuffledText1 = "ethyer recept e ufhiqT spl neanttosrsci"

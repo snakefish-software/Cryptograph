@@ -1,13 +1,13 @@
 package snakefish.crypto
 package cipher.classical
 
-class GronsfeldTest extends BaseTest {
+class CaesarSpec extends BaseSpec {
   
-  private val plaintext  = "GrOnS fElD"
-  private val ciphertext = "IrPsU fFqF"
+  private val plaintext  = "Съешь же ещё этих мягких французских булок, да выпей чаю."
+  private val ciphertext = "Фэзыя йз зьи ахлш пвёнлш чугрщцкфнлш дцосн, жг еютзм ъгб."
   
-  private val nonStrictCipher = Gronsfeld(2015, Alphabet.ENGLISH)
-  private val strictCipher = Gronsfeld(2015, Alphabet.ENGLISH, true)
+  private val nonStrictCipher = Caesar(3, Alphabet.RUSSIAN)
+  private val strictCipher = Caesar(3, Alphabet.RUSSIAN, true)
   
   ".encrypt" must "correctly encrypt plaintext" in {
     val _ciphertext = nonStrictCipher.encrypt(plaintext)

@@ -3,7 +3,7 @@ package cipher.classical
 
 import Trifid._
 
-class TrifidTest extends BaseTest {
+class TrifidSpec extends BaseSpec {
   
   private val plaintext  = "Defend the east wall of the castle."
   private val ciphertext = "Suefec phs egyy jixi mf ofo cejlbsp"

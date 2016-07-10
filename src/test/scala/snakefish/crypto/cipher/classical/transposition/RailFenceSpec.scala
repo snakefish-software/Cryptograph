@@ -4,7 +4,7 @@ package transposition
 
 import RailFence._
 
-class RailFenceTest extends BaseTest {
+class RailFenceSpec extends BaseSpec {
   
   private val plaintext  = "abcdefghijklmnopqr"
   private val ciphertext = "aiqbhjprcgkodflnem"

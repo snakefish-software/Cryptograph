@@ -4,7 +4,7 @@ package cipher.classical
 import ADFGX._
 import PolybiusSquare._
 
-class ADFGVXTest extends BaseTest {
+class ADFGVXSpec extends BaseSpec {
   
   private val square = PolybiusSquare(
     Array(Array('1', 'G', 'R', '4', 'H', 'D'),

@@ -4,7 +4,7 @@ package cipher.classical
 import PolybiusSquare._
 import Playfair._
 
-class PlayfairTest extends BaseTest {
+class PlayfairSpec extends BaseSpec {
   
   private val plaintext  = "Hello one and all"
   private val ciphertext = "kcnvmppoabocfqnv"

@@ -4,7 +4,7 @@ package cipher.classical
 import FourSquare._
 import PolybiusSquare._
 
-class FourSquareTest extends BaseTest {
+class FourSquareSpec extends BaseSpec {
   
   private val plaintext  = "Hello stranger"
   private val ciphertext = "ивййлспсвйибрф"

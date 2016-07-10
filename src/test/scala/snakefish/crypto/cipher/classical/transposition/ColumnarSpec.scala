@@ -2,7 +2,7 @@ package snakefish.crypto
 package cipher.classical
 package transposition
 
-class ColumnarTest extends BaseTest {
+class ColumnarSpec extends BaseSpec {
   
   private val plaintext1  = "Hello World from Kiev"
   private val ciphertext1 = "llmlroveore  KHWfiod "

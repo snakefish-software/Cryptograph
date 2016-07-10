@@ -1,6 +1,6 @@
 package snakefish.crypto
 
-class cryptoTest extends BaseTest {
+class cryptoSpec extends BaseSpec {
   
   ".addByModulo" must "correctly add 2 numbers by modulo" in {
     addByModulo(12, 3, 11) must be (4)
