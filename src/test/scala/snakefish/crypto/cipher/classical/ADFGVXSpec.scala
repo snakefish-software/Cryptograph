@@ -21,6 +21,7 @@ class ADFGVXSpec extends BaseSpec {
   private val transpositionKey = "Secret"
   private val plaintext  = "Attack will begin in 11 AM"
   private val ciphertext = "GXFGFFDFFADDFAGFXDFADXVFAFGFDDXXVFAXVDAGAX"
+  private val ciphertextWithNonDecrChars = " GXFGFFDFFADDFAGF XDFADXVFAFGFDDXXVFAXVDAGAX "
   private val nonStrictCipher = ADFGVX(square, transpositionKey)
   private val strictCipher = ADFGVX(square, transpositionKey, true)
 
@@ -43,19 +44,22 @@ class ADFGVXSpec extends BaseSpec {
   }
   
   ".decrypt" must "correctly decrypt ciphertext" in {
-    val _plaintext = nonStrictCipher.decrypt(ciphertext.toLowerCase)
-    _plaintext must be ("ATTACKWILLBEGININ11AM")
+    val _plaintext1 = nonStrictCipher.decrypt(ciphertext.toLowerCase)
+    _plaintext1 must be ("ATTACKWILLBEGININ11AM")
+    
+    val _plaintext2 = nonStrictCipher.decrypt(ciphertextWithNonDecrChars)
+    _plaintext2 must be ("ATTACKWILLBEGININ11AM")
     
     nonStrictCipher.decrypt("") must be ("")
   }
   
-  it must "throw an exception if ciphertext length is odd" in {
-    an [OddCiphertextLengthException] must be thrownBy nonStrictCipher.decrypt("A")
+  it must "throw an exception in strict mode if ciphertext length is odd" in {
+    an [OddCiphertextLengthException] must be thrownBy strictCipher.decrypt("A")
   }
   
-  it must "throw an exception if ciphertext contains char that is not one of 'ADFGX' chars" in {
-    val ex = the [WrongCiphertextCharException] thrownBy nonStrictCipher.decrypt("a1dfgx")
-    ex.char must be ('1')
+  it must "throw an exception in strict mode if ciphertext contains char that is not one of 'ADFGVX' chars" in {
+    val ex = the [WrongCiphertextCharException] thrownBy strictCipher.decrypt("a dfgx")
+    ex.char must be (' ')
     ex.position must be (1)
   }
   
