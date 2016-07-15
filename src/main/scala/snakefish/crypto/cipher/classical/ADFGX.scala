@@ -23,7 +23,7 @@ class ADFGX (val square: PolybiusSquare,
   private val cipherCharsLen = cipherChars.length
 
   if (square.rowsCount != cipherCharsLen || square.colsCount != cipherCharsLen)
-    throw new WrongSquareSizeException(s"Square must have a $cipherCharsLen x $cipherCharsLen size")
+    throw new WrongSquareSizeException(s"Square must have a size of $cipherCharsLen x $cipherCharsLen")
 
   private val transposition = Columnar(transpositionKey, Alphabet.ENGLISH)
 

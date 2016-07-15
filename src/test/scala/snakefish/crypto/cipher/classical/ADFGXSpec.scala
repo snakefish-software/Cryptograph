@@ -32,7 +32,7 @@ class ADFGXSpec extends BaseSpec {
   
   ".apply" must "throw an exception if Polybius square has size different from 5 x 5" in {
     val ex = the [WrongSquareSizeException] thrownBy ADFGX(squareWithWrongSize, transpositionKey)
-    ex.getMessage must be ("Square must have a 5 x 5 size")
+    ex.getMessage must be ("Square must have a size of 5 x 5")
   }
   
   ".encrypt" must "correctly encrypt plaintext" in {
