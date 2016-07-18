@@ -10,10 +10,10 @@ object Nihilist {
     new Nihilist(key, square, strictMode)
 }
 
-class Nihilist(val key: CharSequence, val square: PolybiusSquare, val strictMode: Boolean = false) {
+class Nihilist (val key: CharSequence, val square: PolybiusSquare, val strictMode: Boolean = false) {
   
   @throws(classOf[DataCharNotInSquareException])
-  def encrypt(plaintext: CharSequence): ArrayBuffer[Int] = {
+  def encrypt(plaintext: CharSequence): List[Int] = {
     val keyNums = toNums(key)
     val keyLength = keyNums.length
       
@@ -34,7 +34,7 @@ class Nihilist(val key: CharSequence, val square: PolybiusSquare, val strictMode
       }
     }
     
-    ciphertext
+    ciphertext.toList
   }
 
   @throws(classOf[CoordinatesOutOfBoundsException])

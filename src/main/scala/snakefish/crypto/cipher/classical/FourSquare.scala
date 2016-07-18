@@ -11,15 +11,15 @@ object FourSquare {
   @throws(classOf[WrongSquareSizeException])
   @throws(classOf[PlaceholderNotInSquareException])
   def apply(plainSquare: PolybiusSquare,
-    cipherSquare1: PolybiusSquare,
-    cipherSquare2: PolybiusSquare,
-    placeholder: Char,
-    strictMode: Boolean = false): FourSquare = {
+            cipherSquare1: PolybiusSquare,
+            cipherSquare2: PolybiusSquare,
+            placeholder: Char,
+            strictMode: Boolean = false): FourSquare = {
     new FourSquare(plainSquare,
-      cipherSquare1,
-      cipherSquare2,
-      placeholder,
-      strictMode)
+                   cipherSquare1,
+                   cipherSquare2,
+                   placeholder,
+                   strictMode)
   }
 
   case class SquaresDifferentSizeException()
@@ -27,11 +27,11 @@ object FourSquare {
 
 }
 
-class FourSquare(val plainSquare: PolybiusSquare,
-    val cipherSquare1: PolybiusSquare,
-    val cipherSquare2: PolybiusSquare,
-    private val _placeholder: Char,
-    val strictMode: Boolean = false) {
+class FourSquare (val plainSquare: PolybiusSquare,
+                  val cipherSquare1: PolybiusSquare,
+                  val cipherSquare2: PolybiusSquare,
+                  private val _placeholder: Char,
+                  val strictMode: Boolean = false) {
 
   val placeholder = _placeholder.toLower
 
