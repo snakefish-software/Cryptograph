@@ -27,7 +27,7 @@ package object classical {
       val charIndex = alphabet.indexOf(dataChar)
       if (charIndex >= 0) {
         val resultIndex = resultIndexCalc(charIndex, keyProvider(calcIndex), alphabet.length)
-        result += (if (dataChar.isUpper) alphabet(resultIndex).toUpper else alphabet(resultIndex))
+        result += { if (dataChar.isUpper) alphabet(resultIndex).toUpper else alphabet(resultIndex) }
         calcIndex += 1
       } else {
         if (strictMode) {

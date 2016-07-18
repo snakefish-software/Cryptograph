@@ -5,12 +5,16 @@ import java.security.SecureRandom
 
 package object crypto extends EraseInstances {
 
+  @inline
   def addByModulo(x: Int, y: Int, mod: Int): Int = (x % mod + y % mod) % mod
 
+  @inline
   def subtractByModulo(x: Int, y: Int, mod: Int): Int = (x % mod - y % mod + mod) % mod
   
+  @inline
   def xor(b1: Byte, b2: Byte): Byte = (b1 ^ b2).toByte
   
+  @inline
   def xor(ch1: Char, ch2: Char): Char = (ch1 ^ ch2).toChar
   
   def xor(key: Array[Byte], data: Array[Byte]): Array[Byte] = {

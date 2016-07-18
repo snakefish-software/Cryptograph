@@ -50,9 +50,7 @@ object PolybiusSquare {
   case class WrongSquareSizeException(msg: String)
       extends RuntimeException(msg)
   
-  implicit def squareToArray(square: PolybiusSquare): Array[Array[Char]] = square.square
-  
-  implicit def arrayToSquare(array: Array[Array[Char]]): PolybiusSquare = PolybiusSquare(array)
+  implicit def arrayAsSquare(array: Array[Array[Char]]): PolybiusSquare = PolybiusSquare(array)
 
   val LATIN = PolybiusSquare(
     Array(Array('a', 'b', 'c', 'd', 'e'),
@@ -175,8 +173,10 @@ object PolybiusSquare {
             resultChar = resultChar.toUpper
           }
           result += resultChar
-          inSquareIndex += 1
-        } else throw new CoordinatesOutOfBoundsException(i, row, col)
+        } else if (strictMode) {
+          throw new CoordinatesOutOfBoundsException(i, row, col)
+        }
+        inSquareIndex += 1
       } else result += notInSquareChar.get
     }
     result.toString
@@ -190,7 +190,9 @@ object PolybiusSquare {
       val dataChar = data.charAt(i)
       if (square.contains(dataChar)) {
         inSquareChars.append(dataChar)
-      } else if (strictMode) throw new DataCharNotInSquareException(dataChar, i)
+      } else if (strictMode) {
+        throw new DataCharNotInSquareException(dataChar, i)
+      }
     }
     
     inSquareChars

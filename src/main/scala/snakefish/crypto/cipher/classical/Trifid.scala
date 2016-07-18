@@ -58,14 +58,15 @@ class Trifid(val cube: Array[Array[Array[Char]]], val period: Int, val strictMod
         val row = dataNums(compIndex * 3 + 1)
         val col = dataNums(compIndex * 3 + 2)
         
-        if (table >= cube.length || row >= cube(table).length || col >= cube(table)(row).length)
+        if (strictMode && table >= cube.length || row >= cube(table).length || col >= cube(table)(row).length) {
           throw new CoordinatesOutOfBoundsException(i, table, row, col)
-          
-        var resultChar = cube(table)(row)(col)
-        if (data.charAt(i).isUpper) {
-          resultChar = resultChar.toUpper
+        } else {
+          var resultChar = cube(table)(row)(col)
+          if (data.charAt(i).isUpper) {
+            resultChar = resultChar.toUpper
+          }
+          result += resultChar
         }
-        result += resultChar
         compIndex += 1
       } else result += notInSquareChar.get
     }

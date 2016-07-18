@@ -16,7 +16,7 @@ object Alphabet {
   val PUNCTUATION = Alphabet(",;.!?-:")
   val SPACES = Alphabet(" \t\n")
   
-  implicit def alphabetToStr(alphabet: Alphabet): String = alphabet.toString
+  implicit def alphabetAsString(alphabet: Alphabet): String = alphabet.toString
 }
 
 case class Alphabet (private val _alphabet: String) {

@@ -54,7 +54,7 @@ class Nihilist(val key: CharSequence, val square: PolybiusSquare, val strictMode
       
       if (rowCorrect && col >= 0 && col < square(row).length) {
         plaintext += square(row)(col)
-      } else throw new CoordinatesOutOfBoundsException(i, row, col)
+      } else if (strictMode) throw new CoordinatesOutOfBoundsException(i, row, col)
     }
     
     plaintext.toString
@@ -70,6 +70,7 @@ class Nihilist(val key: CharSequence, val square: PolybiusSquare, val strictMode
     nums
   }
   
+  @inline
   private def toInt(row: Int, col: Int) = (row + 1) * 10 + (col + 1)
   
 }

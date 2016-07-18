@@ -34,9 +34,9 @@ class NihilistSpec extends BaseSpec {
     nonStrictCipher.decrypt(Array[Int]()) must be ("")
   }
    
-  it must "throw an exception if ciphertext contains wrong number" in {
+  it must "throw an exception in strict mode if ciphertext contains wrong number" in {
     val wrongCiphertext = Array(37, -300, 106, 62, 36)
-    val ex = the [CoordinatesOutOfBoundsException] thrownBy nonStrictCipher.decrypt(wrongCiphertext)
+    val ex = the [CoordinatesOutOfBoundsException] thrownBy strictCipher.decrypt(wrongCiphertext)
     ex.position must be (1)
   }
    

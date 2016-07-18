@@ -104,8 +104,8 @@ class PolybiusSquareSpec extends BaseSpec {
     res3 must be ("АзПцЮеИь")
   }
   
-  ".compute" must "throw an exception if symbol in computed data is missing in square" in {
-    val ex = the [CoordinatesOutOfBoundsException] thrownBy compute("ц", RUSSIAN_ALL, colsRows)
+  ".compute" must "throw an exception in strict mode if symbol in computed data is missing in square" in {
+    val ex = the [CoordinatesOutOfBoundsException] thrownBy compute("ц", RUSSIAN_ALL, colsRows, true)
     ex.position must be (0)
     ex.row must be (5)
     ex.col must be (3)

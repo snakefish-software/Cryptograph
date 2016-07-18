@@ -37,8 +37,11 @@ class PlayfairSpec extends BaseSpec {
   }
   
   ".decrypt" must "correctly decrypt ciphertext" in {
-    val _plaintext = nonStrictCipher.decrypt(ciphertext)
-    _plaintext must be ("hellooneandallx")
+    val _plaintext1 = nonStrictCipher.decrypt(ciphertext)
+    _plaintext1 must be ("hellooneandallx")
+    
+    val _plaintext2 = nonStrictCipher.decrypt("g")
+    _plaintext2 must be ("") 
     
     nonStrictCipher.decrypt("") must be ("")
   }
@@ -49,8 +52,8 @@ class PlayfairSpec extends BaseSpec {
     ex.position must be (plaintext.indexOf(' '))
   }
   
-  it must "throw an exception if ciphertext length is odd" in {
-    an [OddCiphertextLengthException] must be thrownBy nonStrictCipher.decrypt("g")
+  it must "throw an exception in strict mode if ciphertext length is odd" in {
+    an [OddCiphertextLengthException] must be thrownBy strictCipher.decrypt("g")
   }
   
 }
